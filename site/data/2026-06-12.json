@@ -66,9 +66,10 @@
     "cross_stack": 3
    },
    "image": {
-    "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2606.13392/gradient.png",
-    "credit": "huggingface.co",
-    "source": "https://huggingface.co/papers/2606.13392"
+    "url": "https://arxiv.org/html/2606.13392v1/figures/msa_arch.png",
+    "credit": "arxiv.org",
+    "source": "https://arxiv.org/html/2606.13392",
+    "why": "论文 Figure 1：MSA 整体架构图，左侧轻量 Index 分支为每个 query/GQA 组选块，一图看清块级稀疏注意力如何工作"
    }
   },
   {
@@ -91,6 +92,12 @@
     "leading_edge": 4,
     "impact": 3,
     "cross_stack": 3
+   },
+   "image": {
+    "url": "https://arxiv.org/html/2606.13102v1/x1.png",
+    "credit": "arxiv.org",
+    "source": "https://arxiv.org/html/2606.13102",
+    "why": "论文 Figure 1 teaser：展示 FTP-1 作为首个跨传感器/跨形态通用触觉策略，并标出在未见传感器上 +31.6 个百分点的核心结果"
    }
   },
   {
@@ -115,9 +122,10 @@
     "cross_stack": 3
    },
    "image": {
-    "url": "https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/aTcsN5ZZDnMFJvRiG/m7vjmpong0dqbb3hdrdc",
+    "url": "https://res.cloudinary.com/lesswrong-2-0/image/upload/v1781121844/lexical_client_uploads/pzgdfdppqvju4opblgam.png",
     "credit": "alignmentforum.org",
-    "source": "https://www.alignmentforum.org/posts/aTcsN5ZZDnMFJvRiG/models-may-behave-worse-when-eval-aware"
+    "source": "https://www.alignmentforum.org/posts/aTcsN5ZZDnMFJvRiG/models-may-behave-worse-when-eval-aware",
+    "why": "文中关键行为率对比图：Gemini/Opus 4.6/GPT-5.4 在三项评测的整体不当行为率 vs 高评估察觉时（斜纹条）的对比，直观呈现察觉被评估后行为变化"
    }
   },
   {
@@ -167,6 +175,12 @@
     "leading_edge": 3,
     "impact": 3,
     "cross_stack": 3
+   },
+   "image": {
+    "url": "https://arxiv.org/html/2606.13003v1/img/plot_teaser_notitle.png",
+    "credit": "arxiv.org",
+    "source": "https://arxiv.org/html/2606.13003",
+    "why": "论文 Figure 1 主结果图『多智能体优势的幻觉』：理论承诺的分工（左）vs 现实中的冗余与功能坍缩（右），一图点明核心反共识结论"
    }
   }
  ],
@@ -4126,9 +4140,10 @@
      "cross_stack": 3
     },
     "image": {
-     "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2606.13392/gradient.png",
-     "credit": "huggingface.co",
-     "source": "https://huggingface.co/papers/2606.13392"
+     "url": "https://arxiv.org/html/2606.13392v1/figures/msa_arch.png",
+     "credit": "arxiv.org",
+     "source": "https://arxiv.org/html/2606.13392",
+     "why": "论文 Figure 1：MSA 整体架构图，左侧轻量 Index 分支为每个 query/GQA 组选块，一图看清块级稀疏注意力如何工作"
     }
    },
    {
@@ -4151,6 +4166,12 @@
      "leading_edge": 4,
      "impact": 3,
      "cross_stack": 3
+    },
+    "image": {
+     "url": "https://arxiv.org/html/2606.13102v1/x1.png",
+     "credit": "arxiv.org",
+     "source": "https://arxiv.org/html/2606.13102",
+     "why": "论文 Figure 1 teaser：展示 FTP-1 作为首个跨传感器/跨形态通用触觉策略，并标出在未见传感器上 +31.6 个百分点的核心结果"
     }
    },
    {
@@ -4175,9 +4196,10 @@
      "cross_stack": 3
     },
     "image": {
-     "url": "https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/aTcsN5ZZDnMFJvRiG/m7vjmpong0dqbb3hdrdc",
+     "url": "https://res.cloudinary.com/lesswrong-2-0/image/upload/v1781121844/lexical_client_uploads/pzgdfdppqvju4opblgam.png",
      "credit": "alignmentforum.org",
-     "source": "https://www.alignmentforum.org/posts/aTcsN5ZZDnMFJvRiG/models-may-behave-worse-when-eval-aware"
+     "source": "https://www.alignmentforum.org/posts/aTcsN5ZZDnMFJvRiG/models-may-behave-worse-when-eval-aware",
+     "why": "文中关键行为率对比图：Gemini/Opus 4.6/GPT-5.4 在三项评测的整体不当行为率 vs 高评估察觉时（斜纹条）的对比，直观呈现察觉被评估后行为变化"
     }
    },
    {
@@ -4227,6 +4249,12 @@
      "leading_edge": 3,
      "impact": 3,
      "cross_stack": 3
+    },
+    "image": {
+     "url": "https://arxiv.org/html/2606.13003v1/img/plot_teaser_notitle.png",
+     "credit": "arxiv.org",
+     "source": "https://arxiv.org/html/2606.13003",
+     "why": "论文 Figure 1 主结果图『多智能体优势的幻觉』：理论承诺的分工（左）vs 现实中的冗余与功能坍缩（右），一图点明核心反共识结论"
     }
    }
   ],
@@ -4247,9 +4275,10 @@
     },
     "score": 4.5,
     "image": {
-     "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2606.13392/gradient.png",
-     "credit": "huggingface.co",
-     "source": "https://huggingface.co/papers/2606.13392"
+     "url": "https://arxiv.org/html/2606.13392v1/figures/msa_arch.png",
+     "credit": "arxiv.org",
+     "source": "https://arxiv.org/html/2606.13392",
+     "why": "论文 Figure 1：MSA 整体架构图，左侧轻量 Index 分支为每个 query/GQA 组选块，一图看清块级稀疏注意力如何工作"
     }
    },
    {
@@ -4308,7 +4337,13 @@
      "primary": "https://arxiv.org/abs/2606.13102",
      "discussion": ""
     },
-    "score": 4.0
+    "score": 4.0,
+    "image": {
+     "url": "https://arxiv.org/html/2606.13102v1/x1.png",
+     "credit": "arxiv.org",
+     "source": "https://arxiv.org/html/2606.13102",
+     "why": "论文 Figure 1 teaser：展示 FTP-1 作为首个跨传感器/跨形态通用触觉策略，并标出在未见传感器上 +31.6 个百分点的核心结果"
+    }
    },
    {
     "id": "alignment-forum:eval-aware",
@@ -4326,9 +4361,10 @@
     },
     "score": 3.8,
     "image": {
-     "url": "https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/aTcsN5ZZDnMFJvRiG/m7vjmpong0dqbb3hdrdc",
+     "url": "https://res.cloudinary.com/lesswrong-2-0/image/upload/v1781121844/lexical_client_uploads/pzgdfdppqvju4opblgam.png",
      "credit": "alignmentforum.org",
-     "source": "https://www.alignmentforum.org/posts/aTcsN5ZZDnMFJvRiG/models-may-behave-worse-when-eval-aware"
+     "source": "https://www.alignmentforum.org/posts/aTcsN5ZZDnMFJvRiG/models-may-behave-worse-when-eval-aware",
+     "why": "文中关键行为率对比图：Gemini/Opus 4.6/GPT-5.4 在三项评测的整体不当行为率 vs 高评估察觉时（斜纹条）的对比，直观呈现察觉被评估后行为变化"
     }
    },
    {
@@ -4345,7 +4381,13 @@
      "primary": "https://arxiv.org/abs/2606.13003",
      "discussion": ""
     },
-    "score": 3.7
+    "score": 3.7,
+    "image": {
+     "url": "https://arxiv.org/html/2606.13003v1/img/plot_teaser_notitle.png",
+     "credit": "arxiv.org",
+     "source": "https://arxiv.org/html/2606.13003",
+     "why": "论文 Figure 1 主结果图『多智能体优势的幻觉』：理论承诺的分工（左）vs 现实中的冗余与功能坍缩（右），一图点明核心反共识结论"
+    }
    },
    {
     "id": "hn-frontpage:zed-deltadb",

@@ -140,7 +140,7 @@ sources:
     enabled: false
     freq: weekly
     verified: 2026-06-12
-    notes: "Meta 屏蔽数据中心 IP，本网络代理也未稳定可达——生产网络复验后再 enable；Llama 发布通常 HN/Smol AI 兜底"
+    notes: "bot 墙：直连 000、代理 400（llama.com 同样 400），换 UA 无效——不是网络问题，自动管线无干净解。Llama 发布由 HN/Smol/transformers releases 兜底；急需时策展 agent 用 agent-browser 渲染读取。meta-llama GitHub org 可查但新 repo 频率极低（上次 2025-05）"
 
   - id: xai-news
     name: xAI News

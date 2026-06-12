@@ -88,16 +88,15 @@ sources:
     notes: "list 端点无需鉴权（下载才要 key）"
 
   - id: rewardbench
-    name: RewardBench (AllenAI)
+    name: RewardBench 2 (AllenAI)
     layers: [eval, post-training]
     type: html
     url: https://huggingface.co/spaces/allenai/reward-bench
     priority: P2
     needs_proxy: true
-    enabled: false
     freq: monthly
     verified: 2026-06-12
-    notes: "唯一 reward model 榜；HF Space 是 JS 渲染，生产网络复验后再启用"
+    notes: "唯一 reward model 榜，Space 页走代理 200 可达。机器信号看数据集 lastModified：allenai/reward-bench-2-results（v1 的 reward-bench-results 已于 2025-05 停更）；Space 本体 JS 渲染，策展 agent 必要时用 agent-browser"
 
   - id: artificial-analysis
     name: Artificial Analysis

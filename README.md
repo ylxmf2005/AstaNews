@@ -2,7 +2,7 @@
 
 AI 全栈每日情报。一条命令，从论文、模型发布、评测榜单、infra/serving、MaaS changelog、agent 生态、具身智能、安全、产品/商业、devtool 共 **13 个 stack layer** 的已验证数据源中，策展出当日最值得读的内容——**默认 5 条，最多 8 条，覆盖至少 3 层**。
 
-这是一个 Claude Code plugin：数据源注册表开放贡献，抓取与去重由确定性脚本完成，筛选与撰写由 agent 按编辑准则裁决。
+这是一个 Claude Code plugin：数据源注册表开放贡献，抓取与去重由确定性脚本完成，筛选与撰写由 agent 按编辑准则裁决。系统为什么这样设计、数据怎么流动，见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
 
 ## 安装
 

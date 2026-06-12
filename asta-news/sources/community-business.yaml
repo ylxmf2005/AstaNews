@@ -108,13 +108,12 @@ sources:
     notes: "唯一稳定的中国 AI 翻译/分析源；substack.com 域名对数据中心 IP 502，住宅网络可 enable"
 
   - id: reddit-localllama
-    name: r/LocalLLaMA Top Daily
+    name: r/LocalLLaMA Top Daily (RSS)
     layers: [model, serving]
-    type: json
-    parser: reddit_top
-    url: "https://www.reddit.com/r/LocalLLaMA/top.json?t=day&limit=25"
+    type: rss
+    url: "https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day"
     priority: P1
-    enabled: false
+    needs_proxy: true
     freq: daily
     verified: 2026-06-12
-    notes: "开源权重/本地推理第一社区，新模型常最先在这爆。但数据中心/部分住宅 IP 403：需免费 OAuth script app（100 QPM）或保持禁用，由 HN+Smol AI 兜底"
+    notes: "开源权重/本地推理第一社区。.json 端点对代理出口 403，但 RSS 端点放行（实测 200）——用 RSS 牺牲 score 字段换可达性；热度交叉验证靠 HN/Smol"

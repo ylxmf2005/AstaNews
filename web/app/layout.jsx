@@ -3,10 +3,18 @@ import Link from "next/link";
 import Nav from "../components/Nav";
 import { SITE } from "../lib/config";
 
+const SITE_URL = "https://ylxmf2005.github.io/AstaNews/";
+const DESC = "AI 全栈每日情报：论文、模型发布、评测、infra、agent、具身、安全、产品商业、devtool。每天精选，多级筛选，多视角。";
 export const metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "AstaNews · AI 全栈每日情报",
-  description: "Asta Lab 的 AI 全栈每日情报：论文、模型发布、评测、infra、agent、具身、安全、产品商业、devtool。",
+  description: DESC,
   alternates: { types: { "application/atom+xml": `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/feed.xml` } },
+  openGraph: {
+    title: "AstaNews · AI 全栈每日情报", description: DESC, url: SITE_URL,
+    siteName: "AstaNews", locale: "zh_CN", type: "website",
+  },
+  twitter: { card: "summary", title: "AstaNews · AI 全栈每日情报", description: DESC },
 };
 
 export default function RootLayout({ children }) {

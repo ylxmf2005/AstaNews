@@ -6,6 +6,19 @@ export function generateStaticParams() {
   return Object.keys(allItems()).map((slug) => ({ slug }));
 }
 
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const it = getItem(slug);
+  if (!it) return { title: "AstaNews" };
+  const desc = (it.readable || it.take || "").split("\n\n")[0].slice(0, 140);
+  return {
+    title: `${it.title} · AstaNews`,
+    description: desc,
+    openGraph: { title: it.title, description: desc, type: "article", images: it.image?.url ? [it.image.url] : [] },
+    twitter: { card: it.image?.url ? "summary_large_image" : "summary", title: it.title, description: desc, images: it.image?.url ? [it.image.url] : [] },
+  };
+}
+
 export default async function ItemPage({ params }) {
   const { slug } = await params;
   const it = getItem(slug);

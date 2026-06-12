@@ -19,7 +19,7 @@ function applyPerspective(items, persp) {
     .map((x) => x.it);
 }
 
-function Story({ it, n, related }) {
+function Story({ it, n, related, lead }) {
   const body = it.readable || it.take || "";
   const facts = it.facts || [];
   const links = [];
@@ -27,7 +27,7 @@ function Story({ it, n, related }) {
   if (it.links?.discussion) links.push(["讨论", it.links.discussion]);
   const rel = (related?.[it.links?.primary] || []).filter((r) => r.score >= 0.35).slice(0, 3);
   return (
-    <article className="story">
+    <article className={lead ? "story lead" : "story"}>
       <div className="num">{n}</div>
       <div className="dept"><span>{layerEmoji(it.layer)}</span>{layerName(it.layer)}</div>
       <h2>{it.title}</h2>
@@ -155,7 +155,7 @@ export default function EditionView({ edition }) {
         ? <FullRows items={items} />
         : items.length === 0
           ? <p className="empty">该类别下暂无条目。</p>
-          : items.map((it, i) => <Story key={it.id || i} it={it} n={i + 1} related={related} />)}
+          : items.map((it, i) => <Story key={it.id || i} it={it} n={i + 1} related={related} lead={i === 0} />)}
 
       {tier !== "full" && edition.gaps?.length > 0 && (
         <>

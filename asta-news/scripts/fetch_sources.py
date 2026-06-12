@@ -169,12 +169,16 @@ def parse_feed(source: dict, text: str) -> list[dict]:
 # ---------- json parsers（全部防御式：结构不符 -> 空列表而非崩溃）----------
 
 def p_hf_daily_papers(source, data):
+    # publishedAt 是论文提交日（常 >36h，会被时间窗整批误杀）；上榜本身就是"今天"的事件，
+    # 统一盖当前时间戳，跨天重复交给 seen.db 去重
+    now = datetime.now(timezone.utc).isoformat()
     out = []
     for it in data if isinstance(data, list) else []:
         p = it.get("paper", {})
         out.append(mk(source, p.get("title", ""), f"https://huggingface.co/papers/{p.get('id','')}",
-                      it.get("publishedAt"), p.get("summary", ""),
-                      {"upvotes": p.get("upvotes"), "arxiv_id": p.get("id")}))
+                      now, p.get("summary", ""),
+                      {"upvotes": p.get("upvotes"), "arxiv_id": p.get("id"),
+                       "paper_date": it.get("publishedAt")}))
     return out
 
 

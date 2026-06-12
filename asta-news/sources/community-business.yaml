@@ -199,6 +199,17 @@ sources:
     verified: 2026-06-12
     notes: "唯一稳定的中国 AI 翻译/分析源；substack.com 域名对数据中心 IP 502，住宅网络可 enable"
 
+  - id: reddit-machinelearning
+    name: r/MachineLearning Top Daily (RSS)
+    layers: [model, post-training, eval]
+    type: rss
+    url: "https://www.reddit.com/r/MachineLearning/top/.rss?t=day"
+    priority: P1
+    needs_proxy: true
+    freq: daily
+    verified: 2026-06-13
+    notes: "研究级讨论与论文帖；.json 端点 403 但 RSS 放行（同 localllama）"
+
   - id: reddit-localllama
     name: r/LocalLLaMA Top Daily (RSS)
     layers: [model, serving]

@@ -113,6 +113,16 @@ sources:
     freq: monthly
     verified: 2026-06-12
 
+  - id: philschmid
+    name: Phil Schmid Blog
+    layers: [post-training, serving, devtool]
+    type: rss
+    url: https://www.philschmid.de/rss
+    priority: P2
+    freq: weekly
+    verified: 2026-06-13
+    notes: "微调/RLHF/部署的实操向博客，代码与配方"
+
   - id: papers-cool
     name: papers.cool cs.AI (RSSHub)
     layers: [model, agent]

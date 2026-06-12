@@ -41,3 +41,11 @@ export const PERSPECTIVES = [
 
 export const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 export const asset = (p) => `${BASE}${p}`;
+
+// URL → 稳定短 slug（Node 构建期与浏览器端结果一致，用于 item 详情页路由）
+export function slug(url) {
+  let h = 0;
+  const s = url || "";
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h.toString(36);
+}

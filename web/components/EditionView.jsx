@@ -1,6 +1,7 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { LAYERS, lz, layerName, layerEmoji, layerColor, TIERS, PERSPECTIVES, BASE } from "../lib/config";
+import { LAYERS, lz, layerName, layerEmoji, layerColor, TIERS, PERSPECTIVES, BASE, slug } from "../lib/config";
 
 function baseScore(it, i) {
   if (typeof it.score === "number") return it.score;
@@ -30,7 +31,7 @@ function Story({ it, n, related, lead, sharp }) {
     <article className={lead ? "story lead" : "story"}>
       <div className="num">{n}</div>
       <div className="dept"><span>{layerEmoji(it.layer)}</span>{layerName(it.layer)}</div>
-      <h2>{it.title}</h2>
+      <h2>{it.links?.primary ? <Link href={`/item/${slug(it.links.primary)}`}>{it.title}</Link> : it.title}</h2>
       {it.image?.url && <img className="thumb" src={it.image.url} alt="" loading="lazy" />}
       {body && <div className="body">{body}</div>}
       {facts.length > 0 && <ul className="facts">{facts.map((f, i) => <li key={i}>{f}</li>)}</ul>}

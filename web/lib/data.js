@@ -43,3 +43,34 @@ export function normalizeTiers(d) {
     full: d.all_candidates || [],
   };
 }
+
+// URL → 稳定短 slug（与 web/lib/config.js 的 slug 必须一致）
+function slugOf(url) {
+  let h = 0;
+  const s = url || "";
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h.toString(36);
+}
+
+// 全站可详情的条目（group ∪ daily，按 url 去重，附 related）。构建期用。
+export function allItems() {
+  let related = {};
+  try { related = JSON.parse(readFileSync(join(DATA_DIR, "related.json"), "utf8")); } catch {}
+  const by = {};
+  for (const date of allDates()) {
+    const d = getEdition(date);
+    const t = normalizeTiers(d);
+    for (const it of [...(t.group || []), ...(t.daily || [])]) {
+      const url = it.links?.primary;
+      if (!url) continue;
+      const sg = slugOf(url);
+      if (!by[sg]) by[sg] = { ...it, slug: sg, date, related: related[url] || [] };
+      else if (it.readable && !by[sg].readable) by[sg] = { ...by[sg], ...it }; // group 版（有 readable）更全
+    }
+  }
+  return by;
+}
+
+export function getItem(sg) {
+  return allItems()[sg] || null;
+}

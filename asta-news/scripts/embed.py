@@ -107,7 +107,15 @@ def cmd_build(data_dir: Path, index_path: Path, top_k: int = 6) -> int:
                 break
         related[m["id"]] = neigh
     (data_dir / "related.json").write_text(json.dumps(related, ensure_ascii=False))
-    print(f"索引 {len(items)} 条 → {index_path} ({vecs.shape[1]} 维) + related.json（每条 {top_k} 近邻）", file=sys.stderr)
+    # 浏览器语义搜索用：Float32 行主序二进制 + 元数据（顺序对应）。
+    # 浏览器用 transformers.js 同款模型(Xenova/paraphrase-multilingual-MiniLM-L12-v2)嵌入 query，点积即可。
+    vecs.astype(np.float32).tofile(data_dir / "vectors.bin")
+    (data_dir / "search.json").write_text(json.dumps({
+        "model": "Xenova/paraphrase-multilingual-MiniLM-L12-v2",
+        "dim": int(vecs.shape[1]), "count": len(meta),
+        "items": [{"u": m["url"], "t": m["title"], "d": m["date"], "l": m["layer"]} for m in meta],
+    }, ensure_ascii=False))
+    print(f"索引 {len(items)} 条 → {index_path} ({vecs.shape[1]} 维) + related.json + vectors.bin/search.json（浏览器语义搜索）", file=sys.stderr)
     return 0
 
 

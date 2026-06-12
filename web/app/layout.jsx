@@ -6,6 +6,7 @@ import { SITE } from "../lib/config";
 export const metadata = {
   title: "AstaNews · AI 全栈每日情报",
   description: "Asta Lab 的 AI 全栈每日情报：论文、模型发布、评测、infra、agent、具身、安全、产品商业、devtool。",
+  alternates: { types: { "application/atom+xml": `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/feed.xml` } },
 };
 
 export default function RootLayout({ children }) {
@@ -36,7 +37,11 @@ export default function RootLayout({ children }) {
             <footer className="colophon">
               <span>AstaNews</span>
               <span>抓取与去重确定 · 筛选与撰写由 agent 按编辑准则裁决</span>
-              <a href={`https://github.com/${SITE.repo}`} target="_blank" rel="noopener">开放贡献</a>
+              <span>
+                <a href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/feed.xml`}>订阅 RSS</a>
+                {" · "}
+                <a href={`https://github.com/${SITE.repo}`} target="_blank" rel="noopener">开放贡献</a>
+              </span>
             </footer>
           </div>
         </div>

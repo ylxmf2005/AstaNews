@@ -46,4 +46,30 @@ function lz(l) { return Array.isArray(l) ? l[0] : l || ""; }
 
 writeFileSync(join(pubDir, "index.json"), JSON.stringify({ editions: index }));
 writeFileSync(join(pubDir, "corpus.json"), JSON.stringify({ items: corpus }));
-console.log(`prepare-data: ${files.length} editions, ${corpus.length} corpus items → public/data`);
+
+// Atom 订阅 feed：最近若干期的精选(group)，可在任意 RSS 阅读器订阅
+const SITE = "https://ylxmf2005.github.io/AstaNews";
+const esc = (s) => String(s || "").replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+const feedItems = [];
+for (const f of files.slice(0, 14)) {
+  const d = JSON.parse(readFileSync(join(srcDir, f), "utf8"));
+  for (const it of (d.tiers?.group || d.selected || [])) {
+    const body = (it.readable || it.take || "").split("\n\n")[0];
+    feedItems.push(
+      `  <entry>\n    <title>${esc(it.title)}</title>\n` +
+      `    <link href="${esc(it.links?.primary || SITE)}"/>\n` +
+      `    <id>${SITE}/edition/${d.date}#${esc((it.links?.primary || it.title).slice(0, 60))}</id>\n` +
+      `    <updated>${d.date}T08:00:00Z</updated>\n` +
+      `    <category term="${esc(Array.isArray(it.layer) ? it.layer[0] : it.layer)}"/>\n` +
+      `    <summary>${esc(body)}</summary>\n  </entry>`);
+  }
+}
+const feed =
+  `<?xml version="1.0" encoding="utf-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom">\n` +
+  `  <title>AstaNews · AI 全栈每日情报</title>\n  <link href="${SITE}/"/>\n` +
+  `  <link rel="self" href="${SITE}/feed.xml"/>\n  <id>${SITE}/</id>\n` +
+  `  <updated>${(index[0]?.date || "2026-01-01")}T08:00:00Z</updated>\n` +
+  `  <subtitle>每天精选 AI 全栈进展（Asta Lab）</subtitle>\n` +
+  feedItems.join("\n") + `\n</feed>\n`;
+writeFileSync(join(root, "public", "feed.xml"), feed);
+console.log(`prepare-data: ${files.length} editions, ${corpus.length} corpus, ${feedItems.length} feed entries → public/`);

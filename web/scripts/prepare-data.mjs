@@ -12,6 +12,9 @@ mkdirSync(pubDir, { recursive: true });
 const isEdition = (f) => /^20\d\d-\d\d-\d\d\.json$/.test(f);
 const files = existsSync(srcDir) ? readdirSync(srcDir).filter(isEdition).sort().reverse() : [];
 
+// 相关新闻（向量近邻，预计算）——若存在则带上
+if (existsSync(join(srcDir, "related.json"))) copyFileSync(join(srcDir, "related.json"), join(pubDir, "related.json"));
+
 const index = [];
 const corpus = [];
 for (const f of files) {

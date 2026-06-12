@@ -115,6 +115,11 @@ a { color: inherit; text-decoration: none; }
 .story .links a:hover { color: var(--seal); }
 .story .links a::after { content: " ↗"; color: var(--faint); }
 .story .thumb { grid-column: 2; margin: 14px 0 0; border: 1px solid var(--rule); border-radius: 8px; max-width: 100%; max-height: 320px; object-fit: cover; }
+.story .related { grid-column: 2; margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--rule-2); display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.story .related .rel-label { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--seal); }
+.story .related a { font-size: 13px; color: var(--muted); }
+.story .related a:hover { color: var(--seal); }
+.story .related .rel-lb { font-family: var(--mono); font-size: 10px; color: var(--faint); margin-right: 5px; }
 
 /* compact rows (full tier / archive / search) */
 .rows { list-style: none; padding: 0; margin: 0; columns: 1; }

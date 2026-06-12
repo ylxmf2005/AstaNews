@@ -1,6 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
-import { LAYERS, lz, layerName, layerEmoji, layerColor, TIERS, PERSPECTIVES } from "../lib/config";
+import { useEffect, useMemo, useState } from "react";
+import { LAYERS, lz, layerName, layerEmoji, layerColor, TIERS, PERSPECTIVES, BASE } from "../lib/config";
 
 function baseScore(it, i) {
   if (typeof it.score === "number") return it.score;
@@ -19,12 +19,13 @@ function applyPerspective(items, persp) {
     .map((x) => x.it);
 }
 
-function Story({ it, n }) {
+function Story({ it, n, related }) {
   const body = it.readable || it.take || "";
   const facts = it.facts || [];
   const links = [];
   if (it.links?.primary) links.push(["一手源", it.links.primary]);
   if (it.links?.discussion) links.push(["讨论", it.links.discussion]);
+  const rel = (related?.[it.links?.primary] || []).filter((r) => r.score >= 0.35).slice(0, 3);
   return (
     <article className="story">
       <div className="num">{n}</div>
@@ -35,6 +36,16 @@ function Story({ it, n }) {
       {facts.length > 0 && <ul className="facts">{facts.map((f, i) => <li key={i}>{f}</li>)}</ul>}
       {links.length > 0 && (
         <div className="links">{links.map(([t, u]) => <a key={u} href={u} target="_blank" rel="noopener">{t}</a>)}</div>
+      )}
+      {rel.length > 0 && (
+        <div className="related">
+          <span className="rel-label">相关</span>
+          {rel.map((r) => (
+            <a key={r.url} href={r.url} target="_blank" rel="noopener" title={`相似度 ${r.score}`}>
+              <span className="rel-lb">{layerName(r.layer)}</span>{r.title}
+            </a>
+          ))}
+        </div>
       )}
     </article>
   );
@@ -69,6 +80,10 @@ export default function EditionView({ edition }) {
   const [tier, setTier] = useState("daily");
   const [persp, setPersp] = useState("all");   // 视角（大）：重排+框定
   const [cat, setCat] = useState("all");        // 类别（小）：按 layer 硬筛
+  const [related, setRelated] = useState(null); // 预计算的相关新闻（向量近邻）
+  useEffect(() => {
+    fetch(`${BASE}/data/related.json`).then((r) => r.json()).then(setRelated).catch(() => setRelated({}));
+  }, []);
   const tiers = edition.tiers || { group: edition.selected || [], daily: edition.selected || [], full: edition.all_candidates || [] };
   const perspObj = PERSPECTIVES.find((p) => p.key === persp) || PERSPECTIVES[0];
 
@@ -140,7 +155,7 @@ export default function EditionView({ edition }) {
         ? <FullRows items={items} />
         : items.length === 0
           ? <p className="empty">该类别下暂无条目。</p>
-          : items.map((it, i) => <Story key={it.id || i} it={it} n={i + 1} />)}
+          : items.map((it, i) => <Story key={it.id || i} it={it} n={i + 1} related={related} />)}
 
       {tier !== "full" && edition.gaps?.length > 0 && (
         <>

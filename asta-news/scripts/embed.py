@@ -50,43 +50,64 @@ def default_index() -> Path:
     return out / "data" / "vectors.npz"
 
 
+def _lz(lay):
+    return (lay[0] if isinstance(lay, list) else lay) or ""
+
+
 def iter_candidates(data_dir: Path):
-    """从所有 edition json 收集可检索条目（精选 + 全部候选），去重 by id。"""
+    """从所有 edition json 收集可检索条目，**以 URL 为统一身份**去重（前端按 url 查 related）。"""
     seen = set()
     for f in sorted(data_dir.glob("20*.json")):
-        if f.name == "index.json" or f.name == "vectors.npz":
+        if f.name in ("index.json",):
             continue
         try:
             d = json.loads(f.read_text())
         except (json.JSONDecodeError, OSError):
             continue
         date = d.get("date", f.stem)
-        rows = []
-        for it in d.get("selected", []):
-            rows.append((it.get("id") or f"{date}:{it.get('title','')}", it.get("title", ""),
-                         it.get("readable", "") or " ".join(it.get("facts", [])),
-                         (it.get("links") or {}).get("primary", ""), date, True))
-        for c in d.get("all_candidates", []):
-            cid = f"{c.get('source','')}:{c.get('url','')}"
-            rows.append((cid, c.get("title", ""), c.get("summary", ""), c.get("url", ""), date, False))
-        for cid, title, body, url, dt, sel in rows:
-            if cid in seen:
+        rows = []  # (url, title, body, layer, selected)
+        tiers = d.get("tiers", {})
+        for it in (tiers.get("group") or d.get("selected") or []):
+            rows.append(((it.get("links") or {}).get("primary", ""), it.get("title", ""),
+                         it.get("readable", "") or " ".join(it.get("facts", [])), _lz(it.get("layer")), True))
+        for it in tiers.get("daily", []):
+            rows.append(((it.get("links") or {}).get("primary", ""), it.get("title", ""),
+                         it.get("take") or it.get("readable", ""), _lz(it.get("layer")), False))
+        for c in (tiers.get("full") or d.get("all_candidates") or []):
+            rows.append((c.get("url", ""), c.get("title", ""), c.get("summary", ""), _lz(c.get("layer")), False))
+        for url, title, body, lay, sel in rows:
+            if not url or url in seen:
                 continue
-            seen.add(cid)
-            yield {"id": cid, "title": title, "text": f"{title}. {body}"[:512],
-                   "url": url, "date": dt, "selected": sel}
+            seen.add(url)
+            yield {"id": url, "title": title, "text": f"{title}. {body}"[:512],
+                   "url": url, "date": date, "selected": sel, "layer": lay}
 
 
-def cmd_build(data_dir: Path, index_path: Path) -> int:
+def cmd_build(data_dir: Path, index_path: Path, top_k: int = 6) -> int:
     items = list(iter_candidates(data_dir))
     if not items:
         print("无可索引条目", file=sys.stderr)
         return 1
     vecs = embed([it["text"] for it in items])
-    meta = [{k: it[k] for k in ("id", "title", "url", "date", "selected")} for it in items]
+    meta = [{k: it[k] for k in ("id", "title", "url", "date", "selected", "layer")} for it in items]
     np.savez_compressed(index_path, vectors=vecs, ids=np.array([m["id"] for m in meta]))
     index_path.with_suffix(".meta.json").write_text(json.dumps(meta, ensure_ascii=False))
-    print(f"索引 {len(items)} 条 → {index_path} ({vecs.shape[1]} 维)", file=sys.stderr)
+    # 预计算"相关新闻"：每条的 top-K 语义近邻（排除自己与同 URL），静态可用、无需浏览器模型
+    sims = vecs @ vecs.T
+    related = {}
+    for i, m in enumerate(meta):
+        order = np.argsort(-sims[i])
+        neigh = []
+        for j in order:
+            if j == i or meta[j]["url"] == m["url"]:
+                continue
+            neigh.append({"id": meta[j]["id"], "title": meta[j]["title"], "url": meta[j]["url"],
+                          "date": meta[j]["date"], "layer": meta[j]["layer"], "score": round(float(sims[i][j]), 3)})
+            if len(neigh) >= top_k:
+                break
+        related[m["id"]] = neigh
+    (data_dir / "related.json").write_text(json.dumps(related, ensure_ascii=False))
+    print(f"索引 {len(items)} 条 → {index_path} ({vecs.shape[1]} 维) + related.json（每条 {top_k} 近邻）", file=sys.stderr)
     return 0
 
 

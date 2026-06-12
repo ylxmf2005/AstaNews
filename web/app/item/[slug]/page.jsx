@@ -11,7 +11,7 @@ export default async function ItemPage({ params }) {
   const it = getItem(slug);
   if (!it) return <p className="empty">未找到该条目。</p>;
   const body = it.readable || it.take || "";
-  const facts = it.facts || [];
+  const facts = Array.isArray(it.facts) ? it.facts : it.facts ? [it.facts] : [];
   const rel = (it.related || []).filter((r) => r.score >= 0.3).slice(0, 6);
   return (
     <article style={{ maxWidth: 760 }}>

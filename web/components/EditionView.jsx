@@ -22,7 +22,7 @@ function applyPerspective(items, persp) {
 
 function Story({ it, n, related, lead, sharp }) {
   const body = (sharp && it.sharp) || it.readable || it.take || "";
-  const facts = it.facts || [];
+  const facts = Array.isArray(it.facts) ? it.facts : it.facts ? [it.facts] : [];
   const links = [];
   if (it.links?.primary) links.push(["一手源", it.links.primary]);
   if (it.links?.discussion) links.push(["讨论", it.links.discussion]);

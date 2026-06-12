@@ -25,7 +25,9 @@
     "layer": "serving",
     "title": "NVIDIA 公布业界首个多厂商开放 agentic AI 推理基准 AA-AgentPerf",
     "take": "Artificial Analysis 与 NVIDIA 推出 AA-AgentPerf——首个度量「一套推理系统能在满足 SLO 前提下并发支撑多少个 AI agent」的多厂商开放基准。它不再用静态 prompt，而是模拟带工具调用、长度跨 5K–131K token 的真实 agent 轨迹,填补了 agentic 推理负载此前无标准量化口径的空白。",
-    "facts": "测试模型 DeepSeek-V4-Pro,三档 SLO 输出速度 30/100/300 tok/s;GB300 NVL72 达 61.4K agents/MW、57.5 agents/GPU,对比 H200 的 2.6K/MW、1.4/GPU,每兆瓦约 20x;请求序列均长约 27K token,含 1s 中位 CPU 工具延迟。(20x 含代际硬件红利,非纯软件)",
+    "facts": [
+     "测试模型 DeepSeek-V4-Pro,三档 SLO 输出速度 30/100/300 tok/s;GB300 NVL72 达 61.4K agents/MW、57.5 agents/GPU,对比 H200 的 2.6K/MW、1.4/GPU,每兆瓦约 20x;请求序列均长约 27K token,含 1s 中位 CPU 工具延迟。(20x 含代际硬件红利,非纯软件)"
+    ],
     "source": "nvidia-dev-blog",
     "links": {
      "primary": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/"
@@ -45,7 +47,9 @@
     "layer": "model",
     "title": "MiniMax M3 开源权重上线 HF：428B/23B 激活原生多模态 MoE，1M 上下文，MSA 把解码加速 15×",
     "take": "昨天还只有 MSA 注意力论文，今天权重真的落地了：~428B 总参 / ~23B 激活的原生多模态 MoE（文/图/视频混合模态从第一步训练），1M 上下文。靠 MiniMax Sparse Attention（MSA），相对 M2 在 1M 上下文上 prefill 9×、decode 15× 提速，单 token 算力降到 1/20。thinking/non-thinking 双模式，vLLM/SGLang/Transformers 可部署。这是当前能本地跑的最强开源多模态 agent 权重之一，且把训练验证过的稀疏注意力直接交付到 serving。",
-    "facts": "~428B 总参数 / ~23B 激活，1M 上下文；MSA 相对 M2 在 1M 上下文 prefill 9×、decode 15× 提速，单 token 算力降至 1/20（HF 模型卡，技术报告 arXiv:2606.13392）。",
+    "facts": [
+     "~428B 总参数 / ~23B 激活，1M 上下文；MSA 相对 M2 在 1M 上下文 prefill 9×、decode 15× 提速，单 token 算力降至 1/20（HF 模型卡，技术报告 arXiv:2606.13392）。"
+    ],
     "source": "x-_akhaliq / mcp",
     "links": {
      "primary": "https://huggingface.co/MiniMaxAI/MiniMax-M3"
@@ -65,7 +69,9 @@
     "layer": "eval",
     "title": "UC Berkeley 放出 Agents' Last Exam（ALE）：在 NX/Unreal/AE 里真干活，GPT-5.5 反超 Fable 5",
     "take": "ALE 让 Agent 在 Siemens NX 建 3D 模型、Unreal 搭场景、After Effects 做合成等真实软件里完成任务，最难一档 Fable 5、GPT-5.5 全 0 分。总通过率榜上 GPT-5.5+Codex 24.0% 包揽冠军、GPT-5.5+ALE Claw 23.0% 第二，Fable 5+Claude Code 仅 22.0% 第三，Opus 4.8 垫底 15.8%——与 SWE-Bench Pro（Fable 80.3% vs GPT 58.6%）、HLE（64.5% vs 52.2%）上的碾压完全相反。团队是 MMLU/MATH/CyberGym 的提出者。这类「真实工具链干活」评测是对 agent 宣传最直接的冷水。",
-    "facts": "ALE 总通过率：GPT-5.5+Codex 24.0%、GPT-5.5+ALE Claw 23.0%、Fable 5+Claude Code 22.0%、Opus 4.7 18.4%、Opus 4.8 15.8%；最难档全模型 0 分。对照 SWE-Bench Pro 80.3% vs 58.6%、HLE 64.5% vs 52.2%（量子位转述 UC Berkeley 团队）。",
+    "facts": [
+     "ALE 总通过率：GPT-5.5+Codex 24.0%、GPT-5.5+ALE Claw 23.0%、Fable 5+Claude Code 22.0%、Opus 4.7 18.4%、Opus 4.8 15.8%；最难档全模型 0 分。对照 SWE-Bench Pro 80.3% vs 58.6%、HLE 64.5% vs 52.2%（量子位转述 UC Berkeley 团队）。"
+    ],
     "source": "qbitai",
     "links": {
      "primary": "https://www.qbitai.com/2026/06/434774.html"
@@ -85,7 +91,9 @@
     "layer": "infra",
     "title": "NVIDIA Blackwell Leads on First Agentic AI Infrastructure Benchmark (AgentPerf)",
     "take": "Artificial Analysis 推出 AgentPerf，自称业界首个面向 agentic 工作负载的推理基准——区别于传统单次 LLM 调用基准，它建模多步 agent 轨迹、工具调用延迟与增长的上下文，取自真实编码 agent trajectory。首发结果里 Blackwell 平台领跑。属于新类别定义 + 一手厂商数据，对 serving/infra 选型有直接指导意义。",
-    "facts": "GB300 NVL72 在 DeepSeek V4 Pro 工作负载上、于 20 与 60 tokens/s 两档 SLO 下，单位兆瓦运行的 agent 数最高达 NVIDIA HGX H200 系统的 20 倍；除该 20x 能效比外原文未公开绝对吞吐/延迟数字。",
+    "facts": [
+     "GB300 NVL72 在 DeepSeek V4 Pro 工作负载上、于 20 与 60 tokens/s 两档 SLO 下，单位兆瓦运行的 agent 数最高达 NVIDIA HGX H200 系统的 20 倍；除该 20x 能效比外原文未公开绝对吞吐/延迟数字。"
+    ],
     "source": "nvidia-blog",
     "links": {
      "primary": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/"
@@ -154,7 +162,9 @@
     "layer": "serving",
     "title": "NVIDIA 公布业界首个多厂商开放 agentic AI 推理基准 AA-AgentPerf",
     "take": "Artificial Analysis 与 NVIDIA 推出 AA-AgentPerf——首个度量「一套推理系统能在满足 SLO 前提下并发支撑多少个 AI agent」的多厂商开放基准。它不再用静态 prompt，而是模拟带工具调用、长度跨 5K–131K token 的真实 agent 轨迹,填补了 agentic 推理负载此前无标准量化口径的空白。",
-    "facts": "测试模型 DeepSeek-V4-Pro,三档 SLO 输出速度 30/100/300 tok/s;GB300 NVL72 达 61.4K agents/MW、57.5 agents/GPU,对比 H200 的 2.6K/MW、1.4/GPU,每兆瓦约 20x;请求序列均长约 27K token,含 1s 中位 CPU 工具延迟。(20x 含代际硬件红利,非纯软件)",
+    "facts": [
+     "测试模型 DeepSeek-V4-Pro,三档 SLO 输出速度 30/100/300 tok/s;GB300 NVL72 达 61.4K agents/MW、57.5 agents/GPU,对比 H200 的 2.6K/MW、1.4/GPU,每兆瓦约 20x;请求序列均长约 27K token,含 1s 中位 CPU 工具延迟。(20x 含代际硬件红利,非纯软件)"
+    ],
     "source": "nvidia-dev-blog",
     "links": {
      "primary": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/"
@@ -172,7 +182,9 @@
     "layer": "model",
     "title": "MiniMax M3 开源权重上线 HF：428B/23B 激活原生多模态 MoE，1M 上下文，MSA 把解码加速 15×",
     "take": "昨天还只有 MSA 注意力论文，今天权重真的落地了：~428B 总参 / ~23B 激活的原生多模态 MoE（文/图/视频混合模态从第一步训练），1M 上下文。靠 MiniMax Sparse Attention（MSA），相对 M2 在 1M 上下文上 prefill 9×、decode 15× 提速，单 token 算力降到 1/20。thinking/non-thinking 双模式，vLLM/SGLang/Transformers 可部署。这是当前能本地跑的最强开源多模态 agent 权重之一，且把训练验证过的稀疏注意力直接交付到 serving。",
-    "facts": "~428B 总参数 / ~23B 激活，1M 上下文；MSA 相对 M2 在 1M 上下文 prefill 9×、decode 15× 提速，单 token 算力降至 1/20（HF 模型卡，技术报告 arXiv:2606.13392）。",
+    "facts": [
+     "~428B 总参数 / ~23B 激活，1M 上下文；MSA 相对 M2 在 1M 上下文 prefill 9×、decode 15× 提速，单 token 算力降至 1/20（HF 模型卡，技术报告 arXiv:2606.13392）。"
+    ],
     "source": "x-_akhaliq / mcp",
     "links": {
      "primary": "https://huggingface.co/MiniMaxAI/MiniMax-M3"
@@ -190,7 +202,9 @@
     "layer": "eval",
     "title": "UC Berkeley 放出 Agents' Last Exam（ALE）：在 NX/Unreal/AE 里真干活，GPT-5.5 反超 Fable 5",
     "take": "ALE 让 Agent 在 Siemens NX 建 3D 模型、Unreal 搭场景、After Effects 做合成等真实软件里完成任务，最难一档 Fable 5、GPT-5.5 全 0 分。总通过率榜上 GPT-5.5+Codex 24.0% 包揽冠军、GPT-5.5+ALE Claw 23.0% 第二，Fable 5+Claude Code 仅 22.0% 第三，Opus 4.8 垫底 15.8%——与 SWE-Bench Pro（Fable 80.3% vs GPT 58.6%）、HLE（64.5% vs 52.2%）上的碾压完全相反。团队是 MMLU/MATH/CyberGym 的提出者。这类「真实工具链干活」评测是对 agent 宣传最直接的冷水。",
-    "facts": "ALE 总通过率：GPT-5.5+Codex 24.0%、GPT-5.5+ALE Claw 23.0%、Fable 5+Claude Code 22.0%、Opus 4.7 18.4%、Opus 4.8 15.8%；最难档全模型 0 分。对照 SWE-Bench Pro 80.3% vs 58.6%、HLE 64.5% vs 52.2%（量子位转述 UC Berkeley 团队）。",
+    "facts": [
+     "ALE 总通过率：GPT-5.5+Codex 24.0%、GPT-5.5+ALE Claw 23.0%、Fable 5+Claude Code 22.0%、Opus 4.7 18.4%、Opus 4.8 15.8%；最难档全模型 0 分。对照 SWE-Bench Pro 80.3% vs 58.6%、HLE 64.5% vs 52.2%（量子位转述 UC Berkeley 团队）。"
+    ],
     "source": "qbitai",
     "links": {
      "primary": "https://www.qbitai.com/2026/06/434774.html"
@@ -208,7 +222,9 @@
     "layer": "infra",
     "title": "NVIDIA Blackwell Leads on First Agentic AI Infrastructure Benchmark (AgentPerf)",
     "take": "Artificial Analysis 推出 AgentPerf，自称业界首个面向 agentic 工作负载的推理基准——区别于传统单次 LLM 调用基准，它建模多步 agent 轨迹、工具调用延迟与增长的上下文，取自真实编码 agent trajectory。首发结果里 Blackwell 平台领跑。属于新类别定义 + 一手厂商数据，对 serving/infra 选型有直接指导意义。",
-    "facts": "GB300 NVL72 在 DeepSeek V4 Pro 工作负载上、于 20 与 60 tokens/s 两档 SLO 下，单位兆瓦运行的 agent 数最高达 NVIDIA HGX H200 系统的 20 倍；除该 20x 能效比外原文未公开绝对吞吐/延迟数字。",
+    "facts": [
+     "GB300 NVL72 在 DeepSeek V4 Pro 工作负载上、于 20 与 60 tokens/s 两档 SLO 下，单位兆瓦运行的 agent 数最高达 NVIDIA HGX H200 系统的 20 倍；除该 20x 能效比外原文未公开绝对吞吐/延迟数字。"
+    ],
     "source": "nvidia-blog",
     "links": {
      "primary": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/"
@@ -269,7 +285,9 @@
     "layer": "safety",
     "title": "GDM 可解释性团队: 用 auditor agent 自主探测两模型的行为差异",
     "take": "Google DeepMind 可解释性团队 (Neel Nanda 等) 提出 'model diffing agents':让审计 agent 自行构造 prompt 去搜索并验证两个模型间罕见的行为差异,而非沿用在静态 prompt 分布上比对的旧范式。配套给出两套带 ground truth 的评测,为模型行为审计提供可复现的能力基线。",
-    "facts": "在 50 个 seed、触发频率 0%–50% 的条件系统提示 organism 上评测,agent 在部分行为上拿到满分但对精确触发条件识别较弱(强于找'差什么'弱于'何时差');对 3 组 Gemini 真实模型对产出约 50 条发现;相同模型对比时维持低假阳性;diffing agent 在细微差异上几乎总是优于单模型审计 (Fig 3)。",
+    "facts": [
+     "在 50 个 seed、触发频率 0%–50% 的条件系统提示 organism 上评测,agent 在部分行为上拿到满分但对精确触发条件识别较弱(强于找'差什么'弱于'何时差');对 3 组 Gemini 真实模型对产出约 50 条发现;相同模型对比时维持低假阳性;diffing agent 在细微差异上几乎总是优于单模型审计 (Fig 3)。"
+    ],
     "source": "alignment-forum",
     "links": {
      "primary": "https://www.alignmentforum.org/posts/qi4mNbZYAFDYwfRba/building-and-evaluating-model-diffing-agents"
@@ -286,7 +304,9 @@
     "layer": "post-training",
     "title": "olmo-eval: An evaluation workbench for the model development loop",
     "take": "Ai2 开源 olmo-eval，承接 2024 年的 OLMES 标准并延伸到模型开发全流程：降低新评测接入成本、灵活选择各 benchmark 的运行方式（不强制像 Harbor 那样全程沙箱容器，省资源）、把 agentic/多轮评测作为一等公民，并加入统计显著性分析判断改动是真提升还是噪声。对 post-training/data 实验迭代是实打实的工具。",
-    "facts": "新开源发布，代码在 github.com/allenai/olmo-eval；构建于 2024 年发布的 OLMES 之上；原文以\"2.4pp 的变化是否足以下结论\"为例强调内置噪声/显著性分析。原文未给出 benchmark 任务总数等量化规模。",
+    "facts": [
+     "新开源发布，代码在 github.com/allenai/olmo-eval；构建于 2024 年发布的 OLMES 之上；原文以\"2.4pp 的变化是否足以下结论\"为例强调内置噪声/显著性分析。原文未给出 benchmark 任务总数等量化规模。"
+    ],
     "source": "hf-blog",
     "links": {
      "primary": "https://huggingface.co/blog/allenai/olmo-eval"
@@ -303,7 +323,9 @@
     "layer": "model",
     "title": "Hugging Face transformers v5.12.0 — 三个新模型架构 day-0 支持",
     "take": "实质功能发布，非纯 bugfix：本版新增 3 个模型架构。MiniMax-M3-VL（M3 家族视觉-语言成员，CLIP 风格视觉塔 + 3D RoPE + 稠密/稀疏混合 MoE 解码器 + lightning indexer 块稀疏注意力）、PP-OCRv6（MetaFormer 统一模块 + 结构重参数化，medium/small/tiny 三档覆盖服务器到边缘）、Parakeet-RNNT（Fast Conformer 编码器 + RNN-T 解码器的语音识别）。对吃 day-0 权重支持的 model/post-training 从业者直接相关。",
-    "facts": "本版新增 3 个模型架构（MiniMax-M3-VL #46600、PP-OCRv6 #46576、Parakeet-RNNT #46331）；PP-OCRv6 提供 medium/small/tiny 三个模型档位。原文未给出各模型基准跑分。",
+    "facts": [
+     "本版新增 3 个模型架构（MiniMax-M3-VL #46600、PP-OCRv6 #46576、Parakeet-RNNT #46331）；PP-OCRv6 提供 medium/small/tiny 三个模型档位。原文未给出各模型基准跑分。"
+    ],
     "source": "gh-transformers",
     "links": {
      "primary": "https://github.com/huggingface/transformers/releases/tag/v5.12.0"
@@ -320,7 +342,9 @@
     "layer": "agent",
     "title": "OpenAI 收购 Ona（原 Gitpod），把 Codex 推向长时自治编码",
     "take": "OpenAI 收购德国 Ona（前身 Gitpod，2020 年成立），主攻 AI agent 与安全云开发环境，意图让 Codex 能跑长时间、自治的编码任务——和同期「flexible rate-limit reset」降价是一套组合拳，瞄准 agent 编码的运行时与编排层。swyx 转的 Ona 演讲点出 agent swarm 的真正未解项是 coordination（agent 间任务交接与阶段验证），runtime/orchestration 已解。",
-    "facts": "原文未给出收购金额；Ona 前身 Gitpod，2020 年成立于德国 Kiel，主攻云开发环境与编码 agent（the-decoder）。",
+    "facts": [
+     "原文未给出收购金额；Ona 前身 Gitpod，2020 年成立于德国 Kiel，主攻云开发环境与编码 agent（the-decoder）。"
+    ],
     "source": "the-decoder",
     "links": {
      "primary": "https://the-decoder.com/openai-buys-ona-to-push-codex-toward-long-running-autonomous-coding-tasks/"
@@ -337,7 +361,9 @@
     "layer": "model",
     "title": "华为 openPangu 2.0：疑似首个在昇腾（Ascend，950s？）上可信预训练的大模型，引入 ModAttn（DSA+SWA）",
     "take": "teortaxes 指出华为终于在昇腾芯片上可信地完成了一次大 LLM 预训练，'hyper-node optimized training' 暗示 950s，注意力建在 DSA（带 SWA）之上，自创 ModAttn——核心诉求是证明「不靠英伟达也能在自家硬件上把大模型训出来」。若属实，这是国产算力栈跨过预训练门槛的一个信号，牵动模型与 infra 两层。注意：信息来自社区推文转述 #HDC2026 物料，官方细节待核实。",
-    "facts": "原文未给出参数量/基准等量化数据；称在昇腾（疑 950s）上完成大 LLM 预训练，注意力为 ModAttn（DSA+SWA）（teortaxes 推文，引 HDC2026 openPangu 2.0 物料，未经官方一手核实）。",
+    "facts": [
+     "原文未给出参数量/基准等量化数据；称在昇腾（疑 950s）上完成大 LLM 预训练，注意力为 ModAttn（DSA+SWA）（teortaxes 推文，引 HDC2026 openPangu 2.0 物料，未经官方一手核实）。"
+    ],
     "source": "x-teortaxesTex",
     "links": {
      "primary": "https://x.com/teortaxesTex/status/2065447458742673424"
@@ -354,7 +380,9 @@
     "layer": "serving",
     "title": "MiniMax M3 上 NVIDIA 部署: 稀疏注意力 MSA 的 serving 实测数字",
     "take": "本质是已发布模型 MiniMax M3 的 NVIDIA 部署指南,但披露了其 MiniMax Sparse Attention (MSA) 的具体 serving 收益,对跑长上下文 agentic 负载的 serving 从业者有可落地参考——已接入 TensorRT-LLM/SGLang/vLLM/Dynamo。",
-    "facts": "M3 为 428B 总参/22B 激活 MoE (128 专家选 4),1M token 上下文,600M 视觉编码器;MSA 宣称 KV cache 访问比现有稀疏注意力实现快 4x,1M 上下文下每 token 计算量为 M2 的 1/20,prefill 快 9x、decode 快 15x,且无 KV 压缩/精度损失;NeMo 微调支持 128k context parallelism。",
+    "facts": [
+     "M3 为 428B 总参/22B 激活 MoE (128 专家选 4),1M token 上下文,600M 视觉编码器;MSA 宣称 KV cache 访问比现有稀疏注意力实现快 4x,1M 上下文下每 token 计算量为 M2 的 1/20,prefill 快 9x、decode 快 15x,且无 KV 压缩/精度损失;NeMo 微调支持 128k context parallelism。"
+    ],
     "source": "nvidia-dev-blog",
     "links": {
      "primary": "https://developer.nvidia.com/blog/deploy-long-context-reasoning-and-agentic-workflows-with-minimax-m3-on-nvidia-accelerated-infrastructure/"
@@ -1471,7 +1499,9 @@
    "layer": "serving",
    "title": "NVIDIA 公布业界首个多厂商开放 agentic AI 推理基准 AA-AgentPerf",
    "take": "Artificial Analysis 与 NVIDIA 推出 AA-AgentPerf——首个度量「一套推理系统能在满足 SLO 前提下并发支撑多少个 AI agent」的多厂商开放基准。它不再用静态 prompt，而是模拟带工具调用、长度跨 5K–131K token 的真实 agent 轨迹,填补了 agentic 推理负载此前无标准量化口径的空白。",
-   "facts": "测试模型 DeepSeek-V4-Pro,三档 SLO 输出速度 30/100/300 tok/s;GB300 NVL72 达 61.4K agents/MW、57.5 agents/GPU,对比 H200 的 2.6K/MW、1.4/GPU,每兆瓦约 20x;请求序列均长约 27K token,含 1s 中位 CPU 工具延迟。(20x 含代际硬件红利,非纯软件)",
+   "facts": [
+    "测试模型 DeepSeek-V4-Pro,三档 SLO 输出速度 30/100/300 tok/s;GB300 NVL72 达 61.4K agents/MW、57.5 agents/GPU,对比 H200 的 2.6K/MW、1.4/GPU,每兆瓦约 20x;请求序列均长约 27K token,含 1s 中位 CPU 工具延迟。(20x 含代际硬件红利,非纯软件)"
+   ],
    "source": "nvidia-dev-blog",
    "links": {
     "primary": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/"
@@ -1491,7 +1521,9 @@
    "layer": "model",
    "title": "MiniMax M3 开源权重上线 HF：428B/23B 激活原生多模态 MoE，1M 上下文，MSA 把解码加速 15×",
    "take": "昨天还只有 MSA 注意力论文，今天权重真的落地了：~428B 总参 / ~23B 激活的原生多模态 MoE（文/图/视频混合模态从第一步训练），1M 上下文。靠 MiniMax Sparse Attention（MSA），相对 M2 在 1M 上下文上 prefill 9×、decode 15× 提速，单 token 算力降到 1/20。thinking/non-thinking 双模式，vLLM/SGLang/Transformers 可部署。这是当前能本地跑的最强开源多模态 agent 权重之一，且把训练验证过的稀疏注意力直接交付到 serving。",
-   "facts": "~428B 总参数 / ~23B 激活，1M 上下文；MSA 相对 M2 在 1M 上下文 prefill 9×、decode 15× 提速，单 token 算力降至 1/20（HF 模型卡，技术报告 arXiv:2606.13392）。",
+   "facts": [
+    "~428B 总参数 / ~23B 激活，1M 上下文；MSA 相对 M2 在 1M 上下文 prefill 9×、decode 15× 提速，单 token 算力降至 1/20（HF 模型卡，技术报告 arXiv:2606.13392）。"
+   ],
    "source": "x-_akhaliq / mcp",
    "links": {
     "primary": "https://huggingface.co/MiniMaxAI/MiniMax-M3"
@@ -1511,7 +1543,9 @@
    "layer": "eval",
    "title": "UC Berkeley 放出 Agents' Last Exam（ALE）：在 NX/Unreal/AE 里真干活，GPT-5.5 反超 Fable 5",
    "take": "ALE 让 Agent 在 Siemens NX 建 3D 模型、Unreal 搭场景、After Effects 做合成等真实软件里完成任务，最难一档 Fable 5、GPT-5.5 全 0 分。总通过率榜上 GPT-5.5+Codex 24.0% 包揽冠军、GPT-5.5+ALE Claw 23.0% 第二，Fable 5+Claude Code 仅 22.0% 第三，Opus 4.8 垫底 15.8%——与 SWE-Bench Pro（Fable 80.3% vs GPT 58.6%）、HLE（64.5% vs 52.2%）上的碾压完全相反。团队是 MMLU/MATH/CyberGym 的提出者。这类「真实工具链干活」评测是对 agent 宣传最直接的冷水。",
-   "facts": "ALE 总通过率：GPT-5.5+Codex 24.0%、GPT-5.5+ALE Claw 23.0%、Fable 5+Claude Code 22.0%、Opus 4.7 18.4%、Opus 4.8 15.8%；最难档全模型 0 分。对照 SWE-Bench Pro 80.3% vs 58.6%、HLE 64.5% vs 52.2%（量子位转述 UC Berkeley 团队）。",
+   "facts": [
+    "ALE 总通过率：GPT-5.5+Codex 24.0%、GPT-5.5+ALE Claw 23.0%、Fable 5+Claude Code 22.0%、Opus 4.7 18.4%、Opus 4.8 15.8%；最难档全模型 0 分。对照 SWE-Bench Pro 80.3% vs 58.6%、HLE 64.5% vs 52.2%（量子位转述 UC Berkeley 团队）。"
+   ],
    "source": "qbitai",
    "links": {
     "primary": "https://www.qbitai.com/2026/06/434774.html"
@@ -1531,7 +1565,9 @@
    "layer": "infra",
    "title": "NVIDIA Blackwell Leads on First Agentic AI Infrastructure Benchmark (AgentPerf)",
    "take": "Artificial Analysis 推出 AgentPerf，自称业界首个面向 agentic 工作负载的推理基准——区别于传统单次 LLM 调用基准，它建模多步 agent 轨迹、工具调用延迟与增长的上下文，取自真实编码 agent trajectory。首发结果里 Blackwell 平台领跑。属于新类别定义 + 一手厂商数据，对 serving/infra 选型有直接指导意义。",
-   "facts": "GB300 NVL72 在 DeepSeek V4 Pro 工作负载上、于 20 与 60 tokens/s 两档 SLO 下，单位兆瓦运行的 agent 数最高达 NVIDIA HGX H200 系统的 20 倍；除该 20x 能效比外原文未公开绝对吞吐/延迟数字。",
+   "facts": [
+    "GB300 NVL72 在 DeepSeek V4 Pro 工作负载上、于 20 与 60 tokens/s 两档 SLO 下，单位兆瓦运行的 agent 数最高达 NVIDIA HGX H200 系统的 20 倍；除该 20x 能效比外原文未公开绝对吞吐/延迟数字。"
+   ],
    "source": "nvidia-blog",
    "links": {
     "primary": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/"

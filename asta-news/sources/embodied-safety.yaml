@@ -119,6 +119,17 @@ sources:
     verified: 2026-06-12
     notes: "周一刊；用 jack-clark.net 不要用 substack 镜像（数据中心 502）"
 
+  - id: the-zvi
+    name: Don't Worry About the Vase (Zvi)
+    layers: [safety, model]
+    type: rss
+    url: https://thezvi.substack.com/feed
+    priority: P2
+    needs_proxy: true
+    freq: weekly
+    verified: 2026-06-13
+    notes: "高频 AI 进展+安全长评；substack 数据中心需代理"
+
   - id: ai-incident-db
     name: AI Incident Database
     layers: [safety]

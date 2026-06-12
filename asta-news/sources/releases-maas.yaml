@@ -140,7 +140,17 @@ sources:
     enabled: false
     freq: weekly
     verified: 2026-06-12
-    notes: "bot 墙：直连 000、代理 400（llama.com 同样 400），换 UA 无效——curl/fetch 类客户端拿不到。自动管线无干净解，保持 disabled。覆盖兜底（足够）：Llama 发布必在 HN/Smol AI/huggingface transformers releases/meta-llama HF org 出现，这些都已在抓。真要读官博本身，策展 agent 用 agent-browser 在真实浏览器引擎里渲染（curl 被 400 但浏览器能过）"
+    notes: "bot 墙：直连 000、代理 400（llama.com 同样 400），换 UA 无效。自动管线无干净解，保持 disabled。Llama 发布兜底：HN/Smol AI/transformers releases/meta-llama org + 新增 meta-fb-news（fb.com 新闻 RSS 可用）"
+
+  - id: meta-fb-news
+    name: Meta Newsroom (RSS)
+    layers: [model, business, product]
+    type: rss
+    url: https://about.fb.com/news/feed/
+    priority: P2
+    freq: daily
+    verified: 2026-06-13
+    notes: "Meta 官方新闻 RSS（ai.meta.com 博客被 bot 墙,这个能用）；策展层滤 AI/Llama 相关"
 
   - id: xai-news
     name: xAI News

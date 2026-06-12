@@ -31,6 +31,35 @@ sources:
     verified: 2026-06-12
     notes: "免费融资/产品新闻 firehose，全文 feed；日 5-15 条，策展层收窄"
 
+  - id: tldr-ai
+    name: TLDR AI
+    layers: [model, product, business]
+    type: rss
+    url: https://tldr.tech/api/rss/ai
+    priority: P1
+    freq: daily
+    verified: 2026-06-13
+    notes: "日更 AI 新闻简报，已策展过的链接集合，信噪比高"
+
+  - id: bens-bites
+    name: Ben's Bites
+    layers: [product, business, agent]
+    type: rss
+    url: https://www.bensbites.com/feed
+    priority: P2
+    freq: daily
+    verified: 2026-06-13
+
+  - id: one-useful-thing
+    name: One Useful Thing (Ethan Mollick)
+    layers: [product, devtool]
+    type: rss
+    url: https://www.oneusefulthing.org/feed
+    priority: P2
+    freq: weekly
+    verified: 2026-06-13
+    notes: "实用 AI 应用视角，产品/使用方法"
+
   - id: the-decoder
     name: The Decoder
     layers: [model, product, business]

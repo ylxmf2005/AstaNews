@@ -154,6 +154,16 @@ sources:
     verified: 2026-06-12
     notes: "量大，策展时只看 Trainium/Inferentia/Bedrock/SageMaker 关键词"
 
+  - id: runpod-blog
+    name: RunPod Blog
+    layers: [serving, infra]
+    type: rss
+    url: https://www.runpod.io/blog/rss.xml
+    priority: P2
+    freq: weekly
+    verified: 2026-06-13
+    notes: "GPU 云/部署实操，serving 成本与工程"
+
   - id: epoch-data-hub
     name: Epoch AI Data Hub
     layers: [infra, data, business]

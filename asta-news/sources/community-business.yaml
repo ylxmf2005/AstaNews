@@ -61,6 +61,36 @@ sources:
     verified: 2026-06-12
     notes: "中文 AI 媒体；机器之心已无可用源（路由移除+原生 feed 死），量子位为替代"
 
+  - id: leiphone
+    name: 雷峰网 (RSSHub)
+    layers: [business, product, model]
+    type: rsshub
+    url: /leiphone
+    priority: P1
+    freq: daily
+    verified: 2026-06-13
+    notes: "中文 AI/科技媒体，10 条/页；与量子位互补"
+
+  - id: kr36-newsflash
+    name: 36氪快讯 (RSSHub)
+    layers: [business, product]
+    type: rsshub
+    url: /36kr/newsflashes
+    priority: P2
+    freq: daily
+    verified: 2026-06-13
+    notes: "中文商业/融资快讯 firehose（橘鸦式商业视角）；非纯 AI，策展层滤 AI 相关"
+
+  - id: huxiu
+    name: 虎嗅 (RSSHub)
+    layers: [business, product]
+    type: rsshub
+    url: /huxiu/article
+    priority: P2
+    freq: daily
+    verified: 2026-06-13
+    notes: "中文科技商业评论；非纯 AI，策展层滤 AI 相关"
+
   - id: oss-insight-trends
     name: OSS Insight Trending Repos
     layers: [devtool, agent, serving]

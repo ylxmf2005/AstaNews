@@ -139,7 +139,7 @@ group  : 目标 5（上限 8），最严，微信群发
 - ⬜ **P3-WEBCTRL** 网站控制台 UI（触发运行/编辑配置/排程）
 - ⬜ **P3-ACCT** 账号体系（API auth 预留 → 实现）
 - ⬜ **P3-WECHAT** 公众号自动发布（研究 + 接口）
-- 🔵 **持续** 前端：头条层级 + **item 详情页/永久链接(标题点进站内,含全文/锐评/facts/相关)**；数据源 112（+The Decoder/MarkTechPost/Together/Google AI/philschmid/r-ML 等，不止 RSSHub）；前端人类视角打磨、文章质量、更多中文/商业/创意源待续
+- 🔵 **持续** 前端：头条层级 + **item 详情页/永久链接(标题点进站内,含全文/锐评/facts/相关)**；数据源 115（+雷峰网/36氪快讯/虎嗅 中文商业媒体）（+The Decoder/MarkTechPost/Together/Google AI/philschmid/r-ML 等，不止 RSSHub）；前端人类视角打磨、文章质量、更多中文/商业/创意源待续
 
 ## 5. 循环工作准则（5am 起的自我迭代）
 

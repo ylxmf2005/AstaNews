@@ -121,7 +121,7 @@ group  : 目标 5（上限 8），最严，微信群发
 
 - ✅ **P0-DOC** 写本 ROADMAP（PO 总纲）
 - ⬜ **P0-CRON** 设 5am 北京（21:00 UTC）定时任务，进入持续迭代循环（读本文件 backlog → 实现 → commit → 循环 + 跑当日 digest 生产）
-- ⬜ **P1-EMBED** 本地 embedding 模型部署+自测（fastembed 优先，离线可跑），封装 `scripts/embed.py`
+- ✅ **P1-EMBED** 本地 embedding（fastembed multilingual-MiniLM，hf-mirror，离线 CPU）+ 向量索引 + 跨语言检索，`scripts/embed.py` 自测通过
 - ⬜ **P1-CONFIG** 配置模块化：建 `asta-news/config/`，迁 sources/rules，新增 tiers/perspectives/sharpness/site/search yaml
 - ⬜ **P1-SCHEMA** 数据模型 v2：daily-digest 产出 tiers(full/daily/group)+perspectives；今日这期回填重生成
 - ⬜ **P1-TIERS** 多级筛选实现（评分一次→分层切；daily~20 可配）

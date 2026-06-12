@@ -42,13 +42,16 @@ claude --plugin-dir ./asta-news
 - **调编辑规则**：全局默认在 `asta-news/rules.yaml`（走 PR）；个人口味在本地 `rules.local.yaml`。
 - 已知坑收录于 `_schema.md`（Papers with Code 已死、semianalysis 旧 feed 停更、机器之心无可用源等），加源前先看。
 
-## 网页（全量信息 + 归档）
+## 网页（综合资讯站）
 
-精选是为微信群做的减法；要看当天**全部**抓到的信息（不只精选），看网页。每天的 digest 产出 `digest.json` 落到 `site/data/<date>.json`，`site/` 是纯客户端静态站，自动加载渲染：精选卡片、雷达、数据缺口、以及可展开的"全部信息"（当天全部候选按源分组、精选标星）。
+[ylxmf2005.github.io/AstaNews](https://ylxmf2005.github.io/AstaNews/) 是 React 多页应用（`web/`，Next 静态导出）。三级筛选（日报/精选/全部）× 视角（全栈/技术/产品/商业/研究/具身）× 类别（13 layer）任意组合；精选配 AI 信息图；每条带"相关新闻"（向量近邻）；搜索页支持语义 + 关键词。数据来自 `site/data/<date>.json`（digest 产物）。
 
 ```bash
-cd site && python3 -m http.server 8000   # 本地预览 http://localhost:8000
+cd web && npm install && npm run dev     # 本地开发 http://localhost:3000
+# 或静态构建：npm run build → out/（GitHub Actions 自动构建部署）
 ```
+
+> `site/`（旧的纯静态 fallback）已被 `web/` 取代，保留备查。
 
 ## 自动部署（GitHub Actions + Pages）
 

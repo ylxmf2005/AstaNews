@@ -38,39 +38,36 @@ export ASTA_PROXY=http://127.0.0.1:7897   # 以 doctor 探测结果为准
 ```bash
 mkdir -p $DATA/rsshub && cd $DATA/rsshub
 cp ${CLAUDE_PLUGIN_ROOT}/skills/setup/assets/docker-compose.rsshub.yml docker-compose.yml
-# 创建 .env（凭证进 .env，不进任何会提交的文件；抓取器侧不需要这两个变量——
-# 它们只供容器内的 RSSHub 路由使用）：
-#   TWITTER_AUTH_TOKEN=<x.com cookie 的 auth_token 值>   ← X 源需要
-#   GITHUB_ACCESS_TOKEN=<无 scope 的真实 PAT>            ← GitHub Trending 路由需要
+# 创建 .env（凭证进 .env，不进任何会提交的文件；抓取器侧不需要这些变量——只供容器内 RSSHub 路由）：
+#   GITHUB_ACCESS_TOKEN=<无 scope 的真实 PAT>   ← GitHub Trending 路由需要
+# TWITTER_AUTH_TOKEN 见步骤 4，可自动取，先留空起容器
+echo "GITHUB_ACCESS_TOKEN=$(gh auth token 2>/dev/null)" > .env   # 有 gh 就自动填；否则手填
 docker compose up -d
 curl -s http://127.0.0.1:1200/healthz   # 期望输出: ok
 ```
 
 另：在 shell 里也 `export GITHUB_ACCESS_TOKEN` 是可选优化——抓取器会自动给 api.github.com 的请求带上它，把限额从 60/h 提到 5000/h。
 
-`restart: always` 保证开机自启、崩溃自拉——init 之后无需再部署。compose 文件内有取 cookie 的具体步骤注释。
+`restart: always` 保证开机自启、崩溃自拉——init 之后无需再部署。
 
-## 4.（可选）X/Twitter List
+## 4.（可选）X/Twitter
 
-1. 在 X 上建一个 List 收 AI KOL（建议名单见 `sources/community-business.yaml` 中 `x-ai-list` 的 notes），拿到 List id（URL `x.com/i/lists/<id>` 中的数字）。
-2. `export ASTA_X_LIST_ID=<id>`（与 ASTA_PROXY 同样方式持久化）。
-3. 在 `$DATA/sources.local.yaml` 覆盖启用：
+X 用 per-user KOL 路由，**开箱即用、无需建 List**——只要 RSSHub 容器里有 `TWITTER_AUTH_TOKEN`（x.com 登录 cookie 的 auth_token）。一条命令自动取并写入容器 .env（token 全程不经过 agent，会弹一次钥匙串授权，点允许）：
 
-```yaml
-sources:
-  - id: x-ai-list
-    name: X/Twitter AI List (RSSHub)
-    layers: [model, agent, product]
-    type: rsshub
-    url: /twitter/list/${ASTA_X_LIST_ID}
-    priority: P0
-    requires_env: [TWITTER_AUTH_TOKEN, ASTA_X_LIST_ID]
-    enabled: true
-    freq: daily
-    verified: 2026-06-12
+```bash
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/grab_x_cookie.sh        # 默认 Default profile；可传 "Profile 1"
+cd $DATA/rsshub && docker compose up -d                    # 重启容器生效
+curl -s "http://127.0.0.1:1200/twitter/user/karpathy" | head -c 120   # 验证：应出 @karpathy 的推文
 ```
 
-## 5. 终检
+已启用的 X 源见 `sources/community-business.yaml` 的 `x-*`（karpathy/sama/_akhaliq/… 8 个，策展层自动滤纯 RT）。要加/换 KOL 直接在 `sources.local.yaml` 加 `type: rsshub, url: /twitter/user/<handle>` 即可。
+想更省请求改用一个 X List：建好 List 后 `export ASTA_X_LIST_ID=<id>`、在 sources.local.yaml 启用 `x-ai-list`、并 disable `x-*` per-user 源（详见 community-business.yaml 注释）。
+
+## 5.（可选）语义搜索 / 向量索引
+
+零额外配置——`scripts/embed.py` 用本地 fastembed 多语模型（首跑经 hf-mirror 自动下载，离线 CPU 可跑），digest 时自动重建 `vectors.bin`/`related.json`，网站搜索页与"相关新闻"即用。手动重建：`uv run ${CLAUDE_PLUGIN_ROOT}/scripts/embed.py --build $OUT/data`。
+
+## 6. 终检
 
 ```bash
 uv run ${CLAUDE_PLUGIN_ROOT}/scripts/doctor.py

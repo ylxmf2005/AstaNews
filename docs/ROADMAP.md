@@ -134,7 +134,7 @@ group  : 目标 5（上限 8），最严，微信群发
 - ✅ **P2-IMG** 精选 6/6 配 AI 信息图(arXiv 架构图/行为率图)+ daily og:image 兜底(11 张上线)+ enrich_images.py + images.md how-to + 卡片渲染；待续:提升 daily/arXiv 覆盖、防盗链兜底
 - ⬜ **P2-SHARP** 犀利度档位（改写层 + 网站切换）
 - ⬜ **P3-STUDY** 研究橘鸦公众号写法/配图、Tim 的 day-day-arxiv 归档模式，沉淀到设计与 skill
-- ⬜ **P3-SELFCONTAIN** setup skill 自包含审计（cookie/Reddit/代理/RSSHub 一次配好，用户零额外研究）
+- ✅ **P3-SELFCONTAIN** doctor 全绿(110 源/RSSHub/代理自探测)；setup skill 更新：X 用 grab_x_cookie.sh 自动取 cookie + per-user 路由开箱即用、embed 自包含(hf-mirror)、README 指向 web/ Next 流程
 - ⬜ **P3-CONSOLE** services 后端（FastAPI：列期/触发/config/排程/搜索）
 - ⬜ **P3-WEBCTRL** 网站控制台 UI（触发运行/编辑配置/排程）
 - ⬜ **P3-ACCT** 账号体系（API auth 预留 → 实现）

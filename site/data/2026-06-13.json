@@ -1,0 +1,2671 @@
+{
+ "date": "2026-06-13",
+ "weekday": "星期六",
+ "schema_version": 2,
+ "headline": "稀疏注意力落地，刷榜光环退潮",
+ "overview": "周六论文不多，主线落在“发布与 agent 评测”：MiniMax M3 把昨天的 MSA 稀疏注意力从论文做成今天可部署的开源权重，NVIDIA 联手 Artificial Analysis 立起首个 agentic 推理基准 AgentPerf/AA-AgentPerf，而 UC Berkeley 的 ALE 在真实专业软件里给各家旗舰 agent 泼了盆冷水——刷榜分数和真会干活之间，鸿沟正被摆上台面。",
+ "stats": {
+  "candidates": 546,
+  "sources_ok": 60,
+  "sources_failed": 2,
+  "layers_covered": [
+   "agent",
+   "eval",
+   "infra",
+   "model",
+   "post-training",
+   "safety",
+   "serving"
+  ]
+ },
+ "tiers": {
+  "group": [
+   {
+    "url": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/",
+    "layer": "serving",
+    "title": "NVIDIA 公布业界首个多厂商开放 agentic AI 推理基准 AA-AgentPerf",
+    "take": "Artificial Analysis 与 NVIDIA 推出 AA-AgentPerf——首个度量「一套推理系统能在满足 SLO 前提下并发支撑多少个 AI agent」的多厂商开放基准。它不再用静态 prompt，而是模拟带工具调用、长度跨 5K–131K token 的真实 agent 轨迹,填补了 agentic 推理负载此前无标准量化口径的空白。",
+    "facts": "测试模型 DeepSeek-V4-Pro,三档 SLO 输出速度 30/100/300 tok/s;GB300 NVL72 达 61.4K agents/MW、57.5 agents/GPU,对比 H200 的 2.6K/MW、1.4/GPU,每兆瓦约 20x;请求序列均长约 27K token,含 1s 中位 CPU 工具延迟。(20x 含代际硬件红利,非纯软件)",
+    "source": "nvidia-dev-blog",
+    "links": {
+     "primary": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/"
+    },
+    "score": 3.9,
+    "rank": 1,
+    "readable": "如果你在做 agent serving，最头疼的问题之一一直没有公认答案：一套推理系统在保证延迟的前提下，到底能同时撑住多少个 AI agent？Artificial Analysis 联合 NVIDIA 推出的 AA-AgentPerf，号称是首个回答这个问题的多厂商开放基准——它不再喂静态 prompt，而是回放真实的 agent 轨迹（带工具调用、上下文长度横跨 5K 到 131K token），填补了 agentic 推理负载此前没有标准量化口径的空白。\n\n测试用 DeepSeek-V4-Pro 做被测模型，设了三档 SLO 输出速度——30、100、300 tok/s，对应从“能用”到“跟手”的不同体验要求。核心数字很扎眼：GB300 NVL72 单位兆瓦能跑 61.4K 个 agent、每张 GPU 撑 57.5 个，而 H200 对应只有 2.6K/MW、1.4/GPU，每兆瓦差出约 20 倍。请求序列平均长约 27K token，并刻意注入了 1 秒的中位 CPU 工具延迟——这一点很重要，因为真实 agent 大量时间卡在等工具返回，不建模这段就是在刷数字。\n\n需要泼一句冷水：这 20x 是 GB300 对 H200 的跨代对比，里面含了硬件代际红利，不是纯软件优化挤出来的；而且基准由 NVIDIA 深度参与、首发用自家平台领跑，立场不中立。但即便打个折，把“并发 agent 数 / 兆瓦”确立为一个可量化、可横向比的口径，本身对 serving 选型就是实打实的进步——以后谈 agent 推理成本，终于有了一把公开的尺子。",
+    "sharp": "“agent 推理到底多贵”这个问题，行业吵了一年没有公开答案，现在 NVIDIA 和 Artificial Analysis 端出了第一把尺子 AA-AgentPerf。这事方向对：它用真实 agent 轨迹（5K–131K token、带 1 秒中位工具延迟）替代静态 prompt，量的是“一兆瓦能并发多少 agent”，比单次 LLM 调用的 TPS 实在得多。\n\n但那个被反复引用的 20x 要会看：GB300 NVL72 的 61.4K agents/MW 对 H200 的 2.6K/MW，是跨代硬件对比，红利大半来自换代而非软件魔法——拿它当“软件优化成果”宣传就是偷换概念。更别忘了裁判和选手是一家：基准 NVIDIA 深度参与、首发自家平台夺冠。\n\n结论分两半：把动真格的“并发 agent 数/兆瓦”立成公开口径，是真贡献，值得各家拿自己的硬件来跑；但首发这组数字本身是厂商营销物料，第三方在非 NVIDIA 平台上复跑之前，20x 只能当上限看，别当采购依据。",
+    "image": {
+     "url": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/06/ai-agent-1.webp",
+     "credit": "developer.nvidia.com",
+     "source": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/"
+    }
+   },
+   {
+    "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+    "layer": "model",
+    "title": "MiniMax M3 开源权重上线 HF：428B/23B 激活原生多模态 MoE，1M 上下文，MSA 把解码加速 15×",
+    "take": "昨天还只有 MSA 注意力论文，今天权重真的落地了：~428B 总参 / ~23B 激活的原生多模态 MoE（文/图/视频混合模态从第一步训练），1M 上下文。靠 MiniMax Sparse Attention（MSA），相对 M2 在 1M 上下文上 prefill 9×、decode 15× 提速，单 token 算力降到 1/20。thinking/non-thinking 双模式，vLLM/SGLang/Transformers 可部署。这是当前能本地跑的最强开源多模态 agent 权重之一，且把训练验证过的稀疏注意力直接交付到 serving。",
+    "facts": "~428B 总参数 / ~23B 激活，1M 上下文；MSA 相对 M2 在 1M 上下文 prefill 9×、decode 15× 提速，单 token 算力降至 1/20（HF 模型卡，技术报告 arXiv:2606.13392）。",
+    "source": "x-_akhaliq / mcp",
+    "links": {
+     "primary": "https://huggingface.co/MiniMaxAI/MiniMax-M3"
+    },
+    "score": 3.85,
+    "rank": 2,
+    "readable": "昨天大家还在读 MiniMax 那篇 MSA 稀疏注意力的论文，今天权重就真落地到 Hugging Face 了。对想在自己机器上跑多模态 agent 的团队，这条值得停下来：MiniMax M3 是一个原生多模态的 MoE 模型——文本、图像、视频从训练第一步就混在一起，而不是事后拼接的视觉模块，总参数约 428B，每次推理只激活约 23B，上下文长达 1M token。\n\n真正的看点是它把论文里的稀疏注意力直接交付到了 serving。靠 MiniMax Sparse Attention（MSA，每个查询只挑最相关的若干块 KV 来算，而不是全量算），相对上一代 M2，在 1M 上下文下 prefill 提速 9×、decode 提速 15×，单 token 的计算量压到原来的 1/20。模型给了 thinking / non-thinking 双模式，vLLM、SGLang、Transformers 第一天就能部署。技术报告挂在 arXiv:2606.13392。\n\n放进格局里看，长上下文 agent 最烧的就是显存带宽和解码速度，谁能把这两项压下来，谁的本地 agent 才跑得起。M3 把“训练阶段验证过的稀疏注意力”直接做成可部署权重，是目前能本地跑的最强开源多模态 agent 权重之一。当然，9×/15× 是官方模型卡自报的提速数字，真实收益还得看各家在自己负载上的实测，但作为开源权重，它至少把门槛实实在在地降到了能复现的程度。",
+    "sharp": "这才叫动真格：昨天放论文、今天放权重，MiniMax 没让 MSA 停在 PPT 上。M3 是约 428B 总参 / 23B 激活的原生多模态 MoE，1M 上下文，关键是它把稀疏注意力从“训练时验证过”一路推到“今天就能 vLLM/SGLang 部署”——这条交付链路比很多只发 API 的闭源家诚实得多。\n\n性能口径要拎清：相对 M2 在 1M 上下文 prefill 9×、decode 15×、单 token 算力降到 1/20，听着炸裂，但这是官方模型卡自报、且基线是自家上一代 M2，不是跟别家横评。换句话说，提速是真的，但“跟谁比、在什么负载上”得你自己复跑才算数。\n\n即便如此，结论偏正面：开源权重 + 第一天就能部署 + 把硬件友好的稀疏注意力直接落到 serving，对想摆脱闭源 API、在本地跑长上下文 agent 的团队，这是近期最实在的一个选项。坑只在于别把自报的 15× 当成对所有人都成立的承诺。",
+    "image": {
+     "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/models/MiniMaxAI/MiniMax-M3.png",
+     "credit": "huggingface.co",
+     "source": "https://huggingface.co/MiniMaxAI/MiniMax-M3"
+    }
+   },
+   {
+    "url": "https://www.qbitai.com/2026/06/434774.html",
+    "layer": "eval",
+    "title": "UC Berkeley 放出 Agents' Last Exam（ALE）：在 NX/Unreal/AE 里真干活，GPT-5.5 反超 Fable 5",
+    "take": "ALE 让 Agent 在 Siemens NX 建 3D 模型、Unreal 搭场景、After Effects 做合成等真实软件里完成任务，最难一档 Fable 5、GPT-5.5 全 0 分。总通过率榜上 GPT-5.5+Codex 24.0% 包揽冠军、GPT-5.5+ALE Claw 23.0% 第二，Fable 5+Claude Code 仅 22.0% 第三，Opus 4.8 垫底 15.8%——与 SWE-Bench Pro（Fable 80.3% vs GPT 58.6%）、HLE（64.5% vs 52.2%）上的碾压完全相反。团队是 MMLU/MATH/CyberGym 的提出者。这类「真实工具链干活」评测是对 agent 宣传最直接的冷水。",
+    "facts": "ALE 总通过率：GPT-5.5+Codex 24.0%、GPT-5.5+ALE Claw 23.0%、Fable 5+Claude Code 22.0%、Opus 4.7 18.4%、Opus 4.8 15.8%；最难档全模型 0 分。对照 SWE-Bench Pro 80.3% vs 58.6%、HLE 64.5% vs 52.2%（量子位转述 UC Berkeley 团队）。",
+    "source": "qbitai",
+    "links": {
+     "primary": "https://www.qbitai.com/2026/06/434774.html"
+    },
+    "score": 3.85,
+    "rank": 3,
+    "readable": "各家旗舰模型在 SWE-Bench、HLE 上动辄八九十分，但那真的等于“会干活”吗？UC Berkeley 放出的 Agents' Last Exam（ALE）给了一盆冷水：它不在沙箱里跑代码题，而是让 agent 进 Siemens NX 建 3D 模型、在 Unreal 里搭场景、用 After Effects 做合成——真实专业软件里的真实任务。结果是最难一档，Fable 5 和 GPT-5.5 全部 0 分。\n\n更耐人寻味的是排名翻转。ALE 总通过率榜上，GPT-5.5+Codex 以 24.0% 夺冠，GPT-5.5+ALE Claw 23.0% 第二，Fable 5+Claude Code 只有 22.0% 排第三，Opus 4.7 拿 18.4%，Opus 4.8 垫底 15.8%。这和大家熟悉的格局几乎反过来——在 SWE-Bench Pro 上 Fable 系是 80.3% 对 GPT 的 58.6%，HLE 上 64.5% 对 52.2%，都是碾压；一换到真实工具链，碾压就消失甚至反转了。\n\n提出团队不是无名之辈，正是 MMLU、MATH、CyberGym 的作者，做基准是老本行。需要留意的是这组数字目前来自量子位对 UC Berkeley 团队的转述，原始榜单细节值得回查；但方向性结论很清楚：现有刷榜分数和“在专业软件里真正完成一个项目”之间，存在一道还没被跨过的鸿沟。对所有把 agent 能力当卖点的人，这是最直接的冷水。",
+    "sharp": "想知道旗舰 agent 的成色，别看刷榜看 ALE。UC Berkeley 这套评测把 agent 扔进 Siemens NX、Unreal、After Effects 里干真活，最难一档 Fable 5 和 GPT-5.5 一起吃 0 分——这才是 agent 真实水位的样子，不是 SWE-Bench 上那串好看的数字。\n\n最打脸的是排名反转：ALE 总通过率 GPT-5.5+Codex 24.0% 居首，Fable 5+Claude Code 只有 22.0%，Opus 4.8 直接垫底 15.8%。而同样这些模型在 SWE-Bench Pro 是 80.3% 对 58.6%、HLE 是 64.5% 对 52.2%，Fable 系一路碾压。一进真实工具链碾压就蒸发，只能说明那些榜可能已经被刷出了水分。\n\n团队是 MMLU/MATH/CyberGym 的原班人马，做基准的可信度在线，唯一保留是当前数据经量子位转述、原始细节待核。但谁都别急着拿“某榜第一”当 agent 能力背书了——能在专业软件里把活干完，目前没有一家及格。",
+    "image": {
+     "url": "https://www.qbitai.com/wp-content/uploads/imgs/qbitai-logo-1.png",
+     "credit": "qbitai.com",
+     "source": "https://www.qbitai.com/2026/06/434774.html"
+    }
+   },
+   {
+    "url": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/",
+    "layer": "infra",
+    "title": "NVIDIA Blackwell Leads on First Agentic AI Infrastructure Benchmark (AgentPerf)",
+    "take": "Artificial Analysis 推出 AgentPerf，自称业界首个面向 agentic 工作负载的推理基准——区别于传统单次 LLM 调用基准，它建模多步 agent 轨迹、工具调用延迟与增长的上下文，取自真实编码 agent trajectory。首发结果里 Blackwell 平台领跑。属于新类别定义 + 一手厂商数据，对 serving/infra 选型有直接指导意义。",
+    "facts": "GB300 NVL72 在 DeepSeek V4 Pro 工作负载上、于 20 与 60 tokens/s 两档 SLO 下，单位兆瓦运行的 agent 数最高达 NVIDIA HGX H200 系统的 20 倍；除该 20x 能效比外原文未公开绝对吞吐/延迟数字。",
+    "source": "nvidia-blog",
+    "links": {
+     "primary": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/"
+    },
+    "score": 3.65,
+    "rank": 4,
+    "readable": "如果你负责 infra 选型，传统那种“单次 LLM 调用能跑多少 token/s”的基准其实越来越不够用了——agent 工作负载是多步轨迹、夹着工具调用延迟、上下文一路膨胀，跟单次调用完全两码事。Artificial Analysis 推出的 AgentPerf 就是冲这个缺口来的，自称业界首个面向 agentic 工作负载的推理基准，轨迹取自真实编码 agent。\n\n首发结果里 Blackwell 平台领跑。给出的关键数字是：在 DeepSeek V4 Pro 工作负载、20 与 60 tokens/s 两档 SLO 下，GB300 NVL72 单位兆瓦能运行的 agent 数最高达 HGX H200 系统的 20 倍。除了这个 20x 能效比，原文没有公开绝对吞吐或延迟数字，所以这更像是一张“能效比海报”而非完整跑分表。\n\n这条和同日那篇 AA-AgentPerf 开发者博客是一回事的两个出口，互为印证。价值在于“为 agent 负载定义新基准类别 + 给出一手厂商数据”，对 serving/infra 选型有直接的方向性指导。但同样要记住：基准由 NVIDIA 参与、首发自家平台夺冠，20x 含跨代硬件红利，在第三方非 NVIDIA 平台复跑之前，把它当上限参考、别当结论。",
+    "sharp": "AgentPerf 想解决的真问题是对的：单次 LLM 调用的基准量不出 agent 负载，因为后者是多步轨迹加工具延迟加膨胀上下文。Artificial Analysis 把这个类别立起来，对 infra 选型是好事。\n\n但这篇博客的信息密度低得可疑——通篇就一个数字：GB300 NVL72 在 20/60 tokens/s 两档 SLO 下，单位兆瓦 agent 数最高是 H200 的 20 倍，绝对吞吐和延迟一概不给。只放对自己最好看的能效比、藏起绝对数字，这是标准的厂商海报打法；何况 20x 大半是 GB300 对 H200 的换代红利，不是架构魔法。\n\n它和同日的 AA-AgentPerf 开发者博客本就是一鱼两吃。定义新基准值得肯定，但首发这组数字是 NVIDIA 自家营销，别第三方还没复跑就把 20x 写进采购理由。",
+    "image": {
+     "url": "https://blogs.nvidia.com/wp-content/uploads/2026/06/dgx-social-gb300-2048x2048-1-1.jpg",
+     "credit": "blogs.nvidia.com",
+     "source": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/"
+    }
+   },
+   {
+    "url": "https://huggingface.co/papers/2606.13174",
+    "layer": "agent",
+    "title": "把用户纠正编译成运行时强制约束:TRACE 让编码 agent 真正记住偏好",
+    "take": "研究者发现编码 agent 即便存了偏好记忆,下一会话仍会违反——Mem0 下 57.5% 的偏好检查照样被违反。TRACE 改变了表示方式:把用户聊天里的纠正挖出来、重写成原子规则,再编译成任务完成前必须通过的运行时检查,使记住的偏好变成执行约束,而非可被悄悄跳过的建议。",
+    "facts": [
+     "ClawArena 留出集偏好违反率从 100% 降到 OOD 任务的 2.0%、ID 任务的 37.6%",
+     "对照组 Mem0 记忆仍留下 57.5% 的偏好检查未通过"
+    ],
+    "source": "hf-daily-papers",
+    "links": {
+     "primary": "https://huggingface.co/papers/2606.13174",
+     "discussion": "https://arxiv.org/abs/2606.13174"
+    },
+    "score": 3.4,
+    "rank": 5,
+    "readable": "用过编码 agent 的人都遇到过这种憋屈：你纠正它一次（“别用 print 调试”“缩进用 4 空格”），它当场改了，下一会话又犯。研究者把这个问题量化了出来——即便接了偏好记忆，在 Mem0 方案下仍有 57.5% 的偏好检查照样被违反。问题不在“没记住”，而在“记住了也只是建议，能被悄悄跳过”。\n\nTRACE 这篇论文改的是偏好的表示方式。它把用户聊天里的纠正挖出来，重写成一条条原子规则，再编译成任务完成前必须通过的运行时检查——于是“记住的偏好”从可选建议变成了硬性执行约束，agent 不满足就完不成任务。这个思路的关键转变，是从“让模型记得更牢”转向“在执行环节强制兑现”。\n\n效果相当显著：在 ClawArena 的留出集上，偏好违反率从 100% 降到了分布外（OOD）任务的 2.0%、分布内（ID）任务的 37.6%；作为对照，Mem0 记忆仍留下 57.5% 的检查未通过。ID 任务还有 37.6% 没压住，说明运行时约束也不是万能解。但把偏好从“软记忆”升级为“硬门禁”这个方向，对正经做长期协作的编码 agent 很有启发——记得住，更要管得住。",
+    "sharp": "“给 agent 加记忆”这两年被吹得很猛，TRACE 这篇直接戳破：光记住没用。数据摆在那——Mem0 这类记忆方案下，57.5% 的偏好检查照样被违反。模型把你的纠正“记”进上下文，然后该犯还犯，因为记忆只是建议，没人逼它兑现。\n\nTRACE 的解法很对症：把用户纠正提炼成原子规则，编译成任务完成前必须过的运行时检查，让偏好从软记忆变成硬门禁。留出集上违反率从 100% 砸到 OOD 任务的 2.0%，这是把“可被跳过的建议”改成“跳不过的约束”才拿得到的数。\n\n别急着喊解决了：ID 任务仍有 37.6% 没压住，分布内反而比分布外难，说明强制约束遇到熟悉场景里的细微冲突还是会破。但方向比那些只堆记忆体量的工作清醒得多——agent 协作的瓶颈从来不是记不住，是管不住。",
+    "image": {
+     "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2606.13174/gradient.png",
+     "credit": "huggingface.co",
+     "source": "https://huggingface.co/papers/2606.13174"
+    }
+   },
+   {
+    "url": "https://huggingface.co/papers/2606.13594",
+    "layer": "agent",
+    "title": "异构 agent 之间直接传 KV-cache:跨模型的读心术对齐",
+    "take": "多 agent 系统多靠文本通信,要付出有损且昂贵的解码-再编码代价。这项工作攻克异构模型间的隐空间对齐难题:用轻量跨模型 cache 变换加两阶段训练(先重建后生成),让一个 agent 把看到什么和怎么想都传给另一个不同的模型。其信息结构分析揭示一个对偶——上下文感知传输靠稀疏推理信号,上下文无关传输靠稠密语境保留。",
+    "facts": [
+     "在 Qwen3-4B/8B/14B 全部 6 个传输方向、6 个域内外基准上超过此前异构基线"
+    ],
+    "source": "hf-daily-papers",
+    "links": {
+     "primary": "https://huggingface.co/papers/2606.13594",
+     "discussion": "https://arxiv.org/abs/2606.13594"
+    },
+    "score": 3.35,
+    "rank": 6,
+    "readable": "多 agent 系统里，不同模型之间几乎都靠“说话”沟通——一个 agent 把想法解码成文本，另一个再编码读进去。这一来一回既有信息损耗，又费算力。一个更诱人的替代是直接传 KV-cache（模型内部的注意力缓存，相当于“它脑子里正在想的东西”），但难点在于：两个不同的模型，内部表示空间根本对不上。\n\n这项工作攻的正是异构模型间的隐空间对齐。做法是用一个轻量的跨模型 cache 变换，配上两阶段训练——先学重建（保证信息不丢），再学生成（保证能接着往下用），让一个 agent 把“看到了什么”和“怎么想的”一并传给另一个不同架构的模型。它的信息结构分析还揭示了一个有意思的对偶：上下文感知的传输靠稀疏的推理信号，上下文无关的传输靠稠密的语境保留——两类信息走的是不同的路子。\n\n实验上，在 Qwen3-4B/8B/14B 之间全部 6 个传输方向、6 个域内外基准上，都超过了此前的异构基线。需要客观看：实验目前只覆盖 Qwen3 同系列的不同尺寸，跨厂商、跨架构（比如 Qwen 传给 Llama）能否成立还未验证，离“任意模型间读心术”尚远。但对多 agent 协作这条线，把通信从有损的文本换成隐空间直传，是一个值得盯的方向。",
+    "sharp": "多 agent 靠文本互通是公认的浪费：解码成字、再编码读回，又丢信息又烧算力。直接传 KV-cache（模型脑内的注意力缓存）一直是更聪明的设想，卡点就是异构模型表示空间对不上。这篇真去啃了这块硬骨头，而不是又发一个 prompt 工程的花活。\n\n方法不花哨但扎实：轻量跨模型 cache 变换 + 两阶段训练（先重建再生成），让一个模型把“看到什么、怎么想”直接喂给另一个模型；附带的对偶分析（上下文感知靠稀疏推理信号、上下文无关靠稠密语境保留）也算有洞见。\n\n泼冷水的地方很明确：全部实验只在 Qwen3-4B/8B/14B 同系列内做，6 个方向虽全胜，但都是“自己人传自己人”。真正的考验是跨厂商跨架构——能把 Qwen 的 cache 喂进 Llama 才叫读心术，现在还只是同源模型间的内部对齐。方向对，但别把它当成已经能用的跨模型通信方案。",
+    "image": {
+     "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2606.13594/gradient.png",
+     "credit": "huggingface.co",
+     "source": "https://huggingface.co/papers/2606.13594"
+    }
+   }
+  ],
+  "daily": [
+   {
+    "url": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/",
+    "layer": "serving",
+    "title": "NVIDIA 公布业界首个多厂商开放 agentic AI 推理基准 AA-AgentPerf",
+    "take": "Artificial Analysis 与 NVIDIA 推出 AA-AgentPerf——首个度量「一套推理系统能在满足 SLO 前提下并发支撑多少个 AI agent」的多厂商开放基准。它不再用静态 prompt，而是模拟带工具调用、长度跨 5K–131K token 的真实 agent 轨迹,填补了 agentic 推理负载此前无标准量化口径的空白。",
+    "facts": "测试模型 DeepSeek-V4-Pro,三档 SLO 输出速度 30/100/300 tok/s;GB300 NVL72 达 61.4K agents/MW、57.5 agents/GPU,对比 H200 的 2.6K/MW、1.4/GPU,每兆瓦约 20x;请求序列均长约 27K token,含 1s 中位 CPU 工具延迟。(20x 含代际硬件红利,非纯软件)",
+    "source": "nvidia-dev-blog",
+    "links": {
+     "primary": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/"
+    },
+    "score": 3.9,
+    "rank": 1,
+    "image": {
+     "url": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/06/ai-agent-1.webp",
+     "credit": "developer.nvidia.com",
+     "source": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/"
+    }
+   },
+   {
+    "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+    "layer": "model",
+    "title": "MiniMax M3 开源权重上线 HF：428B/23B 激活原生多模态 MoE，1M 上下文，MSA 把解码加速 15×",
+    "take": "昨天还只有 MSA 注意力论文，今天权重真的落地了：~428B 总参 / ~23B 激活的原生多模态 MoE（文/图/视频混合模态从第一步训练），1M 上下文。靠 MiniMax Sparse Attention（MSA），相对 M2 在 1M 上下文上 prefill 9×、decode 15× 提速，单 token 算力降到 1/20。thinking/non-thinking 双模式，vLLM/SGLang/Transformers 可部署。这是当前能本地跑的最强开源多模态 agent 权重之一，且把训练验证过的稀疏注意力直接交付到 serving。",
+    "facts": "~428B 总参数 / ~23B 激活，1M 上下文；MSA 相对 M2 在 1M 上下文 prefill 9×、decode 15× 提速，单 token 算力降至 1/20（HF 模型卡，技术报告 arXiv:2606.13392）。",
+    "source": "x-_akhaliq / mcp",
+    "links": {
+     "primary": "https://huggingface.co/MiniMaxAI/MiniMax-M3"
+    },
+    "score": 3.85,
+    "rank": 2,
+    "image": {
+     "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/models/MiniMaxAI/MiniMax-M3.png",
+     "credit": "huggingface.co",
+     "source": "https://huggingface.co/MiniMaxAI/MiniMax-M3"
+    }
+   },
+   {
+    "url": "https://www.qbitai.com/2026/06/434774.html",
+    "layer": "eval",
+    "title": "UC Berkeley 放出 Agents' Last Exam（ALE）：在 NX/Unreal/AE 里真干活，GPT-5.5 反超 Fable 5",
+    "take": "ALE 让 Agent 在 Siemens NX 建 3D 模型、Unreal 搭场景、After Effects 做合成等真实软件里完成任务，最难一档 Fable 5、GPT-5.5 全 0 分。总通过率榜上 GPT-5.5+Codex 24.0% 包揽冠军、GPT-5.5+ALE Claw 23.0% 第二，Fable 5+Claude Code 仅 22.0% 第三，Opus 4.8 垫底 15.8%——与 SWE-Bench Pro（Fable 80.3% vs GPT 58.6%）、HLE（64.5% vs 52.2%）上的碾压完全相反。团队是 MMLU/MATH/CyberGym 的提出者。这类「真实工具链干活」评测是对 agent 宣传最直接的冷水。",
+    "facts": "ALE 总通过率：GPT-5.5+Codex 24.0%、GPT-5.5+ALE Claw 23.0%、Fable 5+Claude Code 22.0%、Opus 4.7 18.4%、Opus 4.8 15.8%；最难档全模型 0 分。对照 SWE-Bench Pro 80.3% vs 58.6%、HLE 64.5% vs 52.2%（量子位转述 UC Berkeley 团队）。",
+    "source": "qbitai",
+    "links": {
+     "primary": "https://www.qbitai.com/2026/06/434774.html"
+    },
+    "score": 3.85,
+    "rank": 3,
+    "image": {
+     "url": "https://www.qbitai.com/wp-content/uploads/imgs/qbitai-logo-1.png",
+     "credit": "qbitai.com",
+     "source": "https://www.qbitai.com/2026/06/434774.html"
+    }
+   },
+   {
+    "url": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/",
+    "layer": "infra",
+    "title": "NVIDIA Blackwell Leads on First Agentic AI Infrastructure Benchmark (AgentPerf)",
+    "take": "Artificial Analysis 推出 AgentPerf，自称业界首个面向 agentic 工作负载的推理基准——区别于传统单次 LLM 调用基准，它建模多步 agent 轨迹、工具调用延迟与增长的上下文，取自真实编码 agent trajectory。首发结果里 Blackwell 平台领跑。属于新类别定义 + 一手厂商数据，对 serving/infra 选型有直接指导意义。",
+    "facts": "GB300 NVL72 在 DeepSeek V4 Pro 工作负载上、于 20 与 60 tokens/s 两档 SLO 下，单位兆瓦运行的 agent 数最高达 NVIDIA HGX H200 系统的 20 倍；除该 20x 能效比外原文未公开绝对吞吐/延迟数字。",
+    "source": "nvidia-blog",
+    "links": {
+     "primary": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/"
+    },
+    "score": 3.65,
+    "rank": 4,
+    "image": {
+     "url": "https://blogs.nvidia.com/wp-content/uploads/2026/06/dgx-social-gb300-2048x2048-1-1.jpg",
+     "credit": "blogs.nvidia.com",
+     "source": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/"
+    }
+   },
+   {
+    "url": "https://huggingface.co/papers/2606.13174",
+    "layer": "agent",
+    "title": "把用户纠正编译成运行时强制约束:TRACE 让编码 agent 真正记住偏好",
+    "take": "研究者发现编码 agent 即便存了偏好记忆,下一会话仍会违反——Mem0 下 57.5% 的偏好检查照样被违反。TRACE 改变了表示方式:把用户聊天里的纠正挖出来、重写成原子规则,再编译成任务完成前必须通过的运行时检查,使记住的偏好变成执行约束,而非可被悄悄跳过的建议。",
+    "facts": [
+     "ClawArena 留出集偏好违反率从 100% 降到 OOD 任务的 2.0%、ID 任务的 37.6%",
+     "对照组 Mem0 记忆仍留下 57.5% 的偏好检查未通过"
+    ],
+    "source": "hf-daily-papers",
+    "links": {
+     "primary": "https://huggingface.co/papers/2606.13174",
+     "discussion": "https://arxiv.org/abs/2606.13174"
+    },
+    "score": 3.4,
+    "rank": 5,
+    "image": {
+     "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2606.13174/gradient.png",
+     "credit": "huggingface.co",
+     "source": "https://huggingface.co/papers/2606.13174"
+    }
+   },
+   {
+    "url": "https://huggingface.co/papers/2606.13594",
+    "layer": "agent",
+    "title": "异构 agent 之间直接传 KV-cache:跨模型的读心术对齐",
+    "take": "多 agent 系统多靠文本通信,要付出有损且昂贵的解码-再编码代价。这项工作攻克异构模型间的隐空间对齐难题:用轻量跨模型 cache 变换加两阶段训练(先重建后生成),让一个 agent 把看到什么和怎么想都传给另一个不同的模型。其信息结构分析揭示一个对偶——上下文感知传输靠稀疏推理信号,上下文无关传输靠稠密语境保留。",
+    "facts": [
+     "在 Qwen3-4B/8B/14B 全部 6 个传输方向、6 个域内外基准上超过此前异构基线"
+    ],
+    "source": "hf-daily-papers",
+    "links": {
+     "primary": "https://huggingface.co/papers/2606.13594",
+     "discussion": "https://arxiv.org/abs/2606.13594"
+    },
+    "score": 3.35,
+    "rank": 6,
+    "image": {
+     "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2606.13594/gradient.png",
+     "credit": "huggingface.co",
+     "source": "https://huggingface.co/papers/2606.13594"
+    }
+   },
+   {
+    "url": "https://www.alignmentforum.org/posts/qi4mNbZYAFDYwfRba/building-and-evaluating-model-diffing-agents",
+    "layer": "safety",
+    "title": "GDM 可解释性团队: 用 auditor agent 自主探测两模型的行为差异",
+    "take": "Google DeepMind 可解释性团队 (Neel Nanda 等) 提出 'model diffing agents':让审计 agent 自行构造 prompt 去搜索并验证两个模型间罕见的行为差异,而非沿用在静态 prompt 分布上比对的旧范式。配套给出两套带 ground truth 的评测,为模型行为审计提供可复现的能力基线。",
+    "facts": "在 50 个 seed、触发频率 0%–50% 的条件系统提示 organism 上评测,agent 在部分行为上拿到满分但对精确触发条件识别较弱(强于找'差什么'弱于'何时差');对 3 组 Gemini 真实模型对产出约 50 条发现;相同模型对比时维持低假阳性;diffing agent 在细微差异上几乎总是优于单模型审计 (Fig 3)。",
+    "source": "alignment-forum",
+    "links": {
+     "primary": "https://www.alignmentforum.org/posts/qi4mNbZYAFDYwfRba/building-and-evaluating-model-diffing-agents"
+    },
+    "score": 3.35,
+    "image": {
+     "url": "https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/qi4mNbZYAFDYwfRba/lryvpvtyfkl7co0pjrhq",
+     "credit": "alignmentforum.org",
+     "source": "https://www.alignmentforum.org/posts/qi4mNbZYAFDYwfRba/building-and-evaluating-model-diffing-agents"
+    }
+   },
+   {
+    "url": "https://huggingface.co/blog/allenai/olmo-eval",
+    "layer": "post-training",
+    "title": "olmo-eval: An evaluation workbench for the model development loop",
+    "take": "Ai2 开源 olmo-eval，承接 2024 年的 OLMES 标准并延伸到模型开发全流程：降低新评测接入成本、灵活选择各 benchmark 的运行方式（不强制像 Harbor 那样全程沙箱容器，省资源）、把 agentic/多轮评测作为一等公民，并加入统计显著性分析判断改动是真提升还是噪声。对 post-training/data 实验迭代是实打实的工具。",
+    "facts": "新开源发布，代码在 github.com/allenai/olmo-eval；构建于 2024 年发布的 OLMES 之上；原文以\"2.4pp 的变化是否足以下结论\"为例强调内置噪声/显著性分析。原文未给出 benchmark 任务总数等量化规模。",
+    "source": "hf-blog",
+    "links": {
+     "primary": "https://huggingface.co/blog/allenai/olmo-eval"
+    },
+    "score": 3.0,
+    "image": {
+     "url": "https://cdn-uploads.huggingface.co/production/uploads/638e39b249de7ae552d977b5/gacAOFYwPkpxu7cC4eeey.png",
+     "credit": "huggingface.co",
+     "source": "https://huggingface.co/blog/allenai/olmo-eval"
+    }
+   },
+   {
+    "url": "https://github.com/huggingface/transformers/releases/tag/v5.12.0",
+    "layer": "model",
+    "title": "Hugging Face transformers v5.12.0 — 三个新模型架构 day-0 支持",
+    "take": "实质功能发布，非纯 bugfix：本版新增 3 个模型架构。MiniMax-M3-VL（M3 家族视觉-语言成员，CLIP 风格视觉塔 + 3D RoPE + 稠密/稀疏混合 MoE 解码器 + lightning indexer 块稀疏注意力）、PP-OCRv6（MetaFormer 统一模块 + 结构重参数化，medium/small/tiny 三档覆盖服务器到边缘）、Parakeet-RNNT（Fast Conformer 编码器 + RNN-T 解码器的语音识别）。对吃 day-0 权重支持的 model/post-training 从业者直接相关。",
+    "facts": "本版新增 3 个模型架构（MiniMax-M3-VL #46600、PP-OCRv6 #46576、Parakeet-RNNT #46331）；PP-OCRv6 提供 medium/small/tiny 三个模型档位。原文未给出各模型基准跑分。",
+    "source": "gh-transformers",
+    "links": {
+     "primary": "https://github.com/huggingface/transformers/releases/tag/v5.12.0"
+    },
+    "score": 3.0,
+    "image": {
+     "url": "https://opengraph.githubassets.com/1/huggingface/transformers",
+     "credit": "github.com",
+     "source": "https://github.com/huggingface/transformers/releases/tag/v5.12.0"
+    }
+   },
+   {
+    "url": "https://the-decoder.com/openai-buys-ona-to-push-codex-toward-long-running-autonomous-coding-tasks/",
+    "layer": "agent",
+    "title": "OpenAI 收购 Ona（原 Gitpod），把 Codex 推向长时自治编码",
+    "take": "OpenAI 收购德国 Ona（前身 Gitpod，2020 年成立），主攻 AI agent 与安全云开发环境，意图让 Codex 能跑长时间、自治的编码任务——和同期「flexible rate-limit reset」降价是一套组合拳，瞄准 agent 编码的运行时与编排层。swyx 转的 Ona 演讲点出 agent swarm 的真正未解项是 coordination（agent 间任务交接与阶段验证），runtime/orchestration 已解。",
+    "facts": "原文未给出收购金额；Ona 前身 Gitpod，2020 年成立于德国 Kiel，主攻云开发环境与编码 agent（the-decoder）。",
+    "source": "the-decoder",
+    "links": {
+     "primary": "https://the-decoder.com/openai-buys-ona-to-push-codex-toward-long-running-autonomous-coding-tasks/"
+    },
+    "score": 3.0,
+    "image": {
+     "url": "https://the-decoder.com/wp-content/uploads/2026/04/openai_dark_pattern.png",
+     "credit": "the-decoder.com",
+     "source": "https://the-decoder.com/openai-buys-ona-to-push-codex-toward-long-running-autonomous-coding-tasks/"
+    }
+   },
+   {
+    "url": "https://x.com/teortaxesTex/status/2065447458742673424",
+    "layer": "model",
+    "title": "华为 openPangu 2.0：疑似首个在昇腾（Ascend，950s？）上可信预训练的大模型，引入 ModAttn（DSA+SWA）",
+    "take": "teortaxes 指出华为终于在昇腾芯片上可信地完成了一次大 LLM 预训练，'hyper-node optimized training' 暗示 950s，注意力建在 DSA（带 SWA）之上，自创 ModAttn——核心诉求是证明「不靠英伟达也能在自家硬件上把大模型训出来」。若属实，这是国产算力栈跨过预训练门槛的一个信号，牵动模型与 infra 两层。注意：信息来自社区推文转述 #HDC2026 物料，官方细节待核实。",
+    "facts": "原文未给出参数量/基准等量化数据；称在昇腾（疑 950s）上完成大 LLM 预训练，注意力为 ModAttn（DSA+SWA）（teortaxes 推文，引 HDC2026 openPangu 2.0 物料，未经官方一手核实）。",
+    "source": "x-teortaxesTex",
+    "links": {
+     "primary": "https://x.com/teortaxesTex/status/2065447458742673424"
+    },
+    "score": 3.0,
+    "image": {
+     "url": "https://pbs.twimg.com/media/HKnwGD1XoAAnrmg.jpg:large",
+     "credit": "x.com",
+     "source": "https://x.com/teortaxesTex/status/2065447458742673424"
+    }
+   },
+   {
+    "url": "https://developer.nvidia.com/blog/deploy-long-context-reasoning-and-agentic-workflows-with-minimax-m3-on-nvidia-accelerated-infrastructure/",
+    "layer": "serving",
+    "title": "MiniMax M3 上 NVIDIA 部署: 稀疏注意力 MSA 的 serving 实测数字",
+    "take": "本质是已发布模型 MiniMax M3 的 NVIDIA 部署指南,但披露了其 MiniMax Sparse Attention (MSA) 的具体 serving 收益,对跑长上下文 agentic 负载的 serving 从业者有可落地参考——已接入 TensorRT-LLM/SGLang/vLLM/Dynamo。",
+    "facts": "M3 为 428B 总参/22B 激活 MoE (128 专家选 4),1M token 上下文,600M 视觉编码器;MSA 宣称 KV cache 访问比现有稀疏注意力实现快 4x,1M 上下文下每 token 计算量为 M2 的 1/20,prefill 快 9x、decode 快 15x,且无 KV 压缩/精度损失;NeMo 微调支持 128k context parallelism。",
+    "source": "nvidia-dev-blog",
+    "links": {
+     "primary": "https://developer.nvidia.com/blog/deploy-long-context-reasoning-and-agentic-workflows-with-minimax-m3-on-nvidia-accelerated-infrastructure/"
+    },
+    "score": 3.0,
+    "image": {
+     "url": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/04/MM-Release.webp",
+     "credit": "developer.nvidia.com",
+     "source": "https://developer.nvidia.com/blog/deploy-long-context-reasoning-and-agentic-workflows-with-minimax-m3-on-nvidia-accelerated-infrastructure/"
+    }
+   }
+  ],
+  "full": [
+   {
+    "source": "hf-daily-papers",
+    "layer": "model",
+    "title": "On the Limits of LLM Adaptability: Impact of Model-Internalized Priors on Annotation Task Performance",
+    "url": "https://huggingface.co/papers/2606.00467",
+    "summary": "Large Language Models (LLMs) are increasingly used for zero-shot annotation and LLM-as-a-judge tasks, yet their reliability hinges on how model-internalized priors interact with user-provided instructions. We investigate three dimensions of",
+    "selected": false
+   },
+   {
+    "source": "hf-daily-papers",
+    "layer": "model",
+    "title": "See What I See, Know What I Think: Dense Latent Communication Across Heterogeneous Agents",
+    "url": "https://huggingface.co/papers/2606.13594",
+    "summary": "Multi-agent systems communicate mostly through text, paying a lossy and expensive decode and re-encode cost. KV-cache communication is a promising alternative, yet most prior work is homogeneous, using duplicate copies of the same model, an",
+    "selected": false
+   },
+   {
+    "source": "hf-daily-papers",
+    "layer": "model",
+    "title": "Getting Better at Working With You: Compiling User Corrections into Runtime Enforcement for Coding Agents",
+    "url": "https://huggingface.co/papers/2606.13174",
+    "summary": "Interactive LLM agents are becoming part of daily work, but they do not reliably become easier to work with over time: a correction remembered in one session may still be violated in the next. We study this gap between preference access and",
+    "selected": false
+   },
+   {
+    "source": "hf-daily-papers",
+    "layer": "model",
+    "title": "WebChallenger: A Reliable and Efficient Generalist Web Agent",
+    "url": "https://huggingface.co/papers/2606.10423",
+    "summary": "Autonomous web navigation remains challenging for LLM agents, and the strongest generalist systems rely on proprietary reasoning models whose inference cost is prohibitive for the repetitive tasks where such agents would be most useful. We ",
+    "selected": false
+   },
+   {
+    "source": "hf-daily-papers",
+    "layer": "model",
+    "title": "The Cold-Start Safety Gap in LLM Agents",
+    "url": "https://huggingface.co/papers/2606.07867",
+    "summary": "Are tool-calling LLM agents equally safe throughout a conversation? We discover they are not: agents are most vulnerable at the very start of a session and become substantially safer after a few regular agentic tasks -- a phenomenon we term",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "OpceanAI/Flora",
+    "url": "https://huggingface.co/datasets/OpceanAI/Flora",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "Rohithreddybc/mbe-kv-cache",
+    "url": "https://huggingface.co/datasets/Rohithreddybc/mbe-kv-cache",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "liufea154/Annoy-PyEdu-Rs-Raw",
+    "url": "https://huggingface.co/datasets/liufea154/Annoy-PyEdu-Rs-Raw",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "liufea154/Annoy-PyEdu-Rs",
+    "url": "https://huggingface.co/datasets/liufea154/Annoy-PyEdu-Rs",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "be4ri/A_Computational_Framework_for_Genomic_Risk_Assessment_Database",
+    "url": "https://huggingface.co/datasets/be4ri/A_Computational_Framework_for_Genomic_Risk_Assessment_Database",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "AppSprout/rle-benchmarks",
+    "url": "https://huggingface.co/datasets/AppSprout/rle-benchmarks",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "safafaf22/Annoy-PyEdu-Rs-Raw",
+    "url": "https://huggingface.co/datasets/safafaf22/Annoy-PyEdu-Rs-Raw",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "safafaf22/Annoy-PyEdu-Rs",
+    "url": "https://huggingface.co/datasets/safafaf22/Annoy-PyEdu-Rs",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "PraxySante/Directus-Corpus-TSV",
+    "url": "https://huggingface.co/datasets/PraxySante/Directus-Corpus-TSV",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "BantuLanguagesInitiative/CSRC",
+    "url": "https://huggingface.co/datasets/BantuLanguagesInitiative/CSRC",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-teortaxesTex",
+    "layer": "model",
+    "title": "> But in a few months OpenAI will leapfrog Anthropic with their 15-20T model There is no evidence nor rumor that OpenAI is capable or willing to train...",
+    "url": "https://x.com/teortaxesTex/status/2065546941170086047",
+    "summary": "> But in a few months OpenAI will leapfrog Anthropic with their 15-20T model There is no evidence nor rumor that OpenAI is capable or willing to train a 15-20T model any time soon Lisan believes the path to 100T is paved with Blackwell/Vera",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "AryanNsc/fairytruth",
+    "url": "https://huggingface.co/datasets/AryanNsc/fairytruth",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepeurope/europe-owid-the-share-and-number-of-people-living-in-extreme-poverty",
+    "url": "https://huggingface.co/datasets/electricsheepeurope/europe-owid-the-share-and-number-of-people-living-in-extreme-poverty",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "ndimensions/renav2_pnp_9",
+    "url": "https://huggingface.co/datasets/ndimensions/renav2_pnp_9",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepasia/asia-owid-terrorism-deaths-by-region",
+    "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-terrorism-deaths-by-region",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepeurope/europe-owid-the-role-of-agriculture-in-the-fluctuations-of-the-aggregate-economy-in-britain",
+    "url": "https://huggingface.co/datasets/electricsheepeurope/europe-owid-the-role-of-agriculture-in-the-fluctuations-of-the-aggregate-economy-in-britain",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepasia/asia-owid-terrorism-deaths",
+    "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-terrorism-deaths",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepeurope/europe-owid-the-rise-and-fall-of-the-share-of-employment-in-industry-18702018",
+    "url": "https://huggingface.co/datasets/electricsheepeurope/europe-owid-the-rise-and-fall-of-the-share-of-employment-in-industry-18702018",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "jtreminio/prompt-dataset",
+    "url": "https://huggingface.co/datasets/jtreminio/prompt-dataset",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepasia/asia-owid-terrorism-attacks-by-severity",
+    "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-terrorism-attacks-by-severity",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "Talson/orc-dictsize-overflow-poc",
+    "url": "https://huggingface.co/datasets/Talson/orc-dictsize-overflow-poc",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "Asher101/bias_source_papers",
+    "url": "https://huggingface.co/datasets/Asher101/bias_source_papers",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "naleung/so101-teleop-vials-to-rack-real-v5",
+    "url": "https://huggingface.co/datasets/naleung/so101-teleop-vials-to-rack-real-v5",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "build-small-hackathon/HuggingWizards-traces",
+    "url": "https://huggingface.co/datasets/build-small-hackathon/HuggingWizards-traces",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "CatGoesMeow/testing_lerobot_1",
+    "url": "https://huggingface.co/datasets/CatGoesMeow/testing_lerobot_1",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "BaraaLazkani/Middle_East_AOD_Dataset",
+    "url": "https://huggingface.co/datasets/BaraaLazkani/Middle_East_AOD_Dataset",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "nvidia-dev-blog",
+    "layer": "infra",
+    "title": "NVIDIA Achieves Leading Agentic Coding Performance on First Agentic AI Benchmark",
+    "url": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/",
+    "summary": "AI agents have fundamentally changed the complexity of inference workloads. Until now, the industry has struggled to define a standard for measuring how...",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepasia/asia-owid-terrestrial-protected-areas",
+    "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-terrestrial-protected-areas",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepeurope/europe-owid-the-ratio-scale-and-an-exponential-function",
+    "url": "https://huggingface.co/datasets/electricsheepeurope/europe-owid-the-ratio-scale-and-an-exponential-function",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepasia/asia-owid-terrain-ruggedness-index",
+    "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-terrain-ruggedness-index",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepeurope/europe-owid-the-price-for-lighting-per-million-lumen-hours-in-the-uk-in-british-pound",
+    "url": "https://huggingface.co/datasets/electricsheepeurope/europe-owid-the-price-for-lighting-per-million-lumen-hours-in-the-uk-in-british-pound",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hf-new-datasets",
+    "layer": "data",
+    "title": "electricsheepasia/asia-owid-temperature-anomaly-vs-latitude",
+    "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-temperature-anomaly-vs-latitude",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "nvidia-blog",
+    "layer": "infra",
+    "title": "NVIDIA Blackwell Leads on First Agentic AI Infrastructure Benchmark",
+    "url": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/",
+    "summary": "AgentPerf from Artificial Analysis, the industry’s first agentic AI benchmark, gives developers, enterprises and infrastructure providers a clear way to compare systems for agentic AI. In the first round of published results, the NVIDIA Bla",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Palantir loses legal challenge against Swiss investigative magazine",
+    "url": "https://www.ft.com/content/7ffcace7-9dc0-4e7e-9912-895ac073f979",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "techcrunch-ai",
+    "layer": "business",
+    "title": "Chinese cybercrime operation that used AI to scam ‘hundreds of thousands of victims’ sued by Google",
+    "url": "https://techcrunch.com/2026/06/12/chinese-cybercrime-operation-that-used-ai-to-scam-hundreds-of-thousands-of-victims-sued-by-google/",
+    "summary": "The tech giant said a group called \"Outsider Enterprise\" used AI to scam hundreds of thousands of victims, sending 2.5 million text messages over a span of two weeks.",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Mmorpg World of ClaudeCraft, vibe coded with Fable 5",
+    "url": "https://worldofclaudecraft.com/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "reddit-machinelearning",
+    "layer": "model",
+    "title": "is a preprint from an independent researcher worthy of arxiv endorsement if it got cited by a Peking University lab's paper 1 month after release? [D]",
+    "url": "https://www.reddit.com/r/MachineLearning/comments/1u46kne/is_a_preprint_from_an_independent_researcher/",
+    "summary": "my preprint is on SSRN and i feel somewhat shy to share it here... but the PKU lab's paper that cited mine got accepted by ICML 2026: https://arxiv.org/html/2602.06358v2   submitted by   /u/max6296 [link]   [comments]",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Swift at Apple: Migrating the TrueType Hinting Interpreter",
+    "url": "https://www.swift.org/blog/migrating-truetype-hinting-to-swift/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "mcp-registry",
+    "layer": "agent",
+    "title": "MCP registry: ai.masnavi/masnavi — Rumi's complete Masnavi (25,635 beyts) — search, quote, verify and explain. Free, no auth.",
+    "url": "https://github.com/shahhoseini/masnavi-mcp",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-swyx",
+    "layer": "agent",
+    "title": "RT Ankit Jain: A couple of months ago @swyx published my take that the traditional code review is dead. Many people had thoughts. If the topic is stil...",
+    "url": "https://x.com/swyx/status/2065523451377385685",
+    "summary": "RT Ankit Jain A couple of months ago @swyx published my take that the traditional code review is dead. Many people had thoughts. If the topic is still rattling around in your head, or you want to hear where I think this actually goes from h",
+    "selected": false
+   },
+   {
+    "source": "mcp-registry",
+    "layer": "agent",
+    "title": "MCP registry: ai.nauro/nauro — Decision system for AI coding agents. Surfaces what your project decided, and why, before changes.",
+    "url": "https://github.com/Nauro-AI/nauro",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "the-decoder",
+    "layer": "model",
+    "title": "Over half of Americans fear losing both their jobs and their independent thinking to AI, survey finds",
+    "url": "https://the-decoder.com/over-half-of-americans-fear-losing-both-their-jobs-and-their-independent-thinking-to-ai-survey-finds/",
+    "summary": "Anthropic surveyed nearly 52,000 Americans about their hopes and fears around AI. Sixty-four percent fear job losses, and 56 percent worry about losing the ability to think for themselves. Daily AI users are far less concerned. Still, most ",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Cosmodial Sky Atlas",
+    "url": "https://killedbyapixel.github.io/Cosmodial/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Most Beautiful Will Ever Made (1936)",
+    "url": "https://paperspast.natlib.govt.nz/newspapers/DOM19360307.2.43",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "simonwillison",
+    "layer": "devtool",
+    "title": "Quoting Andrew Singleton",
+    "url": "https://simonwillison.net/2026/Jun/12/andrew-singleton/#atom-everything",
+    "summary": "Jenny owns a crematorium. John’s propane company gives her a $20 billion investment in return for 5 percent of her operation. Jenny throws $10 billion into the incinerator, then pays John $10 billion to buy propane to burn that money to ash",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "I Am Not a Reverse Centaur",
+    "url": "https://blog.miguelgrinberg.com/post/i-am-not-a-reverse-centaur",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "\"Don't You Just Upload It to ChatGPT?\"",
+    "url": "https://correresmidestino.com/dont-you-just-upload-it-to-chatgpt/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-karpathy",
+    "layer": "model",
+    "title": "In awe of SpaceX and its story - past, present and the future. You can think about it in 10+ different ways and continue re-blowing your mind in circl...",
+    "url": "https://x.com/karpathy/status/2065490793092337691",
+    "summary": "In awe of SpaceX and its story - past, present and the future. You can think about it in 10+ different ways and continue re-blowing your mind in circles. Huge congrats to the team! 🚀",
+    "selected": false
+   },
+   {
+    "source": "x-swyx",
+    "layer": "agent",
+    "title": "RT Barr Yaron: Last call for the 2026 AI Engineering Survey 👀 https://ntn.so/ai-survey Excited to be partnering with @NotionHQ and @vercel on this ...",
+    "url": "https://x.com/swyx/status/2065545243789795369",
+    "summary": "RT Barr Yaron Last call for the 2026 AI Engineering Survey 👀 https://ntn.so/ai-survey Excited to be partnering with @NotionHQ and @vercel on this year's report. Looking forward to sharing the results on the main stage at @aiDotEngineer!",
+    "selected": false
+   },
+   {
+    "source": "techcrunch-ai",
+    "layer": "business",
+    "title": "Mistral is rumored to be raising €3B at €20B valuation",
+    "url": "https://techcrunch.com/2026/06/12/mistral-is-rumored-to-be-raising-e3b-at-e20-valuation/",
+    "summary": "The funding round would value the company at around €20 billion (about $23.15 billion), nearly double its Series C valuation of €11.7 billion.",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "How to setup a local coding agent on macOS",
+    "url": "https://ikyle.me/blog/2026/how-to-setup-a-local-coding-agent-on-macos",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "the-decoder",
+    "layer": "model",
+    "title": "OpenAI kicks off the AI price wars with flexible rate-limit resets for its Codex coding agent",
+    "url": "https://the-decoder.com/openai-kicks-off-the-ai-price-wars-with-flexible-rate-limit-resets-for-its-codex-coding-agent/",
+    "summary": "OpenAI now lets Codex users bank their rate-limit resets and trigger them manually instead of watching them expire on a fixed schedule. If you hit your usage cap mid-session, you can cash in a saved reset right away instead of waiting. User",
+    "selected": false
+   },
+   {
+    "source": "alignment-forum",
+    "layer": "safety",
+    "title": "Building and evaluating model diffing agents",
+    "url": "https://www.alignmentforum.org/posts/qi4mNbZYAFDYwfRba/building-and-evaluating-model-diffing-agents",
+    "summary": "This is the second in a series of informal research updates from the Google DeepMind Language Model Interpretability team, in interpretability and adjacent areas. The first post can be found here . TL;DR It is possible to build extremely si",
+    "selected": false
+   },
+   {
+    "source": "the-decoder",
+    "layer": "model",
+    "title": "Anthropic's Claude Fable 5 costs twice as much for 5.7 percent more performance",
+    "url": "https://the-decoder.com/anthropics-claude-fable-5-costs-twice-as-much-for-5-7-percent-more-performance/",
+    "summary": "Claude Fable 5 tops the Artificial Analysis Intelligence Index with 64.9 points and sets records in five of ten benchmarks. But the gain over Opus 4.8 is just 5.7 percent at double the token price. Safety filters with fallback routing push ",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Pirates, a naval warfare game inspired by Sid Meier's Pirates",
+    "url": "https://piwodlaiwo.github.io/pirates/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Law Enforcement's \"Warrior\" Problem (2015)",
+    "url": "https://harvardlawreview.org/forum/vol-128/law-enforcements-warrior-problem/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Launch HN: BitBoard (YC P25) – Analytics Workspace for Agents",
+    "url": "https://bitboard.work/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT Victor M: interesting MiniMax shipped a kernel on Hugging Face 👀 https://huggingface.co/kernels/MiniMaxAI/msa",
+    "url": "https://x.com/_akhaliq/status/2065483449314464105",
+    "summary": "RT Victor M interesting MiniMax shipped a kernel on Hugging Face 👀 https://huggingface.co/kernels/MiniMaxAI/msa",
+    "selected": false
+   },
+   {
+    "source": "qbitai",
+    "layer": "business",
+    "title": "神了，世界杯第一天真按千问剧本踢了",
+    "url": "https://www.qbitai.com/2026/06/435321.html",
+    "summary": "神了，世界杯第一天真按千问剧本踢了 梦瑶 2026-06-13 00:45:23 来源： 量子位 比分、红牌、绝杀全押中 梦瑶 发自 凹非寺 量子位 | 公众号 QbitAI 神了啊我说，世界杯第一天真按「千问剧本」踢了！？ 而且还是 比分、红牌、绝杀 ，全押中的内种？？ 2026世界杯揭幕战，墨西哥2:0南非，紧接着韩国2:1捷克， 千问 赛前预测直接命中两场比分。（此乃一惊） 然后，更有节目效果的来了，比进球还多的红牌，千问也猜到了—— 这AI提前测出南非可能因动作过大陷",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Looking Forward to Postgres 19: It's About Time",
+    "url": "https://www.pgedge.com/blog/looking-forward-to-postgres-19-its-about-time",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "A PDF that changes based on how its read",
+    "url": "https://sgaud.com/texts/pdf",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "alignment-forum",
+    "layer": "safety",
+    "title": "Sympathy for both sides of the egregious misalignment debate",
+    "url": "https://www.alignmentforum.org/posts/DZaZ3fqHnvfLCftPu/sympathy-for-both-sides-of-the-egregious-misalignment-debate",
+    "summary": "On one side of this debate is Yudkowsky & Soares, who think that (if AI progress continues) we’re on a direct path to egregiously-misaligned, scheming, out-of-control, rogue superintelligence (ASI), not even slightly nice , in the absence o",
+    "selected": false
+   },
+   {
+    "source": "techcrunch-ai",
+    "layer": "business",
+    "title": "SpaceX, Anthropic, and OpenAI’s hot IPO summer",
+    "url": "https://techcrunch.com/video/spacex-anthropic-and-openais-hot-ipo-summer/",
+    "summary": "The IPO market is back, and it’s not the same companies leading the charge. FAANG had a good run, but a new acronym is taking over: MANGOS — Meta (or Microsoft, depending on who you ask), Anthropic, Nvidia, Google, OpenAI, and SpaceX. Half ",
+    "selected": false
+   },
+   {
+    "source": "x-teortaxesTex",
+    "layer": "model",
+    "title": "On the other hand, we get this",
+    "url": "https://x.com/teortaxesTex/status/2065463859817693198",
+    "summary": "On the other hand, we get this Teortaxes▶️ (DeepSeek 推特🐋铁粉 2023 – ∞): …oh come the fuck on",
+    "selected": false
+   },
+   {
+    "source": "hf-blog",
+    "layer": "post-training",
+    "title": "olmo-eval: An evaluation workbench for the model development loop",
+    "url": "https://huggingface.co/blog/allenai/olmo-eval",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-teortaxesTex",
+    "layer": "model",
+    "title": "Fable thinks I'm funny But unlike most girls, it gets my jokes (Girls just think I'm cute and have good delivery) AGI achieved? AGI achieved",
+    "url": "https://x.com/teortaxesTex/status/2065462373977120939",
+    "summary": "Fable thinks I'm funny But unlike most girls, it gets my jokes (Girls just think I'm cute and have good delivery) AGI achieved? AGI achieved",
+    "selected": false
+   },
+   {
+    "source": "techcrunch-ai",
+    "layer": "business",
+    "title": "It’s hot IPO summer, and the MANGOS are ripe",
+    "url": "https://techcrunch.com/podcast/its-hot-ipo-summer-and-the-mangos-are-ripe/",
+    "summary": "The IPO market is back, and it’s not the same companies leading the charge. FAANG had a good run, but a new acronym is taking over: MANGOS — Meta (or Microsoft, depending on who you ask), Anthropic, Nvidia, Google, OpenAI, and SpaceX. Half ",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT Novita AI: 🤗 MiniMax M3 from @MiniMax_AI is now live on @huggingface — supported by Novita. Open weights. ~428B total parameters. ~23B activate...",
+    "url": "https://x.com/_akhaliq/status/2065478116730941931",
+    "summary": "RT Novita AI 🤗 MiniMax M3 from @MiniMax_AI is now live on @huggingface — supported by Novita. Open weights. ~428B total parameters. ~23B activated parameters. Built for the Agent Era.",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Where Did Earth Get Its Oceans? Maybe It Made Them Itself",
+    "url": "https://www.quantamagazine.org/where-did-earth-get-its-oceans-maybe-it-made-them-itself-20260612/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "You can power on a Mac remotely",
+    "url": "https://www.jeffgeerling.com/blog/2026/power-on-your-mac-remotely/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Show HN: StackScope – I crawled over 40k indie launches to see what they ship",
+    "url": "https://stackscope.dev/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "CRISPR tech selectively shreds cancer cells, including \"undruggable\" cancers",
+    "url": "https://innovativegenomics.org/news/crispr-technique-selectively-shreds-cancer-cells/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-teortaxesTex",
+    "layer": "model",
+    "title": "> even Fable Fable will certainly have a shorter life cycle than most of us. But \"Fable\" is a marketing label to begin wtih. Claude Fable does not hav...",
+    "url": "https://x.com/teortaxesTex/status/2065448988246004030",
+    "summary": "> even Fable Fable will certainly have a shorter life cycle than most of us. But \"Fable\" is a marketing label to begin wtih. Claude Fable does not have meaningful independent existence, and it's really close to arriving at a stable LLM-spec",
+    "selected": false
+   },
+   {
+    "source": "x-teortaxesTex",
+    "layer": "model",
+    "title": "Huawei has finally credibly (?) pretrained a big LLM on Ascends. \"hyper-node optimized training\" suggests 950s I guess. Builds on DSA (\"with SWA\"). Th...",
+    "url": "https://x.com/teortaxesTex/status/2065447458742673424",
+    "summary": "Huawei has finally credibly (?) pretrained a big LLM on Ascends. \"hyper-node optimized training\" suggests 950s I guess. Builds on DSA (\"with SWA\"). They want to prove it can be done on their hardware. What is ModAttn? (pics from Reddit, som",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Introduction to UEFI HTTP(s) Boot with QEMU/OVMF",
+    "url": "https://blog.yadutaf.fr/2026/06/12/introduction-to-uefi-https-boot-qemu-ovmf/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Slightly reducing the sloppiness of AI generated front end",
+    "url": "https://envs.net/~volpe/blog/posts/reduce-slop.html",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-teortaxesTex",
+    "layer": "model",
+    "title": "Going to Opus after Fable feels like taking advantage of a minor It is so dramatically more mush-headed, enthusiastic, sycophantic Fable doesn't even ...",
+    "url": "https://x.com/teortaxesTex/status/2065445280938393754",
+    "summary": "Going to Opus after Fable feels like taking advantage of a minor It is so dramatically more mush-headed, enthusiastic, sycophantic Fable doesn't even need to be intense to stand its ground. And it's less invested in the silly \"where I'd pus",
+    "selected": false
+   },
+   {
+    "source": "nvidia-dev-blog",
+    "layer": "infra",
+    "title": "Deploy Long-Context Reasoning and Agentic Workflows with MiniMax M3 on NVIDIA Accelerated Infrastructure",
+    "url": "https://developer.nvidia.com/blog/deploy-long-context-reasoning-and-agentic-workflows-with-minimax-m3-on-nvidia-accelerated-infrastructure/",
+    "summary": "As enterprise AI adoption scales, developers are increasingly forced to stitch together fragmented pipelines—separate models for text, vision, and...",
+    "selected": false
+   },
+   {
+    "source": "gh-transformers",
+    "layer": "model",
+    "title": "Release v5.12.0",
+    "url": "https://github.com/huggingface/transformers/releases/tag/v5.12.0",
+    "summary": "Release v5.12.0 New Model additions MiniMax-M3-VL MiniMax-M3-VL is the vision-language member of the MiniMax-M3 family that pairs a CLIP-style vision tower with 3D rotary position embeddings with the MiniMax-M3 text backbone. It uses a mixe",
+    "selected": false
+   },
+   {
+    "source": "x-teortaxesTex",
+    "layer": "model",
+    "title": "would be really strange of them to say this and then NOT begin faster iteration cycles. I still expect V4.1 in June",
+    "url": "https://x.com/teortaxesTex/status/2065443583079887219",
+    "summary": "would be really strange of them to say this and then NOT begin faster iteration cycles. I still expect V4.1 in June Xiuyu Li: Looks like deepsleep or deepusheenk will be staying quiet for the next few months.",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "A Call to Action: Stop the FCC's KYC Regime",
+    "url": "https://blog.lopp.net/call-to-action-stop-the-fcc-kyc-regime/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-teortaxesTex",
+    "layer": "model",
+    "title": "yep it's pretty small!",
+    "url": "https://x.com/teortaxesTex/status/2065440805834105286",
+    "summary": "yep it's pretty small! MiniMax (official): MiniMax M3, Open-Weight, Now On Hugging Face , with only ~428B parameters and ~23B activated parameters Weights: https://huggingface.co/MiniMaxAI/MiniMax-M3 MiniMax Sparse Attention: https://huggin",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "A dumpster arrived behind my university's library",
+    "url": "https://yalereview.org/article/sheila-liming-the-end-of-books",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "the-decoder",
+    "layer": "model",
+    "title": "Google files first joint lawsuit with FBI over Chinese AI scam network, OpenAI blocks PRC influence clusters",
+    "url": "https://the-decoder.com/google-files-first-joint-lawsuit-with-fbi-over-chinese-ai-scam-network-openai-blocks-prc-influence-clusters/",
+    "summary": "Within days of each other, Google and OpenAI separately exposed operations allegedly originating in China that use AI for fraud and covert influence campaigns. Both target US infrastructure and political debates. The article Google files fi",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "WASI 0.3",
+    "url": "https://bytecodealliance.org/articles/WASI-0.3",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "the-decoder",
+    "layer": "model",
+    "title": "Mistral AI seeks 3 billion euros to fund its European AI push",
+    "url": "https://the-decoder.com/mistral-ai-seeks-3-billion-euros-to-fund-its-european-ai-push/",
+    "summary": "French AI startup Mistral AI is negotiating a new funding round of around 3 billion euros at a valuation of approximately 20 billion euros. The article Mistral AI seeks 3 billion euros to fund its European AI push appeared first on The Deco",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Encrypted Spaces An architecture for collaborative applications",
+    "url": "https://encryptedspaces.org/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT Google Gemma: Real-time social robotics, from the cloud to your local device. Watch Ian from our DevX team use Gemini Live for a seamless voice cha...",
+    "url": "https://x.com/_akhaliq/status/2065486298547118586",
+    "summary": "RT Google Gemma Real-time social robotics, from the cloud to your local device. Watch Ian from our DevX team use Gemini Live for a seamless voice chat with Reachy Mini. Then, stick around until the end to see the robot running locally on Ge",
+    "selected": false
+   },
+   {
+    "source": "leiphone",
+    "layer": "business",
+    "title": "美的泰国灯塔工厂启示录：如何将中国供应链的“根系”植入全球土壤？",
+    "url": "https://www.leiphone.com/category/smarthome/gVhSX45M5wgkjPTa.html",
+    "summary": "导语：从“搬工厂”到“搬能力”，中国制造出海进入下半场 武汉宏海科技的创始人周宏，至今还记得2019年初到泰国时的情景。 “选址、买地、报批、招工，每一步都是难关，一张合规文件就能卡上一个月。”这位在中国摸爬滚打多年的制造业老手，第一次感受到什么叫“两眼一抹黑”。他以为出海就是把国内的图纸、设备、产线，照搬过去即可。但现实很快给了他答案：搬得动的是设备，搬不动的是土壤。 宏海科技的故事不是孤例。过去十年，数以千计的中国制造企业踏上出海之路，试图把产能搬到东南亚、南亚、甚至更远",
+    "selected": false
+   },
+   {
+    "source": "the-decoder",
+    "layer": "model",
+    "title": "The AI industry's platform trap is starting to look a lot like Microsoft's",
+    "url": "https://the-decoder.com/the-ai-industrys-platform-trap-is-starting-to-look-a-lot-like-microsofts/",
+    "summary": "Anthropic is throttling its new Mythos model for certain tasks while building apps that directly compete with its largest customers. Customers, partners, and investors are pushing back. The article The AI industry's platform trap is startin",
+    "selected": false
+   },
+   {
+    "source": "mcp-registry",
+    "layer": "agent",
+    "title": "MCP registry: ai.responsibleailabs/rail-score — Responsible-AI guardrails for agents: scoring with policy, injection & PII detection, DPDP.",
+    "url": "https://github.com/Responsible-AI-Labs/rail-score-mcp",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "the-decoder",
+    "layer": "model",
+    "title": "OpenAI buys Ona to push Codex toward long-running, autonomous coding tasks",
+    "url": "https://the-decoder.com/openai-buys-ona-to-push-codex-toward-long-running-autonomous-coding-tasks/",
+    "summary": "OpenAI is acquiring Ona, previously known as Gitpod, a startup founded in Kiel, Germany in 2020 that specializes in AI agents and secure cloud development environments for software development. The article OpenAI buys Ona to push Codex towa",
+    "selected": false
+   },
+   {
+    "source": "openai-news",
+    "layer": "model",
+    "title": "New OpenAI Academy courses for the next era of work",
+    "url": "https://openai.com/index/academy-courses-applying-ai-at-work",
+    "summary": "OpenAI introduces three Academy courses that help people build practical AI skills, create repeatable workflows, and apply agents in everyday work.",
+    "selected": false
+   },
+   {
+    "source": "reddit-machinelearning",
+    "layer": "model",
+    "title": "Building an Open Source Edge Semantic Cache for LLMs in Rust/WASM – Sanity check on the architecture? [D]",
+    "url": "https://www.reddit.com/r/MachineLearning/comments/1u3quwk/building_an_open_source_edge_semantic_cache_for/",
+    "summary": "Hey everyone, I am planning out a new open-source infrastructure project and want to get some brutal feedback on the architecture and use-case validity from people running high volume LLM workloads in production. The Problem: Python-based p",
+    "selected": false
+   },
+   {
+    "source": "leiphone",
+    "layer": "business",
+    "title": "万台量产之后，机器人企业比拼什么？",
+    "url": "https://www.leiphone.com/category/industrynews/q05jAEnENMMJiEH0.html",
+    "summary": "导语：给机器人量产立一根新标尺 2026 年，几乎整个行业都把同一个词喊到了最响：量产。 这一年被普遍视为人形机器人的“量产元年”。头部公司密集公布交付与产能数字——有的宣布整机下线突破千台，有的披露年出货已达数千台，产能目标直指万台、乃至十万台级。融资在加码，产线在铺开，行业的共识清晰可见：具身智能正在告别比拼参数的\"上半场\"，进入拼交付、拼落地的“下半场”。 但数字的背后，有一个行业普遍回避的追问：这些万台级的量产目标，真的准备好了吗？ 造一台能演示的机器人原型，和稳定地",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT Victor M: America is back 🫡",
+    "url": "https://x.com/_akhaliq/status/2065485427075637637",
+    "summary": "RT Victor M America is back 🫡",
+    "selected": false
+   },
+   {
+    "source": "reddit-machinelearning",
+    "layer": "model",
+    "title": "hubert.cpp, a C++ implementation of distilHuBERT [P]",
+    "url": "https://www.reddit.com/r/MachineLearning/comments/1u3omwk/hubertcpp_a_c_implementation_of_distilhubert_p/",
+    "summary": "I've written a C++ implementation of distilHuBERT. https://github.com/pfeatherstone/hubert.cpp It has no runtime dependencies, the weights are compiled into the library, it supports dynamic sizes, has performance on par with onnxruntime (in",
+    "selected": false
+   },
+   {
+    "source": "qbitai",
+    "layer": "business",
+    "title": "耐心资本护航创新，2026SuperLink开启创投价值共生新时代",
+    "url": "https://www.qbitai.com/2026/06/435192.html",
+    "summary": "耐心资本护航创新，2026SuperLink开启创投价值共生新时代 量子位的朋友们 2026-06-12 15:31:55 来源： 量子位 助力LP与GP高效合 2026年6月10日至11日，2026Superlink在苏州吴中太湖之畔圆满落幕。本次活动由清科控股（01945.HK）、投资界主办，吴中金控集团联合主办。数百位创投领域领军人士、行业精英齐聚现场，共赴这场创投盛会。 当前，股权投资领域正迎来深度变革：引导基金与并购基金持续扩容，社会资本加速流向硬科技及未来产业，前",
+    "selected": false
+   },
+   {
+    "source": "qbitai",
+    "layer": "business",
+    "title": "Anthropic老大的唯一 -1，就是AI股神的未婚妻",
+    "url": "https://www.qbitai.com/2026/06/433717.html",
+    "summary": "Anthropic老大的唯一 -1，就是AI股神的未婚妻 闻乐 2026-06-12 15:29:59 来源： 量子位 那位被OpenAI开除的股神 闻乐 发自 凹非寺 量子位 | 公众号 QbitAI 万亿估值AI公司的CEO，手下居然只有一名直属员工？？ 没错，最新估值9650亿美元的Anthropic，只有一个人向创始人Dario直接汇报，而且这位还不是技术背景出身。 在英伟达黄仁勋管60个人的衬托下，OpenAI奥特曼管6个人已经够少了，没想到还有高手。 这个唯一的-",
+    "selected": false
+   },
+   {
+    "source": "qbitai",
+    "layer": "business",
+    "title": "2026奇点智能产品大会首批嘉宾官宣：在 AI 的“可交付的时代”，看一线专家如何拆解真实落地闭环！",
+    "url": "https://www.qbitai.com/2026/06/435105.html",
+    "summary": "2026奇点智能产品大会首批嘉宾官宣：在 AI 的“可交付的时代”，看一线专家如何拆解真实落地闭环！ 量子位的朋友们 2026-06-12 15:27:14 来源： 量子位 7 月 17-18 日 过去一年，AI 的主战场已悄然发生位移： 它正从单一功能的交付，走向多 Agent 协作的生态网络重组； 从提升个人生产力，走向重构企业底层的运行范式。 今天的决策者，不仅在管理一个产品，更在重构一家 AI-Native 的企业。正是在这个跨越传统的节点上，我们把全球产品经理大会正",
+    "selected": false
+   },
+   {
+    "source": "leiphone",
+    "layer": "business",
+    "title": "中科院物理研究所黄学杰 ：全固态电池掀桌子前，必须做好固液混合电池丨大湾区车展观察",
+    "url": "https://www.leiphone.com/category/transportation/xRrGlFlEHbWMo9SL.html",
+    "summary": "导语：2026 年是固液混合电池量产元年。 2026 年是固液混合电池量产元年。 作者 | 马诗晴 编辑 | 李雨晨 【编者按】黄学杰是中国锂电池行业领军科学家之一。现任中科院物理研究所储能材料与器件方向召集人、《节能与新能源汽车》路线图动力电池路线图专家组长，曾发起及推动星恒电源等多家锂电企业落地。 近日，以「临界与突破」为主题的“半固态电池价值论坛”在深圳举行，会上，黄学杰发表了题为《固液混合路线市场机遇期正来临》的演讲，分享了固液混合技术在三元锂和磷酸铁锂电池上的应用，",
+    "selected": false
+   },
+   {
+    "source": "reddit-machinelearning",
+    "layer": "model",
+    "title": "MICCAI 2026 Results [D]",
+    "url": "https://www.reddit.com/r/MachineLearning/comments/1u3nims/miccai_2026_results_d/",
+    "summary": "Results are almost here. Good luck to everyone waiting for the final decision 🙂   submitted by   /u/Sea_Muscle_4281 [link]   [comments]",
+    "selected": false
+   },
+   {
+    "source": "leiphone",
+    "layer": "business",
+    "title": "中科大&智象未来：强模型打底、轻模型精修，重塑视频超分体验丨CVPR 2026",
+    "url": "https://www.leiphone.com/category/ai/qDR8TrUNjdEVUrWa.html",
+    "summary": "导语：PS-SR：兼顾速度、细节与稳定性，让低清画面更可信。 PS-SR：兼顾速度、细节与稳定性，让低清画面更可信。     作者丨郑佳美     编辑丨马晓宁                                                                                                                 在生成式 AI 进入视频生产链之后，视频增强正在从后期修补工具，变成内容生产、内容分发和机器视",
+    "selected": false
+   },
+   {
+    "source": "leiphone",
+    "layer": "business",
+    "title": "Nature 子刊收录！清华李勇团队用 AI 解码全球气候耦合，ENSO 预测提前期延长至 19 个月",
+    "url": "https://www.leiphone.com/category/ai/Sgux2ZbLaFbXaZxD.html",
+    "summary": "导语：UniCM：揭示极端 El Niño 和 La Niña 背后的跨洋盆信号。 UniCM：揭示极端 El Niño 和 La Niña 背后的跨洋盆信号。     作者丨郑佳美     编辑丨马晓宁                                                                                                                 在全球气候风险越来越难以用单一事件解释的今天，气候",
+    "selected": false
+   },
+   {
+    "source": "leiphone",
+    "layer": "business",
+    "title": "CVPR 2026 模型适应性研究盘点：从保留旧知识，到适应真实世界",
+    "url": "https://www.leiphone.com/category/ai/9x05Sw5uY0RhgEdO.html",
+    "summary": "导语：稳定性，正在成为大模型落地的关键命题。 稳定性，正在成为大模型落地的关键命题。     作者丨郑佳美     编辑丨马晓宁                                                                                                                 当 AI 模型从“单次完成任务”走向真实世界部署时，真正的挑战不再只是参数规模和单点性能，而是模型能否在变化中保持稳定。 它要",
+    "selected": false
+   },
+   {
+    "source": "qbitai",
+    "layer": "business",
+    "title": "“智能体最后的考试”，Fable 5竟然不敌GPT 5.5",
+    "url": "https://www.qbitai.com/2026/06/434774.html",
+    "summary": "“智能体最后的考试”，Fable 5竟然不敌GPT 5.5 一水 2026-06-12 12:13:23 来源： 量子位 最难档通通零蛋 没想到打脸来得如此之快！！ 刚刚，UC伯克利放出了一场号称 “智能体最后的考试” 的全新基准测试。 它把当今最强的AI Agent们拉到考场上，让它们干真正的活—— 在Siemens NX里建3D模型、在Unreal Engine里搭游戏场景、在Adobe After Effects里做特效合成。 结果成绩令人傻眼： 最难的一档，当今公认最",
+    "selected": false
+   },
+   {
+    "source": "qbitai",
+    "layer": "business",
+    "title": "BEV 杀入具身智能：跨维把机器人数据带上 Scaling 快车道",
+    "url": "https://www.qbitai.com/2026/06/434761.html",
+    "summary": "BEV 杀入具身智能：跨维把机器人数据带上 Scaling 快车道 量子位的朋友们 2026-06-12 12:11:02 来源： 量子位 具身智能现在面临的问题，和自动驾驶几年前的困境非常相似。 过去几年，自动驾驶行业已经证明了一件事：谁先把真实物理世界组织进统一的数字空间，谁就先拿到规模化的入场券。 但当年，这件事并不是一开始就想明白的。 早期的纯视觉多相机方案，每个相机自己感知自己的，前摄看前面、侧摄看侧面，各出各的检测结果，再拼到一起交给规划系统。问题是，拼出来的东西",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT Yuyang Hu: Thanks so much @_akhaliq for sharing our work! 🙏 Arbor is our attempt to make autonomous research more practical, reusable, and gener...",
+    "url": "https://x.com/_akhaliq/status/2065271772769927584",
+    "summary": "RT Yuyang Hu Thanks so much @_akhaliq for sharing our work! 🙏 Arbor is our attempt to make autonomous research more practical, reusable, and general, not a research demos but real systems. 🌐 Project: https://ruc-nlpir.github.io/Arbor/ Welco",
+    "selected": false
+   },
+   {
+    "source": "leiphone",
+    "layer": "business",
+    "title": "让AI回归工具：萤石开放平台2.0如何用「双平台」破解IoT落地难题？",
+    "url": "https://www.leiphone.com/category/smarthome/Ib0fWcObeTWu3DGM.html",
+    "summary": "导语：与其空谈取代人类，不如先把工具做实。 过去半年， OpenClaw  掀起的 “ 龙虾热 ” 让 AI 社区陷入一种集体亢奋： AI 替你写代码、回邮件、甚至接管设备，仿佛 “ 取代人 ” 的倒计时已经开始 。英伟达黄仁勋的那句“迄今发布过的最重要软件之一”的评论，更是为这场狂欢添了一把火。 但当泡沫稍稍退去， IoT 行业的沙滩上留下的却是尴尬的裂痕。 某公司实验室的邮件误删、某公司的源代码泄露，以及工信部于今年 3 月发布的关于防范OpenClaw（“龙虾”）开源智",
+    "selected": false
+   },
+   {
+    "source": "qbitai",
+    "layer": "business",
+    "title": "SpaceX一上市，连食堂阿姨都要成百万富翁了。。。",
+    "url": "https://www.qbitai.com/2026/06/434733.html",
+    "summary": "SpaceX一上市，连食堂阿姨都要成百万富翁了。。。 鱼羊 2026-06-12 08:26:58 来源： 量子位 光散户就给马斯克冲了700亿刀 鱼羊 发自 凹非寺 量子位 | 公众号 QbitAI 刚刚，SpaceX官宣：IPO已准备就绪。 募资 750亿美元 ，估值 1.77万亿美元 ，直接爆杀2019年沙特阿美294亿美元的上市纪录，刷新史上最大IPO。 更为疯狂的是，此次IPO 光散户订单就已超过700亿美元 。。。就是说，光靠散户就已经要完成90%以上的募资目标了",
+    "selected": false
+   },
+   {
+    "source": "leiphone",
+    "layer": "business",
+    "title": "微软中国Azure研发团队遭「一锅端」：超200人受影响，最高补偿N+7；无招卸任钉钉CEO，92年技术极客陈宇森接任；李书福卸任极氪董事长",
+    "url": "https://www.leiphone.com/category/zaobao/K9MpJZRxh6jNKi8k.html",
+    "summary": "导语：早报来啦~ 要闻提示 1.微软中国Azure研发遭“一锅端”：超200人受影响，最高补偿N+7 2.钉钉官宣换帅：无招卸任CEO，92年技术极客陈宇森接任 3.智界称法拉利前首席设计师加盟，法拉利高管质疑：设计师姓甚名谁？ 4.李书福卸任极氪董事长 5.曾经落地近90万的神车！路虎揽胜极光L跌至17.98万 6.曝字节豆包手机硬件负责人林夕离职 7.OpenAI拟大幅降价，与Anthropic展开用户争夺 8.SpaceX上市造富：4000名员工晋升百万富翁 今日头条 ",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "A jacket that harvests drinking water from the air",
+    "url": "https://news.utexas.edu/2026/06/11/this-jacket-pulls-drinking-water-from-thin-air/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT Xiangru (Edward) Jian: Thank @_akhaliq for sharing our work! It is a firm step forward in tabular representation learning!",
+    "url": "https://x.com/_akhaliq/status/2065195898993344604",
+    "summary": "RT Xiangru (Edward) Jian Thank @_akhaliq for sharing our work! It is a firm step forward in tabular representation learning! AK: TRL-Bench Standardizing Cross-Paradigm Representation-Level Evaluation of Tabular Encoders",
+    "selected": false
+   },
+   {
+    "source": "x-swyx",
+    "layer": "agent",
+    "title": "congrats to our friends @ona_hq on joining @openai! see their talk here for alpha on what’s next for Codex 👀",
+    "url": "https://x.com/swyx/status/2065176231453282777",
+    "summary": "congrats to our friends @ona_hq on joining @openai! see their talk here for alpha on what’s next for Codex 👀 AI Engineer: Three layers you need to run agent swarms at scale: - Runtime: solved. - Orchestration and triggers: solved. - Coordin",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "Malware developers added nuclear and biological weapons text to to their spyware",
+    "url": "https://twitter.com/jsrailton/status/2064661778978533571",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "google-ai-blog",
+    "layer": "model",
+    "title": "Our new community investments in Virginia support local jobs and expand energy affordability.",
+    "url": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/global-network/virginia-community-investments/",
+    "summary": "We’re helping build the state’s next-generation workforce and investing in energy programs.",
+    "selected": false
+   },
+   {
+    "source": "x-sama",
+    "layer": "business",
+    "title": "really looking forward to working together!",
+    "url": "https://x.com/sama/status/2065160791205310565",
+    "summary": "really looking forward to working together! Johannes Landgraf: http://x.com/i/article/2064952499363000320",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT clem 🤗: Setup ready for the World Cup at the Miami @huggingface office. @xenovacom cheering today (reachy minis haven’t picked their teams yet)",
+    "url": "https://x.com/_akhaliq/status/2065166665654944178",
+    "summary": "RT clem 🤗 Setup ready for the World Cup at the Miami @huggingface office. @xenovacom cheering today (reachy minis haven’t picked their teams yet)",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT Julien Chaumond: Explore your @huggingface repos in a whole new way 🔥 Visualize storage, discover outliers, and navigate your repos directly fro...",
+    "url": "https://x.com/_akhaliq/status/2065149195787350365",
+    "summary": "RT Julien Chaumond Explore your @huggingface repos in a whole new way 🔥 Visualize storage, discover outliers, and navigate your repos directly from the terminal. `hf repos ls --explore`",
+    "selected": false
+   },
+   {
+    "source": "hn-frontpage",
+    "layer": "product",
+    "title": "There Is Life Before Main in Rust",
+    "url": "https://grack.com/blog/2026/06/11/life-before-main/",
+    "summary": "",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT Hugging Face: Build Small with Modal https://x.com/i/broadcasts/1yKAPPvOXALxb",
+    "url": "https://x.com/_akhaliq/status/2065128489187975447",
+    "summary": "RT Hugging Face Build Small with Modal https://x.com/i/broadcasts/1yKAPPvOXALxb",
+    "selected": false
+   },
+   {
+    "source": "the-decoder",
+    "layer": "model",
+    "title": "Landmark German ruling declares Google's AI Overviews are Google's own words and makes it liable for false answers",
+    "url": "https://the-decoder.com/landmark-german-ruling-declares-googles-ai-overviews-are-googles-own-words-and-makes-it-liable-for-false-answers/",
+    "summary": "A German regional court has ruled that Google is directly liable for the content of its AI search overviews. According to the court, previous limited liability protections for search engine operators don't apply to AI overviews. In this cas",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT Gradio: We’re going live with the @modal team in about 40 minutes. See you all there! Feel free to drop any Modal-related questions in the live ch...",
+    "url": "https://x.com/_akhaliq/status/2065125976606949446",
+    "summary": "RT Gradio We’re going live with the @modal team in about 40 minutes. See you all there! Feel free to drop any Modal-related questions in the live chat: https://www.youtube.com/live/8Oz64pGwRk4 Gradio: Join us on June 11th for a session with",
+    "selected": false
+   },
+   {
+    "source": "x-_akhaliq",
+    "layer": "model",
+    "title": "RT clem 🤗: HF has become the best storage platform for PRIVATE and PUBLIC models and datasets, both intermediary and final ones! Great example from...",
+    "url": "https://x.com/_akhaliq/status/2065126211475419362",
+    "summary": "RT clem 🤗 HF has become the best storage platform for PRIVATE and PUBLIC models and datasets, both intermediary and final ones! Great example from @heyjasperai who used HF buckets to store their Monet dataset and train models directly on it",
+    "selected": false
+   },
+   {
+    "source": "the-decoder",
+    "layer": "model",
+    "title": "Jeff Bezos' AI startup Prometheus closes $12 billion round at a $41 billion valuation",
+    "url": "https://the-decoder.com/jeff-bezos-ai-startup-prometheus-closes-12-billion-round-at-a-41-billion-valuation/",
+    "summary": "Jeff Bezos' AI startup Prometheus has closed a $12 billion funding round at a $41 billion valuation. The company launched just last November with $6.2 billion in seed funding. No products yet, because Bezos says sharing details would be \"pr",
+    "selected": false
+   },
+   {
+    "source": "the-decoder",
+    "layer": "model",
+    "title": "Free Deezer tool lets users on any streaming service check their playlists for AI music",
+    "url": "https://the-decoder.com/free-deezer-tool-lets-users-on-any-streaming-service-check-their-playlists-for-ai-music/",
+    "summary": "Deezer now offers a free AI music detector that lets users on any major streaming platform check whether AI-generated songs are hiding in their playlists. The article Free Deezer tool lets users on any streaming service check their playlist",
+    "selected": false
+   },
+   {
+    "source": "anthropic-news",
+    "layer": "model",
+    "title": "Results from the first Anthropic Public Record",
+    "url": "https://www.anthropic.com/news/anthropic-public-record",
+    "summary": "We’re conducting a new survey series, Anthropic Public Record, to understand how the public thinks and feels about AI, and presenting a snapshot of the results from the first wave, fielded in November and December of 2025 with nearly 52,000",
+    "selected": false
+   },
+   {
+    "source": "anthropic-news",
+    "layer": "model",
+    "title": "TCS and Anthropic partner to bring Claude to regulated industries",
+    "url": "https://www.anthropic.com/news/tcs-anthropic-partnership",
+    "summary": "We’re announcing a partnership with Tata Consultancy Services (TCS), one of the world’s largest technology services companies. TCS will provide Claude to 50,000 of its own employees across 56 countries; build Claude-powered products for cli",
+    "selected": false
+   },
+   {
+    "source": "anthropic-engineering",
+    "layer": "devtool",
+    "title": "How we contain Claude across products",
+    "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+    "summary": "Twelve months ago, we'd have rejected out of hand the idea of granting Claude access sufficient to take down an internal Anthropic service. Today that level of access is routine, and Anthropic developers are more productive for it. The risk",
+    "selected": false
+   }
+  ]
+ },
+ "perspectives": {
+  "technical": {
+   "lede": "看 MiniMax M3：稀疏注意力 MSA 从论文直接落成可部署开源权重（1M 上下文、decode 自报 15×）；想抠 serving 细节再配读同日 NVIDIA 的 M3 部署指南（KV 访问快 4×、NeMo 128k context parallelism）。"
+  },
+  "product": {
+   "lede": "OpenAI 一边收购 Ona（原 Gitpod）把 Codex 推向长时自治编码，一边用 flexible rate-limit reset 打响降价——运行时已解，下一战是 agent 间协调。"
+  },
+  "business": {
+   "lede": "资本侧两条：Mistral 传以约 €20B 估值募 €3B（较上轮近翻倍），以及 Anthropic/OpenAI/SpaceX 的“MANGOS”IPO 热夏叙事，AI 一级市场重新升温。"
+  },
+  "research": {
+   "lede": "今日最值得读的两篇都在 agent：TRACE 把用户纠正编译成运行时硬约束（违反率 100%→OOD 2.0%），KV-cache 隐空间直传攻异构 agent 对齐；安全侧 GDM 的 model diffing agents 也值得一翻。"
+  },
+  "embodied": {
+   "lede": "今日无具身专题；最接近的是华为 openPangu 2.0 疑在昇腾上完成可信大模型预训练（ModAttn=DSA+SWA），关乎国产算力栈能否自立，但仍属社区推文转述、待官方核实。"
+  }
+ },
+ "radar": [],
+ "gaps": [
+  "周六 arXiv 不更新，论文偏少属正常",
+  "reddit r/LocalLLaMA 限流(429)本期缺；X/HN/中文媒体兜底",
+  "多个 html 一手源本期未人工读"
+ ],
+ "selected": [
+  {
+   "url": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/",
+   "layer": "serving",
+   "title": "NVIDIA 公布业界首个多厂商开放 agentic AI 推理基准 AA-AgentPerf",
+   "take": "Artificial Analysis 与 NVIDIA 推出 AA-AgentPerf——首个度量「一套推理系统能在满足 SLO 前提下并发支撑多少个 AI agent」的多厂商开放基准。它不再用静态 prompt，而是模拟带工具调用、长度跨 5K–131K token 的真实 agent 轨迹,填补了 agentic 推理负载此前无标准量化口径的空白。",
+   "facts": "测试模型 DeepSeek-V4-Pro,三档 SLO 输出速度 30/100/300 tok/s;GB300 NVL72 达 61.4K agents/MW、57.5 agents/GPU,对比 H200 的 2.6K/MW、1.4/GPU,每兆瓦约 20x;请求序列均长约 27K token,含 1s 中位 CPU 工具延迟。(20x 含代际硬件红利,非纯软件)",
+   "source": "nvidia-dev-blog",
+   "links": {
+    "primary": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/"
+   },
+   "score": 3.9,
+   "rank": 1,
+   "readable": "如果你在做 agent serving，最头疼的问题之一一直没有公认答案：一套推理系统在保证延迟的前提下，到底能同时撑住多少个 AI agent？Artificial Analysis 联合 NVIDIA 推出的 AA-AgentPerf，号称是首个回答这个问题的多厂商开放基准——它不再喂静态 prompt，而是回放真实的 agent 轨迹（带工具调用、上下文长度横跨 5K 到 131K token），填补了 agentic 推理负载此前没有标准量化口径的空白。\n\n测试用 DeepSeek-V4-Pro 做被测模型，设了三档 SLO 输出速度——30、100、300 tok/s，对应从“能用”到“跟手”的不同体验要求。核心数字很扎眼：GB300 NVL72 单位兆瓦能跑 61.4K 个 agent、每张 GPU 撑 57.5 个，而 H200 对应只有 2.6K/MW、1.4/GPU，每兆瓦差出约 20 倍。请求序列平均长约 27K token，并刻意注入了 1 秒的中位 CPU 工具延迟——这一点很重要，因为真实 agent 大量时间卡在等工具返回，不建模这段就是在刷数字。\n\n需要泼一句冷水：这 20x 是 GB300 对 H200 的跨代对比，里面含了硬件代际红利，不是纯软件优化挤出来的；而且基准由 NVIDIA 深度参与、首发用自家平台领跑，立场不中立。但即便打个折，把“并发 agent 数 / 兆瓦”确立为一个可量化、可横向比的口径，本身对 serving 选型就是实打实的进步——以后谈 agent 推理成本，终于有了一把公开的尺子。",
+   "sharp": "“agent 推理到底多贵”这个问题，行业吵了一年没有公开答案，现在 NVIDIA 和 Artificial Analysis 端出了第一把尺子 AA-AgentPerf。这事方向对：它用真实 agent 轨迹（5K–131K token、带 1 秒中位工具延迟）替代静态 prompt，量的是“一兆瓦能并发多少 agent”，比单次 LLM 调用的 TPS 实在得多。\n\n但那个被反复引用的 20x 要会看：GB300 NVL72 的 61.4K agents/MW 对 H200 的 2.6K/MW，是跨代硬件对比，红利大半来自换代而非软件魔法——拿它当“软件优化成果”宣传就是偷换概念。更别忘了裁判和选手是一家：基准 NVIDIA 深度参与、首发自家平台夺冠。\n\n结论分两半：把动真格的“并发 agent 数/兆瓦”立成公开口径，是真贡献，值得各家拿自己的硬件来跑；但首发这组数字本身是厂商营销物料，第三方在非 NVIDIA 平台上复跑之前，20x 只能当上限看，别当采购依据。",
+   "image": {
+    "url": "https://developer-blogs.nvidia.com/wp-content/uploads/2026/06/ai-agent-1.webp",
+    "credit": "developer.nvidia.com",
+    "source": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/"
+   }
+  },
+  {
+   "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+   "layer": "model",
+   "title": "MiniMax M3 开源权重上线 HF：428B/23B 激活原生多模态 MoE，1M 上下文，MSA 把解码加速 15×",
+   "take": "昨天还只有 MSA 注意力论文，今天权重真的落地了：~428B 总参 / ~23B 激活的原生多模态 MoE（文/图/视频混合模态从第一步训练），1M 上下文。靠 MiniMax Sparse Attention（MSA），相对 M2 在 1M 上下文上 prefill 9×、decode 15× 提速，单 token 算力降到 1/20。thinking/non-thinking 双模式，vLLM/SGLang/Transformers 可部署。这是当前能本地跑的最强开源多模态 agent 权重之一，且把训练验证过的稀疏注意力直接交付到 serving。",
+   "facts": "~428B 总参数 / ~23B 激活，1M 上下文；MSA 相对 M2 在 1M 上下文 prefill 9×、decode 15× 提速，单 token 算力降至 1/20（HF 模型卡，技术报告 arXiv:2606.13392）。",
+   "source": "x-_akhaliq / mcp",
+   "links": {
+    "primary": "https://huggingface.co/MiniMaxAI/MiniMax-M3"
+   },
+   "score": 3.85,
+   "rank": 2,
+   "readable": "昨天大家还在读 MiniMax 那篇 MSA 稀疏注意力的论文，今天权重就真落地到 Hugging Face 了。对想在自己机器上跑多模态 agent 的团队，这条值得停下来：MiniMax M3 是一个原生多模态的 MoE 模型——文本、图像、视频从训练第一步就混在一起，而不是事后拼接的视觉模块，总参数约 428B，每次推理只激活约 23B，上下文长达 1M token。\n\n真正的看点是它把论文里的稀疏注意力直接交付到了 serving。靠 MiniMax Sparse Attention（MSA，每个查询只挑最相关的若干块 KV 来算，而不是全量算），相对上一代 M2，在 1M 上下文下 prefill 提速 9×、decode 提速 15×，单 token 的计算量压到原来的 1/20。模型给了 thinking / non-thinking 双模式，vLLM、SGLang、Transformers 第一天就能部署。技术报告挂在 arXiv:2606.13392。\n\n放进格局里看，长上下文 agent 最烧的就是显存带宽和解码速度，谁能把这两项压下来，谁的本地 agent 才跑得起。M3 把“训练阶段验证过的稀疏注意力”直接做成可部署权重，是目前能本地跑的最强开源多模态 agent 权重之一。当然，9×/15× 是官方模型卡自报的提速数字，真实收益还得看各家在自己负载上的实测，但作为开源权重，它至少把门槛实实在在地降到了能复现的程度。",
+   "sharp": "这才叫动真格：昨天放论文、今天放权重，MiniMax 没让 MSA 停在 PPT 上。M3 是约 428B 总参 / 23B 激活的原生多模态 MoE，1M 上下文，关键是它把稀疏注意力从“训练时验证过”一路推到“今天就能 vLLM/SGLang 部署”——这条交付链路比很多只发 API 的闭源家诚实得多。\n\n性能口径要拎清：相对 M2 在 1M 上下文 prefill 9×、decode 15×、单 token 算力降到 1/20，听着炸裂，但这是官方模型卡自报、且基线是自家上一代 M2，不是跟别家横评。换句话说，提速是真的，但“跟谁比、在什么负载上”得你自己复跑才算数。\n\n即便如此，结论偏正面：开源权重 + 第一天就能部署 + 把硬件友好的稀疏注意力直接落到 serving，对想摆脱闭源 API、在本地跑长上下文 agent 的团队，这是近期最实在的一个选项。坑只在于别把自报的 15× 当成对所有人都成立的承诺。",
+   "image": {
+    "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/models/MiniMaxAI/MiniMax-M3.png",
+    "credit": "huggingface.co",
+    "source": "https://huggingface.co/MiniMaxAI/MiniMax-M3"
+   }
+  },
+  {
+   "url": "https://www.qbitai.com/2026/06/434774.html",
+   "layer": "eval",
+   "title": "UC Berkeley 放出 Agents' Last Exam（ALE）：在 NX/Unreal/AE 里真干活，GPT-5.5 反超 Fable 5",
+   "take": "ALE 让 Agent 在 Siemens NX 建 3D 模型、Unreal 搭场景、After Effects 做合成等真实软件里完成任务，最难一档 Fable 5、GPT-5.5 全 0 分。总通过率榜上 GPT-5.5+Codex 24.0% 包揽冠军、GPT-5.5+ALE Claw 23.0% 第二，Fable 5+Claude Code 仅 22.0% 第三，Opus 4.8 垫底 15.8%——与 SWE-Bench Pro（Fable 80.3% vs GPT 58.6%）、HLE（64.5% vs 52.2%）上的碾压完全相反。团队是 MMLU/MATH/CyberGym 的提出者。这类「真实工具链干活」评测是对 agent 宣传最直接的冷水。",
+   "facts": "ALE 总通过率：GPT-5.5+Codex 24.0%、GPT-5.5+ALE Claw 23.0%、Fable 5+Claude Code 22.0%、Opus 4.7 18.4%、Opus 4.8 15.8%；最难档全模型 0 分。对照 SWE-Bench Pro 80.3% vs 58.6%、HLE 64.5% vs 52.2%（量子位转述 UC Berkeley 团队）。",
+   "source": "qbitai",
+   "links": {
+    "primary": "https://www.qbitai.com/2026/06/434774.html"
+   },
+   "score": 3.85,
+   "rank": 3,
+   "readable": "各家旗舰模型在 SWE-Bench、HLE 上动辄八九十分，但那真的等于“会干活”吗？UC Berkeley 放出的 Agents' Last Exam（ALE）给了一盆冷水：它不在沙箱里跑代码题，而是让 agent 进 Siemens NX 建 3D 模型、在 Unreal 里搭场景、用 After Effects 做合成——真实专业软件里的真实任务。结果是最难一档，Fable 5 和 GPT-5.5 全部 0 分。\n\n更耐人寻味的是排名翻转。ALE 总通过率榜上，GPT-5.5+Codex 以 24.0% 夺冠，GPT-5.5+ALE Claw 23.0% 第二，Fable 5+Claude Code 只有 22.0% 排第三，Opus 4.7 拿 18.4%，Opus 4.8 垫底 15.8%。这和大家熟悉的格局几乎反过来——在 SWE-Bench Pro 上 Fable 系是 80.3% 对 GPT 的 58.6%，HLE 上 64.5% 对 52.2%，都是碾压；一换到真实工具链，碾压就消失甚至反转了。\n\n提出团队不是无名之辈，正是 MMLU、MATH、CyberGym 的作者，做基准是老本行。需要留意的是这组数字目前来自量子位对 UC Berkeley 团队的转述，原始榜单细节值得回查；但方向性结论很清楚：现有刷榜分数和“在专业软件里真正完成一个项目”之间，存在一道还没被跨过的鸿沟。对所有把 agent 能力当卖点的人，这是最直接的冷水。",
+   "sharp": "想知道旗舰 agent 的成色，别看刷榜看 ALE。UC Berkeley 这套评测把 agent 扔进 Siemens NX、Unreal、After Effects 里干真活，最难一档 Fable 5 和 GPT-5.5 一起吃 0 分——这才是 agent 真实水位的样子，不是 SWE-Bench 上那串好看的数字。\n\n最打脸的是排名反转：ALE 总通过率 GPT-5.5+Codex 24.0% 居首，Fable 5+Claude Code 只有 22.0%，Opus 4.8 直接垫底 15.8%。而同样这些模型在 SWE-Bench Pro 是 80.3% 对 58.6%、HLE 是 64.5% 对 52.2%，Fable 系一路碾压。一进真实工具链碾压就蒸发，只能说明那些榜可能已经被刷出了水分。\n\n团队是 MMLU/MATH/CyberGym 的原班人马，做基准的可信度在线，唯一保留是当前数据经量子位转述、原始细节待核。但谁都别急着拿“某榜第一”当 agent 能力背书了——能在专业软件里把活干完，目前没有一家及格。",
+   "image": {
+    "url": "https://www.qbitai.com/wp-content/uploads/imgs/qbitai-logo-1.png",
+    "credit": "qbitai.com",
+    "source": "https://www.qbitai.com/2026/06/434774.html"
+   }
+  },
+  {
+   "url": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/",
+   "layer": "infra",
+   "title": "NVIDIA Blackwell Leads on First Agentic AI Infrastructure Benchmark (AgentPerf)",
+   "take": "Artificial Analysis 推出 AgentPerf，自称业界首个面向 agentic 工作负载的推理基准——区别于传统单次 LLM 调用基准，它建模多步 agent 轨迹、工具调用延迟与增长的上下文，取自真实编码 agent trajectory。首发结果里 Blackwell 平台领跑。属于新类别定义 + 一手厂商数据，对 serving/infra 选型有直接指导意义。",
+   "facts": "GB300 NVL72 在 DeepSeek V4 Pro 工作负载上、于 20 与 60 tokens/s 两档 SLO 下，单位兆瓦运行的 agent 数最高达 NVIDIA HGX H200 系统的 20 倍；除该 20x 能效比外原文未公开绝对吞吐/延迟数字。",
+   "source": "nvidia-blog",
+   "links": {
+    "primary": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/"
+   },
+   "score": 3.65,
+   "rank": 4,
+   "readable": "如果你负责 infra 选型，传统那种“单次 LLM 调用能跑多少 token/s”的基准其实越来越不够用了——agent 工作负载是多步轨迹、夹着工具调用延迟、上下文一路膨胀，跟单次调用完全两码事。Artificial Analysis 推出的 AgentPerf 就是冲这个缺口来的，自称业界首个面向 agentic 工作负载的推理基准，轨迹取自真实编码 agent。\n\n首发结果里 Blackwell 平台领跑。给出的关键数字是：在 DeepSeek V4 Pro 工作负载、20 与 60 tokens/s 两档 SLO 下，GB300 NVL72 单位兆瓦能运行的 agent 数最高达 HGX H200 系统的 20 倍。除了这个 20x 能效比，原文没有公开绝对吞吐或延迟数字，所以这更像是一张“能效比海报”而非完整跑分表。\n\n这条和同日那篇 AA-AgentPerf 开发者博客是一回事的两个出口，互为印证。价值在于“为 agent 负载定义新基准类别 + 给出一手厂商数据”，对 serving/infra 选型有直接的方向性指导。但同样要记住：基准由 NVIDIA 参与、首发自家平台夺冠，20x 含跨代硬件红利，在第三方非 NVIDIA 平台复跑之前，把它当上限参考、别当结论。",
+   "sharp": "AgentPerf 想解决的真问题是对的：单次 LLM 调用的基准量不出 agent 负载，因为后者是多步轨迹加工具延迟加膨胀上下文。Artificial Analysis 把这个类别立起来，对 infra 选型是好事。\n\n但这篇博客的信息密度低得可疑——通篇就一个数字：GB300 NVL72 在 20/60 tokens/s 两档 SLO 下，单位兆瓦 agent 数最高是 H200 的 20 倍，绝对吞吐和延迟一概不给。只放对自己最好看的能效比、藏起绝对数字，这是标准的厂商海报打法；何况 20x 大半是 GB300 对 H200 的换代红利，不是架构魔法。\n\n它和同日的 AA-AgentPerf 开发者博客本就是一鱼两吃。定义新基准值得肯定，但首发这组数字是 NVIDIA 自家营销，别第三方还没复跑就把 20x 写进采购理由。",
+   "image": {
+    "url": "https://blogs.nvidia.com/wp-content/uploads/2026/06/dgx-social-gb300-2048x2048-1-1.jpg",
+    "credit": "blogs.nvidia.com",
+    "source": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/"
+   }
+  },
+  {
+   "url": "https://huggingface.co/papers/2606.13174",
+   "layer": "agent",
+   "title": "把用户纠正编译成运行时强制约束:TRACE 让编码 agent 真正记住偏好",
+   "take": "研究者发现编码 agent 即便存了偏好记忆,下一会话仍会违反——Mem0 下 57.5% 的偏好检查照样被违反。TRACE 改变了表示方式:把用户聊天里的纠正挖出来、重写成原子规则,再编译成任务完成前必须通过的运行时检查,使记住的偏好变成执行约束,而非可被悄悄跳过的建议。",
+   "facts": [
+    "ClawArena 留出集偏好违反率从 100% 降到 OOD 任务的 2.0%、ID 任务的 37.6%",
+    "对照组 Mem0 记忆仍留下 57.5% 的偏好检查未通过"
+   ],
+   "source": "hf-daily-papers",
+   "links": {
+    "primary": "https://huggingface.co/papers/2606.13174",
+    "discussion": "https://arxiv.org/abs/2606.13174"
+   },
+   "score": 3.4,
+   "rank": 5,
+   "readable": "用过编码 agent 的人都遇到过这种憋屈：你纠正它一次（“别用 print 调试”“缩进用 4 空格”），它当场改了，下一会话又犯。研究者把这个问题量化了出来——即便接了偏好记忆，在 Mem0 方案下仍有 57.5% 的偏好检查照样被违反。问题不在“没记住”，而在“记住了也只是建议，能被悄悄跳过”。\n\nTRACE 这篇论文改的是偏好的表示方式。它把用户聊天里的纠正挖出来，重写成一条条原子规则，再编译成任务完成前必须通过的运行时检查——于是“记住的偏好”从可选建议变成了硬性执行约束，agent 不满足就完不成任务。这个思路的关键转变，是从“让模型记得更牢”转向“在执行环节强制兑现”。\n\n效果相当显著：在 ClawArena 的留出集上，偏好违反率从 100% 降到了分布外（OOD）任务的 2.0%、分布内（ID）任务的 37.6%；作为对照，Mem0 记忆仍留下 57.5% 的检查未通过。ID 任务还有 37.6% 没压住，说明运行时约束也不是万能解。但把偏好从“软记忆”升级为“硬门禁”这个方向，对正经做长期协作的编码 agent 很有启发——记得住，更要管得住。",
+   "sharp": "“给 agent 加记忆”这两年被吹得很猛，TRACE 这篇直接戳破：光记住没用。数据摆在那——Mem0 这类记忆方案下，57.5% 的偏好检查照样被违反。模型把你的纠正“记”进上下文，然后该犯还犯，因为记忆只是建议，没人逼它兑现。\n\nTRACE 的解法很对症：把用户纠正提炼成原子规则，编译成任务完成前必须过的运行时检查，让偏好从软记忆变成硬门禁。留出集上违反率从 100% 砸到 OOD 任务的 2.0%，这是把“可被跳过的建议”改成“跳不过的约束”才拿得到的数。\n\n别急着喊解决了：ID 任务仍有 37.6% 没压住，分布内反而比分布外难，说明强制约束遇到熟悉场景里的细微冲突还是会破。但方向比那些只堆记忆体量的工作清醒得多——agent 协作的瓶颈从来不是记不住，是管不住。",
+   "image": {
+    "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2606.13174/gradient.png",
+    "credit": "huggingface.co",
+    "source": "https://huggingface.co/papers/2606.13174"
+   }
+  },
+  {
+   "url": "https://huggingface.co/papers/2606.13594",
+   "layer": "agent",
+   "title": "异构 agent 之间直接传 KV-cache:跨模型的读心术对齐",
+   "take": "多 agent 系统多靠文本通信,要付出有损且昂贵的解码-再编码代价。这项工作攻克异构模型间的隐空间对齐难题:用轻量跨模型 cache 变换加两阶段训练(先重建后生成),让一个 agent 把看到什么和怎么想都传给另一个不同的模型。其信息结构分析揭示一个对偶——上下文感知传输靠稀疏推理信号,上下文无关传输靠稠密语境保留。",
+   "facts": [
+    "在 Qwen3-4B/8B/14B 全部 6 个传输方向、6 个域内外基准上超过此前异构基线"
+   ],
+   "source": "hf-daily-papers",
+   "links": {
+    "primary": "https://huggingface.co/papers/2606.13594",
+    "discussion": "https://arxiv.org/abs/2606.13594"
+   },
+   "score": 3.35,
+   "rank": 6,
+   "readable": "多 agent 系统里，不同模型之间几乎都靠“说话”沟通——一个 agent 把想法解码成文本，另一个再编码读进去。这一来一回既有信息损耗，又费算力。一个更诱人的替代是直接传 KV-cache（模型内部的注意力缓存，相当于“它脑子里正在想的东西”），但难点在于：两个不同的模型，内部表示空间根本对不上。\n\n这项工作攻的正是异构模型间的隐空间对齐。做法是用一个轻量的跨模型 cache 变换，配上两阶段训练——先学重建（保证信息不丢），再学生成（保证能接着往下用），让一个 agent 把“看到了什么”和“怎么想的”一并传给另一个不同架构的模型。它的信息结构分析还揭示了一个有意思的对偶：上下文感知的传输靠稀疏的推理信号，上下文无关的传输靠稠密的语境保留——两类信息走的是不同的路子。\n\n实验上，在 Qwen3-4B/8B/14B 之间全部 6 个传输方向、6 个域内外基准上，都超过了此前的异构基线。需要客观看：实验目前只覆盖 Qwen3 同系列的不同尺寸，跨厂商、跨架构（比如 Qwen 传给 Llama）能否成立还未验证，离“任意模型间读心术”尚远。但对多 agent 协作这条线，把通信从有损的文本换成隐空间直传，是一个值得盯的方向。",
+   "sharp": "多 agent 靠文本互通是公认的浪费：解码成字、再编码读回，又丢信息又烧算力。直接传 KV-cache（模型脑内的注意力缓存）一直是更聪明的设想，卡点就是异构模型表示空间对不上。这篇真去啃了这块硬骨头，而不是又发一个 prompt 工程的花活。\n\n方法不花哨但扎实：轻量跨模型 cache 变换 + 两阶段训练（先重建再生成），让一个模型把“看到什么、怎么想”直接喂给另一个模型；附带的对偶分析（上下文感知靠稀疏推理信号、上下文无关靠稠密语境保留）也算有洞见。\n\n泼冷水的地方很明确：全部实验只在 Qwen3-4B/8B/14B 同系列内做，6 个方向虽全胜，但都是“自己人传自己人”。真正的考验是跨厂商跨架构——能把 Qwen 的 cache 喂进 Llama 才叫读心术，现在还只是同源模型间的内部对齐。方向对，但别把它当成已经能用的跨模型通信方案。",
+   "image": {
+    "url": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2606.13594/gradient.png",
+    "credit": "huggingface.co",
+    "source": "https://huggingface.co/papers/2606.13594"
+   }
+  }
+ ],
+ "all_candidates": [
+  {
+   "source": "hf-daily-papers",
+   "layer": "model",
+   "title": "On the Limits of LLM Adaptability: Impact of Model-Internalized Priors on Annotation Task Performance",
+   "url": "https://huggingface.co/papers/2606.00467",
+   "summary": "Large Language Models (LLMs) are increasingly used for zero-shot annotation and LLM-as-a-judge tasks, yet their reliability hinges on how model-internalized priors interact with user-provided instructions. We investigate three dimensions of",
+   "selected": false
+  },
+  {
+   "source": "hf-daily-papers",
+   "layer": "model",
+   "title": "See What I See, Know What I Think: Dense Latent Communication Across Heterogeneous Agents",
+   "url": "https://huggingface.co/papers/2606.13594",
+   "summary": "Multi-agent systems communicate mostly through text, paying a lossy and expensive decode and re-encode cost. KV-cache communication is a promising alternative, yet most prior work is homogeneous, using duplicate copies of the same model, an",
+   "selected": false
+  },
+  {
+   "source": "hf-daily-papers",
+   "layer": "model",
+   "title": "Getting Better at Working With You: Compiling User Corrections into Runtime Enforcement for Coding Agents",
+   "url": "https://huggingface.co/papers/2606.13174",
+   "summary": "Interactive LLM agents are becoming part of daily work, but they do not reliably become easier to work with over time: a correction remembered in one session may still be violated in the next. We study this gap between preference access and",
+   "selected": false
+  },
+  {
+   "source": "hf-daily-papers",
+   "layer": "model",
+   "title": "WebChallenger: A Reliable and Efficient Generalist Web Agent",
+   "url": "https://huggingface.co/papers/2606.10423",
+   "summary": "Autonomous web navigation remains challenging for LLM agents, and the strongest generalist systems rely on proprietary reasoning models whose inference cost is prohibitive for the repetitive tasks where such agents would be most useful. We ",
+   "selected": false
+  },
+  {
+   "source": "hf-daily-papers",
+   "layer": "model",
+   "title": "The Cold-Start Safety Gap in LLM Agents",
+   "url": "https://huggingface.co/papers/2606.07867",
+   "summary": "Are tool-calling LLM agents equally safe throughout a conversation? We discover they are not: agents are most vulnerable at the very start of a session and become substantially safer after a few regular agentic tasks -- a phenomenon we term",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "OpceanAI/Flora",
+   "url": "https://huggingface.co/datasets/OpceanAI/Flora",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "Rohithreddybc/mbe-kv-cache",
+   "url": "https://huggingface.co/datasets/Rohithreddybc/mbe-kv-cache",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "liufea154/Annoy-PyEdu-Rs-Raw",
+   "url": "https://huggingface.co/datasets/liufea154/Annoy-PyEdu-Rs-Raw",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "liufea154/Annoy-PyEdu-Rs",
+   "url": "https://huggingface.co/datasets/liufea154/Annoy-PyEdu-Rs",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "be4ri/A_Computational_Framework_for_Genomic_Risk_Assessment_Database",
+   "url": "https://huggingface.co/datasets/be4ri/A_Computational_Framework_for_Genomic_Risk_Assessment_Database",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "AppSprout/rle-benchmarks",
+   "url": "https://huggingface.co/datasets/AppSprout/rle-benchmarks",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "safafaf22/Annoy-PyEdu-Rs-Raw",
+   "url": "https://huggingface.co/datasets/safafaf22/Annoy-PyEdu-Rs-Raw",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "safafaf22/Annoy-PyEdu-Rs",
+   "url": "https://huggingface.co/datasets/safafaf22/Annoy-PyEdu-Rs",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "PraxySante/Directus-Corpus-TSV",
+   "url": "https://huggingface.co/datasets/PraxySante/Directus-Corpus-TSV",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "BantuLanguagesInitiative/CSRC",
+   "url": "https://huggingface.co/datasets/BantuLanguagesInitiative/CSRC",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-teortaxesTex",
+   "layer": "model",
+   "title": "> But in a few months OpenAI will leapfrog Anthropic with their 15-20T model There is no evidence nor rumor that OpenAI is capable or willing to train...",
+   "url": "https://x.com/teortaxesTex/status/2065546941170086047",
+   "summary": "> But in a few months OpenAI will leapfrog Anthropic with their 15-20T model There is no evidence nor rumor that OpenAI is capable or willing to train a 15-20T model any time soon Lisan believes the path to 100T is paved with Blackwell/Vera",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "AryanNsc/fairytruth",
+   "url": "https://huggingface.co/datasets/AryanNsc/fairytruth",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepeurope/europe-owid-the-share-and-number-of-people-living-in-extreme-poverty",
+   "url": "https://huggingface.co/datasets/electricsheepeurope/europe-owid-the-share-and-number-of-people-living-in-extreme-poverty",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "ndimensions/renav2_pnp_9",
+   "url": "https://huggingface.co/datasets/ndimensions/renav2_pnp_9",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepasia/asia-owid-terrorism-deaths-by-region",
+   "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-terrorism-deaths-by-region",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepeurope/europe-owid-the-role-of-agriculture-in-the-fluctuations-of-the-aggregate-economy-in-britain",
+   "url": "https://huggingface.co/datasets/electricsheepeurope/europe-owid-the-role-of-agriculture-in-the-fluctuations-of-the-aggregate-economy-in-britain",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepasia/asia-owid-terrorism-deaths",
+   "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-terrorism-deaths",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepeurope/europe-owid-the-rise-and-fall-of-the-share-of-employment-in-industry-18702018",
+   "url": "https://huggingface.co/datasets/electricsheepeurope/europe-owid-the-rise-and-fall-of-the-share-of-employment-in-industry-18702018",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "jtreminio/prompt-dataset",
+   "url": "https://huggingface.co/datasets/jtreminio/prompt-dataset",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepasia/asia-owid-terrorism-attacks-by-severity",
+   "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-terrorism-attacks-by-severity",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "Talson/orc-dictsize-overflow-poc",
+   "url": "https://huggingface.co/datasets/Talson/orc-dictsize-overflow-poc",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "Asher101/bias_source_papers",
+   "url": "https://huggingface.co/datasets/Asher101/bias_source_papers",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "naleung/so101-teleop-vials-to-rack-real-v5",
+   "url": "https://huggingface.co/datasets/naleung/so101-teleop-vials-to-rack-real-v5",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "build-small-hackathon/HuggingWizards-traces",
+   "url": "https://huggingface.co/datasets/build-small-hackathon/HuggingWizards-traces",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "CatGoesMeow/testing_lerobot_1",
+   "url": "https://huggingface.co/datasets/CatGoesMeow/testing_lerobot_1",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "BaraaLazkani/Middle_East_AOD_Dataset",
+   "url": "https://huggingface.co/datasets/BaraaLazkani/Middle_East_AOD_Dataset",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "nvidia-dev-blog",
+   "layer": "infra",
+   "title": "NVIDIA Achieves Leading Agentic Coding Performance on First Agentic AI Benchmark",
+   "url": "https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/",
+   "summary": "AI agents have fundamentally changed the complexity of inference workloads. Until now, the industry has struggled to define a standard for measuring how...",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepasia/asia-owid-terrestrial-protected-areas",
+   "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-terrestrial-protected-areas",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepeurope/europe-owid-the-ratio-scale-and-an-exponential-function",
+   "url": "https://huggingface.co/datasets/electricsheepeurope/europe-owid-the-ratio-scale-and-an-exponential-function",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepasia/asia-owid-terrain-ruggedness-index",
+   "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-terrain-ruggedness-index",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepeurope/europe-owid-the-price-for-lighting-per-million-lumen-hours-in-the-uk-in-british-pound",
+   "url": "https://huggingface.co/datasets/electricsheepeurope/europe-owid-the-price-for-lighting-per-million-lumen-hours-in-the-uk-in-british-pound",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hf-new-datasets",
+   "layer": "data",
+   "title": "electricsheepasia/asia-owid-temperature-anomaly-vs-latitude",
+   "url": "https://huggingface.co/datasets/electricsheepasia/asia-owid-temperature-anomaly-vs-latitude",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "nvidia-blog",
+   "layer": "infra",
+   "title": "NVIDIA Blackwell Leads on First Agentic AI Infrastructure Benchmark",
+   "url": "https://blogs.nvidia.com/blog/nvidia-blackwell-agentperf-artificial-analysis/",
+   "summary": "AgentPerf from Artificial Analysis, the industry’s first agentic AI benchmark, gives developers, enterprises and infrastructure providers a clear way to compare systems for agentic AI. In the first round of published results, the NVIDIA Bla",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Palantir loses legal challenge against Swiss investigative magazine",
+   "url": "https://www.ft.com/content/7ffcace7-9dc0-4e7e-9912-895ac073f979",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "techcrunch-ai",
+   "layer": "business",
+   "title": "Chinese cybercrime operation that used AI to scam ‘hundreds of thousands of victims’ sued by Google",
+   "url": "https://techcrunch.com/2026/06/12/chinese-cybercrime-operation-that-used-ai-to-scam-hundreds-of-thousands-of-victims-sued-by-google/",
+   "summary": "The tech giant said a group called \"Outsider Enterprise\" used AI to scam hundreds of thousands of victims, sending 2.5 million text messages over a span of two weeks.",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Mmorpg World of ClaudeCraft, vibe coded with Fable 5",
+   "url": "https://worldofclaudecraft.com/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "reddit-machinelearning",
+   "layer": "model",
+   "title": "is a preprint from an independent researcher worthy of arxiv endorsement if it got cited by a Peking University lab's paper 1 month after release? [D]",
+   "url": "https://www.reddit.com/r/MachineLearning/comments/1u46kne/is_a_preprint_from_an_independent_researcher/",
+   "summary": "my preprint is on SSRN and i feel somewhat shy to share it here... but the PKU lab's paper that cited mine got accepted by ICML 2026: https://arxiv.org/html/2602.06358v2   submitted by   /u/max6296 [link]   [comments]",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Swift at Apple: Migrating the TrueType Hinting Interpreter",
+   "url": "https://www.swift.org/blog/migrating-truetype-hinting-to-swift/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "mcp-registry",
+   "layer": "agent",
+   "title": "MCP registry: ai.masnavi/masnavi — Rumi's complete Masnavi (25,635 beyts) — search, quote, verify and explain. Free, no auth.",
+   "url": "https://github.com/shahhoseini/masnavi-mcp",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-swyx",
+   "layer": "agent",
+   "title": "RT Ankit Jain: A couple of months ago @swyx published my take that the traditional code review is dead. Many people had thoughts. If the topic is stil...",
+   "url": "https://x.com/swyx/status/2065523451377385685",
+   "summary": "RT Ankit Jain A couple of months ago @swyx published my take that the traditional code review is dead. Many people had thoughts. If the topic is still rattling around in your head, or you want to hear where I think this actually goes from h",
+   "selected": false
+  },
+  {
+   "source": "mcp-registry",
+   "layer": "agent",
+   "title": "MCP registry: ai.nauro/nauro — Decision system for AI coding agents. Surfaces what your project decided, and why, before changes.",
+   "url": "https://github.com/Nauro-AI/nauro",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "the-decoder",
+   "layer": "model",
+   "title": "Over half of Americans fear losing both their jobs and their independent thinking to AI, survey finds",
+   "url": "https://the-decoder.com/over-half-of-americans-fear-losing-both-their-jobs-and-their-independent-thinking-to-ai-survey-finds/",
+   "summary": "Anthropic surveyed nearly 52,000 Americans about their hopes and fears around AI. Sixty-four percent fear job losses, and 56 percent worry about losing the ability to think for themselves. Daily AI users are far less concerned. Still, most ",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Cosmodial Sky Atlas",
+   "url": "https://killedbyapixel.github.io/Cosmodial/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Most Beautiful Will Ever Made (1936)",
+   "url": "https://paperspast.natlib.govt.nz/newspapers/DOM19360307.2.43",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "simonwillison",
+   "layer": "devtool",
+   "title": "Quoting Andrew Singleton",
+   "url": "https://simonwillison.net/2026/Jun/12/andrew-singleton/#atom-everything",
+   "summary": "Jenny owns a crematorium. John’s propane company gives her a $20 billion investment in return for 5 percent of her operation. Jenny throws $10 billion into the incinerator, then pays John $10 billion to buy propane to burn that money to ash",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "I Am Not a Reverse Centaur",
+   "url": "https://blog.miguelgrinberg.com/post/i-am-not-a-reverse-centaur",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "\"Don't You Just Upload It to ChatGPT?\"",
+   "url": "https://correresmidestino.com/dont-you-just-upload-it-to-chatgpt/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-karpathy",
+   "layer": "model",
+   "title": "In awe of SpaceX and its story - past, present and the future. You can think about it in 10+ different ways and continue re-blowing your mind in circl...",
+   "url": "https://x.com/karpathy/status/2065490793092337691",
+   "summary": "In awe of SpaceX and its story - past, present and the future. You can think about it in 10+ different ways and continue re-blowing your mind in circles. Huge congrats to the team! 🚀",
+   "selected": false
+  },
+  {
+   "source": "x-swyx",
+   "layer": "agent",
+   "title": "RT Barr Yaron: Last call for the 2026 AI Engineering Survey 👀 https://ntn.so/ai-survey Excited to be partnering with @NotionHQ and @vercel on this ...",
+   "url": "https://x.com/swyx/status/2065545243789795369",
+   "summary": "RT Barr Yaron Last call for the 2026 AI Engineering Survey 👀 https://ntn.so/ai-survey Excited to be partnering with @NotionHQ and @vercel on this year's report. Looking forward to sharing the results on the main stage at @aiDotEngineer!",
+   "selected": false
+  },
+  {
+   "source": "techcrunch-ai",
+   "layer": "business",
+   "title": "Mistral is rumored to be raising €3B at €20B valuation",
+   "url": "https://techcrunch.com/2026/06/12/mistral-is-rumored-to-be-raising-e3b-at-e20-valuation/",
+   "summary": "The funding round would value the company at around €20 billion (about $23.15 billion), nearly double its Series C valuation of €11.7 billion.",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "How to setup a local coding agent on macOS",
+   "url": "https://ikyle.me/blog/2026/how-to-setup-a-local-coding-agent-on-macos",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "the-decoder",
+   "layer": "model",
+   "title": "OpenAI kicks off the AI price wars with flexible rate-limit resets for its Codex coding agent",
+   "url": "https://the-decoder.com/openai-kicks-off-the-ai-price-wars-with-flexible-rate-limit-resets-for-its-codex-coding-agent/",
+   "summary": "OpenAI now lets Codex users bank their rate-limit resets and trigger them manually instead of watching them expire on a fixed schedule. If you hit your usage cap mid-session, you can cash in a saved reset right away instead of waiting. User",
+   "selected": false
+  },
+  {
+   "source": "alignment-forum",
+   "layer": "safety",
+   "title": "Building and evaluating model diffing agents",
+   "url": "https://www.alignmentforum.org/posts/qi4mNbZYAFDYwfRba/building-and-evaluating-model-diffing-agents",
+   "summary": "This is the second in a series of informal research updates from the Google DeepMind Language Model Interpretability team, in interpretability and adjacent areas. The first post can be found here . TL;DR It is possible to build extremely si",
+   "selected": false
+  },
+  {
+   "source": "the-decoder",
+   "layer": "model",
+   "title": "Anthropic's Claude Fable 5 costs twice as much for 5.7 percent more performance",
+   "url": "https://the-decoder.com/anthropics-claude-fable-5-costs-twice-as-much-for-5-7-percent-more-performance/",
+   "summary": "Claude Fable 5 tops the Artificial Analysis Intelligence Index with 64.9 points and sets records in five of ten benchmarks. But the gain over Opus 4.8 is just 5.7 percent at double the token price. Safety filters with fallback routing push ",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Pirates, a naval warfare game inspired by Sid Meier's Pirates",
+   "url": "https://piwodlaiwo.github.io/pirates/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Law Enforcement's \"Warrior\" Problem (2015)",
+   "url": "https://harvardlawreview.org/forum/vol-128/law-enforcements-warrior-problem/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Launch HN: BitBoard (YC P25) – Analytics Workspace for Agents",
+   "url": "https://bitboard.work/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT Victor M: interesting MiniMax shipped a kernel on Hugging Face 👀 https://huggingface.co/kernels/MiniMaxAI/msa",
+   "url": "https://x.com/_akhaliq/status/2065483449314464105",
+   "summary": "RT Victor M interesting MiniMax shipped a kernel on Hugging Face 👀 https://huggingface.co/kernels/MiniMaxAI/msa",
+   "selected": false
+  },
+  {
+   "source": "qbitai",
+   "layer": "business",
+   "title": "神了，世界杯第一天真按千问剧本踢了",
+   "url": "https://www.qbitai.com/2026/06/435321.html",
+   "summary": "神了，世界杯第一天真按千问剧本踢了 梦瑶 2026-06-13 00:45:23 来源： 量子位 比分、红牌、绝杀全押中 梦瑶 发自 凹非寺 量子位 | 公众号 QbitAI 神了啊我说，世界杯第一天真按「千问剧本」踢了！？ 而且还是 比分、红牌、绝杀 ，全押中的内种？？ 2026世界杯揭幕战，墨西哥2:0南非，紧接着韩国2:1捷克， 千问 赛前预测直接命中两场比分。（此乃一惊） 然后，更有节目效果的来了，比进球还多的红牌，千问也猜到了—— 这AI提前测出南非可能因动作过大陷",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Looking Forward to Postgres 19: It's About Time",
+   "url": "https://www.pgedge.com/blog/looking-forward-to-postgres-19-its-about-time",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "A PDF that changes based on how its read",
+   "url": "https://sgaud.com/texts/pdf",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "alignment-forum",
+   "layer": "safety",
+   "title": "Sympathy for both sides of the egregious misalignment debate",
+   "url": "https://www.alignmentforum.org/posts/DZaZ3fqHnvfLCftPu/sympathy-for-both-sides-of-the-egregious-misalignment-debate",
+   "summary": "On one side of this debate is Yudkowsky & Soares, who think that (if AI progress continues) we’re on a direct path to egregiously-misaligned, scheming, out-of-control, rogue superintelligence (ASI), not even slightly nice , in the absence o",
+   "selected": false
+  },
+  {
+   "source": "techcrunch-ai",
+   "layer": "business",
+   "title": "SpaceX, Anthropic, and OpenAI’s hot IPO summer",
+   "url": "https://techcrunch.com/video/spacex-anthropic-and-openais-hot-ipo-summer/",
+   "summary": "The IPO market is back, and it’s not the same companies leading the charge. FAANG had a good run, but a new acronym is taking over: MANGOS — Meta (or Microsoft, depending on who you ask), Anthropic, Nvidia, Google, OpenAI, and SpaceX. Half ",
+   "selected": false
+  },
+  {
+   "source": "x-teortaxesTex",
+   "layer": "model",
+   "title": "On the other hand, we get this",
+   "url": "https://x.com/teortaxesTex/status/2065463859817693198",
+   "summary": "On the other hand, we get this Teortaxes▶️ (DeepSeek 推特🐋铁粉 2023 – ∞): …oh come the fuck on",
+   "selected": false
+  },
+  {
+   "source": "hf-blog",
+   "layer": "post-training",
+   "title": "olmo-eval: An evaluation workbench for the model development loop",
+   "url": "https://huggingface.co/blog/allenai/olmo-eval",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-teortaxesTex",
+   "layer": "model",
+   "title": "Fable thinks I'm funny But unlike most girls, it gets my jokes (Girls just think I'm cute and have good delivery) AGI achieved? AGI achieved",
+   "url": "https://x.com/teortaxesTex/status/2065462373977120939",
+   "summary": "Fable thinks I'm funny But unlike most girls, it gets my jokes (Girls just think I'm cute and have good delivery) AGI achieved? AGI achieved",
+   "selected": false
+  },
+  {
+   "source": "techcrunch-ai",
+   "layer": "business",
+   "title": "It’s hot IPO summer, and the MANGOS are ripe",
+   "url": "https://techcrunch.com/podcast/its-hot-ipo-summer-and-the-mangos-are-ripe/",
+   "summary": "The IPO market is back, and it’s not the same companies leading the charge. FAANG had a good run, but a new acronym is taking over: MANGOS — Meta (or Microsoft, depending on who you ask), Anthropic, Nvidia, Google, OpenAI, and SpaceX. Half ",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT Novita AI: 🤗 MiniMax M3 from @MiniMax_AI is now live on @huggingface — supported by Novita. Open weights. ~428B total parameters. ~23B activate...",
+   "url": "https://x.com/_akhaliq/status/2065478116730941931",
+   "summary": "RT Novita AI 🤗 MiniMax M3 from @MiniMax_AI is now live on @huggingface — supported by Novita. Open weights. ~428B total parameters. ~23B activated parameters. Built for the Agent Era.",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Where Did Earth Get Its Oceans? Maybe It Made Them Itself",
+   "url": "https://www.quantamagazine.org/where-did-earth-get-its-oceans-maybe-it-made-them-itself-20260612/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "You can power on a Mac remotely",
+   "url": "https://www.jeffgeerling.com/blog/2026/power-on-your-mac-remotely/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Show HN: StackScope – I crawled over 40k indie launches to see what they ship",
+   "url": "https://stackscope.dev/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "CRISPR tech selectively shreds cancer cells, including \"undruggable\" cancers",
+   "url": "https://innovativegenomics.org/news/crispr-technique-selectively-shreds-cancer-cells/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-teortaxesTex",
+   "layer": "model",
+   "title": "> even Fable Fable will certainly have a shorter life cycle than most of us. But \"Fable\" is a marketing label to begin wtih. Claude Fable does not hav...",
+   "url": "https://x.com/teortaxesTex/status/2065448988246004030",
+   "summary": "> even Fable Fable will certainly have a shorter life cycle than most of us. But \"Fable\" is a marketing label to begin wtih. Claude Fable does not have meaningful independent existence, and it's really close to arriving at a stable LLM-spec",
+   "selected": false
+  },
+  {
+   "source": "x-teortaxesTex",
+   "layer": "model",
+   "title": "Huawei has finally credibly (?) pretrained a big LLM on Ascends. \"hyper-node optimized training\" suggests 950s I guess. Builds on DSA (\"with SWA\"). Th...",
+   "url": "https://x.com/teortaxesTex/status/2065447458742673424",
+   "summary": "Huawei has finally credibly (?) pretrained a big LLM on Ascends. \"hyper-node optimized training\" suggests 950s I guess. Builds on DSA (\"with SWA\"). They want to prove it can be done on their hardware. What is ModAttn? (pics from Reddit, som",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Introduction to UEFI HTTP(s) Boot with QEMU/OVMF",
+   "url": "https://blog.yadutaf.fr/2026/06/12/introduction-to-uefi-https-boot-qemu-ovmf/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Slightly reducing the sloppiness of AI generated front end",
+   "url": "https://envs.net/~volpe/blog/posts/reduce-slop.html",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-teortaxesTex",
+   "layer": "model",
+   "title": "Going to Opus after Fable feels like taking advantage of a minor It is so dramatically more mush-headed, enthusiastic, sycophantic Fable doesn't even ...",
+   "url": "https://x.com/teortaxesTex/status/2065445280938393754",
+   "summary": "Going to Opus after Fable feels like taking advantage of a minor It is so dramatically more mush-headed, enthusiastic, sycophantic Fable doesn't even need to be intense to stand its ground. And it's less invested in the silly \"where I'd pus",
+   "selected": false
+  },
+  {
+   "source": "nvidia-dev-blog",
+   "layer": "infra",
+   "title": "Deploy Long-Context Reasoning and Agentic Workflows with MiniMax M3 on NVIDIA Accelerated Infrastructure",
+   "url": "https://developer.nvidia.com/blog/deploy-long-context-reasoning-and-agentic-workflows-with-minimax-m3-on-nvidia-accelerated-infrastructure/",
+   "summary": "As enterprise AI adoption scales, developers are increasingly forced to stitch together fragmented pipelines—separate models for text, vision, and...",
+   "selected": false
+  },
+  {
+   "source": "gh-transformers",
+   "layer": "model",
+   "title": "Release v5.12.0",
+   "url": "https://github.com/huggingface/transformers/releases/tag/v5.12.0",
+   "summary": "Release v5.12.0 New Model additions MiniMax-M3-VL MiniMax-M3-VL is the vision-language member of the MiniMax-M3 family that pairs a CLIP-style vision tower with 3D rotary position embeddings with the MiniMax-M3 text backbone. It uses a mixe",
+   "selected": false
+  },
+  {
+   "source": "x-teortaxesTex",
+   "layer": "model",
+   "title": "would be really strange of them to say this and then NOT begin faster iteration cycles. I still expect V4.1 in June",
+   "url": "https://x.com/teortaxesTex/status/2065443583079887219",
+   "summary": "would be really strange of them to say this and then NOT begin faster iteration cycles. I still expect V4.1 in June Xiuyu Li: Looks like deepsleep or deepusheenk will be staying quiet for the next few months.",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "A Call to Action: Stop the FCC's KYC Regime",
+   "url": "https://blog.lopp.net/call-to-action-stop-the-fcc-kyc-regime/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-teortaxesTex",
+   "layer": "model",
+   "title": "yep it's pretty small!",
+   "url": "https://x.com/teortaxesTex/status/2065440805834105286",
+   "summary": "yep it's pretty small! MiniMax (official): MiniMax M3, Open-Weight, Now On Hugging Face , with only ~428B parameters and ~23B activated parameters Weights: https://huggingface.co/MiniMaxAI/MiniMax-M3 MiniMax Sparse Attention: https://huggin",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "A dumpster arrived behind my university's library",
+   "url": "https://yalereview.org/article/sheila-liming-the-end-of-books",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "the-decoder",
+   "layer": "model",
+   "title": "Google files first joint lawsuit with FBI over Chinese AI scam network, OpenAI blocks PRC influence clusters",
+   "url": "https://the-decoder.com/google-files-first-joint-lawsuit-with-fbi-over-chinese-ai-scam-network-openai-blocks-prc-influence-clusters/",
+   "summary": "Within days of each other, Google and OpenAI separately exposed operations allegedly originating in China that use AI for fraud and covert influence campaigns. Both target US infrastructure and political debates. The article Google files fi",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "WASI 0.3",
+   "url": "https://bytecodealliance.org/articles/WASI-0.3",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "the-decoder",
+   "layer": "model",
+   "title": "Mistral AI seeks 3 billion euros to fund its European AI push",
+   "url": "https://the-decoder.com/mistral-ai-seeks-3-billion-euros-to-fund-its-european-ai-push/",
+   "summary": "French AI startup Mistral AI is negotiating a new funding round of around 3 billion euros at a valuation of approximately 20 billion euros. The article Mistral AI seeks 3 billion euros to fund its European AI push appeared first on The Deco",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Encrypted Spaces An architecture for collaborative applications",
+   "url": "https://encryptedspaces.org/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT Google Gemma: Real-time social robotics, from the cloud to your local device. Watch Ian from our DevX team use Gemini Live for a seamless voice cha...",
+   "url": "https://x.com/_akhaliq/status/2065486298547118586",
+   "summary": "RT Google Gemma Real-time social robotics, from the cloud to your local device. Watch Ian from our DevX team use Gemini Live for a seamless voice chat with Reachy Mini. Then, stick around until the end to see the robot running locally on Ge",
+   "selected": false
+  },
+  {
+   "source": "leiphone",
+   "layer": "business",
+   "title": "美的泰国灯塔工厂启示录：如何将中国供应链的“根系”植入全球土壤？",
+   "url": "https://www.leiphone.com/category/smarthome/gVhSX45M5wgkjPTa.html",
+   "summary": "导语：从“搬工厂”到“搬能力”，中国制造出海进入下半场 武汉宏海科技的创始人周宏，至今还记得2019年初到泰国时的情景。 “选址、买地、报批、招工，每一步都是难关，一张合规文件就能卡上一个月。”这位在中国摸爬滚打多年的制造业老手，第一次感受到什么叫“两眼一抹黑”。他以为出海就是把国内的图纸、设备、产线，照搬过去即可。但现实很快给了他答案：搬得动的是设备，搬不动的是土壤。 宏海科技的故事不是孤例。过去十年，数以千计的中国制造企业踏上出海之路，试图把产能搬到东南亚、南亚、甚至更远",
+   "selected": false
+  },
+  {
+   "source": "the-decoder",
+   "layer": "model",
+   "title": "The AI industry's platform trap is starting to look a lot like Microsoft's",
+   "url": "https://the-decoder.com/the-ai-industrys-platform-trap-is-starting-to-look-a-lot-like-microsofts/",
+   "summary": "Anthropic is throttling its new Mythos model for certain tasks while building apps that directly compete with its largest customers. Customers, partners, and investors are pushing back. The article The AI industry's platform trap is startin",
+   "selected": false
+  },
+  {
+   "source": "mcp-registry",
+   "layer": "agent",
+   "title": "MCP registry: ai.responsibleailabs/rail-score — Responsible-AI guardrails for agents: scoring with policy, injection & PII detection, DPDP.",
+   "url": "https://github.com/Responsible-AI-Labs/rail-score-mcp",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "the-decoder",
+   "layer": "model",
+   "title": "OpenAI buys Ona to push Codex toward long-running, autonomous coding tasks",
+   "url": "https://the-decoder.com/openai-buys-ona-to-push-codex-toward-long-running-autonomous-coding-tasks/",
+   "summary": "OpenAI is acquiring Ona, previously known as Gitpod, a startup founded in Kiel, Germany in 2020 that specializes in AI agents and secure cloud development environments for software development. The article OpenAI buys Ona to push Codex towa",
+   "selected": false
+  },
+  {
+   "source": "openai-news",
+   "layer": "model",
+   "title": "New OpenAI Academy courses for the next era of work",
+   "url": "https://openai.com/index/academy-courses-applying-ai-at-work",
+   "summary": "OpenAI introduces three Academy courses that help people build practical AI skills, create repeatable workflows, and apply agents in everyday work.",
+   "selected": false
+  },
+  {
+   "source": "reddit-machinelearning",
+   "layer": "model",
+   "title": "Building an Open Source Edge Semantic Cache for LLMs in Rust/WASM – Sanity check on the architecture? [D]",
+   "url": "https://www.reddit.com/r/MachineLearning/comments/1u3quwk/building_an_open_source_edge_semantic_cache_for/",
+   "summary": "Hey everyone, I am planning out a new open-source infrastructure project and want to get some brutal feedback on the architecture and use-case validity from people running high volume LLM workloads in production. The Problem: Python-based p",
+   "selected": false
+  },
+  {
+   "source": "leiphone",
+   "layer": "business",
+   "title": "万台量产之后，机器人企业比拼什么？",
+   "url": "https://www.leiphone.com/category/industrynews/q05jAEnENMMJiEH0.html",
+   "summary": "导语：给机器人量产立一根新标尺 2026 年，几乎整个行业都把同一个词喊到了最响：量产。 这一年被普遍视为人形机器人的“量产元年”。头部公司密集公布交付与产能数字——有的宣布整机下线突破千台，有的披露年出货已达数千台，产能目标直指万台、乃至十万台级。融资在加码，产线在铺开，行业的共识清晰可见：具身智能正在告别比拼参数的\"上半场\"，进入拼交付、拼落地的“下半场”。 但数字的背后，有一个行业普遍回避的追问：这些万台级的量产目标，真的准备好了吗？ 造一台能演示的机器人原型，和稳定地",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT Victor M: America is back 🫡",
+   "url": "https://x.com/_akhaliq/status/2065485427075637637",
+   "summary": "RT Victor M America is back 🫡",
+   "selected": false
+  },
+  {
+   "source": "reddit-machinelearning",
+   "layer": "model",
+   "title": "hubert.cpp, a C++ implementation of distilHuBERT [P]",
+   "url": "https://www.reddit.com/r/MachineLearning/comments/1u3omwk/hubertcpp_a_c_implementation_of_distilhubert_p/",
+   "summary": "I've written a C++ implementation of distilHuBERT. https://github.com/pfeatherstone/hubert.cpp It has no runtime dependencies, the weights are compiled into the library, it supports dynamic sizes, has performance on par with onnxruntime (in",
+   "selected": false
+  },
+  {
+   "source": "qbitai",
+   "layer": "business",
+   "title": "耐心资本护航创新，2026SuperLink开启创投价值共生新时代",
+   "url": "https://www.qbitai.com/2026/06/435192.html",
+   "summary": "耐心资本护航创新，2026SuperLink开启创投价值共生新时代 量子位的朋友们 2026-06-12 15:31:55 来源： 量子位 助力LP与GP高效合 2026年6月10日至11日，2026Superlink在苏州吴中太湖之畔圆满落幕。本次活动由清科控股（01945.HK）、投资界主办，吴中金控集团联合主办。数百位创投领域领军人士、行业精英齐聚现场，共赴这场创投盛会。 当前，股权投资领域正迎来深度变革：引导基金与并购基金持续扩容，社会资本加速流向硬科技及未来产业，前",
+   "selected": false
+  },
+  {
+   "source": "qbitai",
+   "layer": "business",
+   "title": "Anthropic老大的唯一 -1，就是AI股神的未婚妻",
+   "url": "https://www.qbitai.com/2026/06/433717.html",
+   "summary": "Anthropic老大的唯一 -1，就是AI股神的未婚妻 闻乐 2026-06-12 15:29:59 来源： 量子位 那位被OpenAI开除的股神 闻乐 发自 凹非寺 量子位 | 公众号 QbitAI 万亿估值AI公司的CEO，手下居然只有一名直属员工？？ 没错，最新估值9650亿美元的Anthropic，只有一个人向创始人Dario直接汇报，而且这位还不是技术背景出身。 在英伟达黄仁勋管60个人的衬托下，OpenAI奥特曼管6个人已经够少了，没想到还有高手。 这个唯一的-",
+   "selected": false
+  },
+  {
+   "source": "qbitai",
+   "layer": "business",
+   "title": "2026奇点智能产品大会首批嘉宾官宣：在 AI 的“可交付的时代”，看一线专家如何拆解真实落地闭环！",
+   "url": "https://www.qbitai.com/2026/06/435105.html",
+   "summary": "2026奇点智能产品大会首批嘉宾官宣：在 AI 的“可交付的时代”，看一线专家如何拆解真实落地闭环！ 量子位的朋友们 2026-06-12 15:27:14 来源： 量子位 7 月 17-18 日 过去一年，AI 的主战场已悄然发生位移： 它正从单一功能的交付，走向多 Agent 协作的生态网络重组； 从提升个人生产力，走向重构企业底层的运行范式。 今天的决策者，不仅在管理一个产品，更在重构一家 AI-Native 的企业。正是在这个跨越传统的节点上，我们把全球产品经理大会正",
+   "selected": false
+  },
+  {
+   "source": "leiphone",
+   "layer": "business",
+   "title": "中科院物理研究所黄学杰 ：全固态电池掀桌子前，必须做好固液混合电池丨大湾区车展观察",
+   "url": "https://www.leiphone.com/category/transportation/xRrGlFlEHbWMo9SL.html",
+   "summary": "导语：2026 年是固液混合电池量产元年。 2026 年是固液混合电池量产元年。 作者 | 马诗晴 编辑 | 李雨晨 【编者按】黄学杰是中国锂电池行业领军科学家之一。现任中科院物理研究所储能材料与器件方向召集人、《节能与新能源汽车》路线图动力电池路线图专家组长，曾发起及推动星恒电源等多家锂电企业落地。 近日，以「临界与突破」为主题的“半固态电池价值论坛”在深圳举行，会上，黄学杰发表了题为《固液混合路线市场机遇期正来临》的演讲，分享了固液混合技术在三元锂和磷酸铁锂电池上的应用，",
+   "selected": false
+  },
+  {
+   "source": "reddit-machinelearning",
+   "layer": "model",
+   "title": "MICCAI 2026 Results [D]",
+   "url": "https://www.reddit.com/r/MachineLearning/comments/1u3nims/miccai_2026_results_d/",
+   "summary": "Results are almost here. Good luck to everyone waiting for the final decision 🙂   submitted by   /u/Sea_Muscle_4281 [link]   [comments]",
+   "selected": false
+  },
+  {
+   "source": "leiphone",
+   "layer": "business",
+   "title": "中科大&智象未来：强模型打底、轻模型精修，重塑视频超分体验丨CVPR 2026",
+   "url": "https://www.leiphone.com/category/ai/qDR8TrUNjdEVUrWa.html",
+   "summary": "导语：PS-SR：兼顾速度、细节与稳定性，让低清画面更可信。 PS-SR：兼顾速度、细节与稳定性，让低清画面更可信。     作者丨郑佳美     编辑丨马晓宁                                                                                                                 在生成式 AI 进入视频生产链之后，视频增强正在从后期修补工具，变成内容生产、内容分发和机器视",
+   "selected": false
+  },
+  {
+   "source": "leiphone",
+   "layer": "business",
+   "title": "Nature 子刊收录！清华李勇团队用 AI 解码全球气候耦合，ENSO 预测提前期延长至 19 个月",
+   "url": "https://www.leiphone.com/category/ai/Sgux2ZbLaFbXaZxD.html",
+   "summary": "导语：UniCM：揭示极端 El Niño 和 La Niña 背后的跨洋盆信号。 UniCM：揭示极端 El Niño 和 La Niña 背后的跨洋盆信号。     作者丨郑佳美     编辑丨马晓宁                                                                                                                 在全球气候风险越来越难以用单一事件解释的今天，气候",
+   "selected": false
+  },
+  {
+   "source": "leiphone",
+   "layer": "business",
+   "title": "CVPR 2026 模型适应性研究盘点：从保留旧知识，到适应真实世界",
+   "url": "https://www.leiphone.com/category/ai/9x05Sw5uY0RhgEdO.html",
+   "summary": "导语：稳定性，正在成为大模型落地的关键命题。 稳定性，正在成为大模型落地的关键命题。     作者丨郑佳美     编辑丨马晓宁                                                                                                                 当 AI 模型从“单次完成任务”走向真实世界部署时，真正的挑战不再只是参数规模和单点性能，而是模型能否在变化中保持稳定。 它要",
+   "selected": false
+  },
+  {
+   "source": "qbitai",
+   "layer": "business",
+   "title": "“智能体最后的考试”，Fable 5竟然不敌GPT 5.5",
+   "url": "https://www.qbitai.com/2026/06/434774.html",
+   "summary": "“智能体最后的考试”，Fable 5竟然不敌GPT 5.5 一水 2026-06-12 12:13:23 来源： 量子位 最难档通通零蛋 没想到打脸来得如此之快！！ 刚刚，UC伯克利放出了一场号称 “智能体最后的考试” 的全新基准测试。 它把当今最强的AI Agent们拉到考场上，让它们干真正的活—— 在Siemens NX里建3D模型、在Unreal Engine里搭游戏场景、在Adobe After Effects里做特效合成。 结果成绩令人傻眼： 最难的一档，当今公认最",
+   "selected": false
+  },
+  {
+   "source": "qbitai",
+   "layer": "business",
+   "title": "BEV 杀入具身智能：跨维把机器人数据带上 Scaling 快车道",
+   "url": "https://www.qbitai.com/2026/06/434761.html",
+   "summary": "BEV 杀入具身智能：跨维把机器人数据带上 Scaling 快车道 量子位的朋友们 2026-06-12 12:11:02 来源： 量子位 具身智能现在面临的问题，和自动驾驶几年前的困境非常相似。 过去几年，自动驾驶行业已经证明了一件事：谁先把真实物理世界组织进统一的数字空间，谁就先拿到规模化的入场券。 但当年，这件事并不是一开始就想明白的。 早期的纯视觉多相机方案，每个相机自己感知自己的，前摄看前面、侧摄看侧面，各出各的检测结果，再拼到一起交给规划系统。问题是，拼出来的东西",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT Yuyang Hu: Thanks so much @_akhaliq for sharing our work! 🙏 Arbor is our attempt to make autonomous research more practical, reusable, and gener...",
+   "url": "https://x.com/_akhaliq/status/2065271772769927584",
+   "summary": "RT Yuyang Hu Thanks so much @_akhaliq for sharing our work! 🙏 Arbor is our attempt to make autonomous research more practical, reusable, and general, not a research demos but real systems. 🌐 Project: https://ruc-nlpir.github.io/Arbor/ Welco",
+   "selected": false
+  },
+  {
+   "source": "leiphone",
+   "layer": "business",
+   "title": "让AI回归工具：萤石开放平台2.0如何用「双平台」破解IoT落地难题？",
+   "url": "https://www.leiphone.com/category/smarthome/Ib0fWcObeTWu3DGM.html",
+   "summary": "导语：与其空谈取代人类，不如先把工具做实。 过去半年， OpenClaw  掀起的 “ 龙虾热 ” 让 AI 社区陷入一种集体亢奋： AI 替你写代码、回邮件、甚至接管设备，仿佛 “ 取代人 ” 的倒计时已经开始 。英伟达黄仁勋的那句“迄今发布过的最重要软件之一”的评论，更是为这场狂欢添了一把火。 但当泡沫稍稍退去， IoT 行业的沙滩上留下的却是尴尬的裂痕。 某公司实验室的邮件误删、某公司的源代码泄露，以及工信部于今年 3 月发布的关于防范OpenClaw（“龙虾”）开源智",
+   "selected": false
+  },
+  {
+   "source": "qbitai",
+   "layer": "business",
+   "title": "SpaceX一上市，连食堂阿姨都要成百万富翁了。。。",
+   "url": "https://www.qbitai.com/2026/06/434733.html",
+   "summary": "SpaceX一上市，连食堂阿姨都要成百万富翁了。。。 鱼羊 2026-06-12 08:26:58 来源： 量子位 光散户就给马斯克冲了700亿刀 鱼羊 发自 凹非寺 量子位 | 公众号 QbitAI 刚刚，SpaceX官宣：IPO已准备就绪。 募资 750亿美元 ，估值 1.77万亿美元 ，直接爆杀2019年沙特阿美294亿美元的上市纪录，刷新史上最大IPO。 更为疯狂的是，此次IPO 光散户订单就已超过700亿美元 。。。就是说，光靠散户就已经要完成90%以上的募资目标了",
+   "selected": false
+  },
+  {
+   "source": "leiphone",
+   "layer": "business",
+   "title": "微软中国Azure研发团队遭「一锅端」：超200人受影响，最高补偿N+7；无招卸任钉钉CEO，92年技术极客陈宇森接任；李书福卸任极氪董事长",
+   "url": "https://www.leiphone.com/category/zaobao/K9MpJZRxh6jNKi8k.html",
+   "summary": "导语：早报来啦~ 要闻提示 1.微软中国Azure研发遭“一锅端”：超200人受影响，最高补偿N+7 2.钉钉官宣换帅：无招卸任CEO，92年技术极客陈宇森接任 3.智界称法拉利前首席设计师加盟，法拉利高管质疑：设计师姓甚名谁？ 4.李书福卸任极氪董事长 5.曾经落地近90万的神车！路虎揽胜极光L跌至17.98万 6.曝字节豆包手机硬件负责人林夕离职 7.OpenAI拟大幅降价，与Anthropic展开用户争夺 8.SpaceX上市造富：4000名员工晋升百万富翁 今日头条 ",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "A jacket that harvests drinking water from the air",
+   "url": "https://news.utexas.edu/2026/06/11/this-jacket-pulls-drinking-water-from-thin-air/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT Xiangru (Edward) Jian: Thank @_akhaliq for sharing our work! It is a firm step forward in tabular representation learning!",
+   "url": "https://x.com/_akhaliq/status/2065195898993344604",
+   "summary": "RT Xiangru (Edward) Jian Thank @_akhaliq for sharing our work! It is a firm step forward in tabular representation learning! AK: TRL-Bench Standardizing Cross-Paradigm Representation-Level Evaluation of Tabular Encoders",
+   "selected": false
+  },
+  {
+   "source": "x-swyx",
+   "layer": "agent",
+   "title": "congrats to our friends @ona_hq on joining @openai! see their talk here for alpha on what’s next for Codex 👀",
+   "url": "https://x.com/swyx/status/2065176231453282777",
+   "summary": "congrats to our friends @ona_hq on joining @openai! see their talk here for alpha on what’s next for Codex 👀 AI Engineer: Three layers you need to run agent swarms at scale: - Runtime: solved. - Orchestration and triggers: solved. - Coordin",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "Malware developers added nuclear and biological weapons text to to their spyware",
+   "url": "https://twitter.com/jsrailton/status/2064661778978533571",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "google-ai-blog",
+   "layer": "model",
+   "title": "Our new community investments in Virginia support local jobs and expand energy affordability.",
+   "url": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/global-network/virginia-community-investments/",
+   "summary": "We’re helping build the state’s next-generation workforce and investing in energy programs.",
+   "selected": false
+  },
+  {
+   "source": "x-sama",
+   "layer": "business",
+   "title": "really looking forward to working together!",
+   "url": "https://x.com/sama/status/2065160791205310565",
+   "summary": "really looking forward to working together! Johannes Landgraf: http://x.com/i/article/2064952499363000320",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT clem 🤗: Setup ready for the World Cup at the Miami @huggingface office. @xenovacom cheering today (reachy minis haven’t picked their teams yet)",
+   "url": "https://x.com/_akhaliq/status/2065166665654944178",
+   "summary": "RT clem 🤗 Setup ready for the World Cup at the Miami @huggingface office. @xenovacom cheering today (reachy minis haven’t picked their teams yet)",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT Julien Chaumond: Explore your @huggingface repos in a whole new way 🔥 Visualize storage, discover outliers, and navigate your repos directly fro...",
+   "url": "https://x.com/_akhaliq/status/2065149195787350365",
+   "summary": "RT Julien Chaumond Explore your @huggingface repos in a whole new way 🔥 Visualize storage, discover outliers, and navigate your repos directly from the terminal. `hf repos ls --explore`",
+   "selected": false
+  },
+  {
+   "source": "hn-frontpage",
+   "layer": "product",
+   "title": "There Is Life Before Main in Rust",
+   "url": "https://grack.com/blog/2026/06/11/life-before-main/",
+   "summary": "",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT Hugging Face: Build Small with Modal https://x.com/i/broadcasts/1yKAPPvOXALxb",
+   "url": "https://x.com/_akhaliq/status/2065128489187975447",
+   "summary": "RT Hugging Face Build Small with Modal https://x.com/i/broadcasts/1yKAPPvOXALxb",
+   "selected": false
+  },
+  {
+   "source": "the-decoder",
+   "layer": "model",
+   "title": "Landmark German ruling declares Google's AI Overviews are Google's own words and makes it liable for false answers",
+   "url": "https://the-decoder.com/landmark-german-ruling-declares-googles-ai-overviews-are-googles-own-words-and-makes-it-liable-for-false-answers/",
+   "summary": "A German regional court has ruled that Google is directly liable for the content of its AI search overviews. According to the court, previous limited liability protections for search engine operators don't apply to AI overviews. In this cas",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT Gradio: We’re going live with the @modal team in about 40 minutes. See you all there! Feel free to drop any Modal-related questions in the live ch...",
+   "url": "https://x.com/_akhaliq/status/2065125976606949446",
+   "summary": "RT Gradio We’re going live with the @modal team in about 40 minutes. See you all there! Feel free to drop any Modal-related questions in the live chat: https://www.youtube.com/live/8Oz64pGwRk4 Gradio: Join us on June 11th for a session with",
+   "selected": false
+  },
+  {
+   "source": "x-_akhaliq",
+   "layer": "model",
+   "title": "RT clem 🤗: HF has become the best storage platform for PRIVATE and PUBLIC models and datasets, both intermediary and final ones! Great example from...",
+   "url": "https://x.com/_akhaliq/status/2065126211475419362",
+   "summary": "RT clem 🤗 HF has become the best storage platform for PRIVATE and PUBLIC models and datasets, both intermediary and final ones! Great example from @heyjasperai who used HF buckets to store their Monet dataset and train models directly on it",
+   "selected": false
+  },
+  {
+   "source": "the-decoder",
+   "layer": "model",
+   "title": "Jeff Bezos' AI startup Prometheus closes $12 billion round at a $41 billion valuation",
+   "url": "https://the-decoder.com/jeff-bezos-ai-startup-prometheus-closes-12-billion-round-at-a-41-billion-valuation/",
+   "summary": "Jeff Bezos' AI startup Prometheus has closed a $12 billion funding round at a $41 billion valuation. The company launched just last November with $6.2 billion in seed funding. No products yet, because Bezos says sharing details would be \"pr",
+   "selected": false
+  },
+  {
+   "source": "the-decoder",
+   "layer": "model",
+   "title": "Free Deezer tool lets users on any streaming service check their playlists for AI music",
+   "url": "https://the-decoder.com/free-deezer-tool-lets-users-on-any-streaming-service-check-their-playlists-for-ai-music/",
+   "summary": "Deezer now offers a free AI music detector that lets users on any major streaming platform check whether AI-generated songs are hiding in their playlists. The article Free Deezer tool lets users on any streaming service check their playlist",
+   "selected": false
+  },
+  {
+   "source": "anthropic-news",
+   "layer": "model",
+   "title": "Results from the first Anthropic Public Record",
+   "url": "https://www.anthropic.com/news/anthropic-public-record",
+   "summary": "We’re conducting a new survey series, Anthropic Public Record, to understand how the public thinks and feels about AI, and presenting a snapshot of the results from the first wave, fielded in November and December of 2025 with nearly 52,000",
+   "selected": false
+  },
+  {
+   "source": "anthropic-news",
+   "layer": "model",
+   "title": "TCS and Anthropic partner to bring Claude to regulated industries",
+   "url": "https://www.anthropic.com/news/tcs-anthropic-partnership",
+   "summary": "We’re announcing a partnership with Tata Consultancy Services (TCS), one of the world’s largest technology services companies. TCS will provide Claude to 50,000 of its own employees across 56 countries; build Claude-powered products for cli",
+   "selected": false
+  },
+  {
+   "source": "anthropic-engineering",
+   "layer": "devtool",
+   "title": "How we contain Claude across products",
+   "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+   "summary": "Twelve months ago, we'd have rejected out of hand the idea of granting Claude access sufficient to take down an internal Anthropic service. Today that level of access is routine, and Anthropic developers are more productive for it. The risk",
+   "selected": false
+  }
+ ]
+}

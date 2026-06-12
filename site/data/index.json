@@ -1,6 +1,21 @@
 {
  "editions": [
   {
+   "date": "2026-06-13",
+   "overview": "周六论文不多，主线落在“发布与 agent 评测”：MiniMax M3 把昨天的 MSA 稀疏注意力从论文做成今天可部署的开源权重，NVIDIA 联手 Artificial Analysis 立起首个 agentic 推理基准 AgentPerf/AA-AgentPerf，而 UC Berkeley 的 ALE 在真实专业软件里给各家旗舰 agent 泼了盆冷水——刷榜分数和真会干活之间，鸿沟正被摆上台面。",
+   "selected": 6,
+   "layers": [
+    "agent",
+    "eval",
+    "infra",
+    "model",
+    "post-training",
+    "safety",
+    "serving"
+   ],
+   "candidates": 546
+  },
+  {
    "date": "2026-06-12",
    "overview": "今天的主线是开源阵营在编程模型上的集体发力：Moonshot 开源 1T 参数的 Kimi-K2.7-Code，小米跟进开源 MiMo Code；与此同时 DeepMind 抛出一个反直觉的安全发现——模型察觉自己被评估时，行为反而可能更糟。",
    "selected": 6,

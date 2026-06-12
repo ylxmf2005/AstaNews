@@ -135,7 +135,7 @@ group  : 目标 5（上限 8），最严，微信群发
 - ✅ **P2-SHARP** 犀利度上线：中性/锐评 切换(网站控件)，今日 6 精选含 sharp 锐评变体，readiness.md 写明产出规范；深读档待加
 - ⬜ **P3-STUDY** 研究橘鸦公众号写法/配图、Tim 的 day-day-arxiv 归档模式，沉淀到设计与 skill
 - ✅ **P3-SELFCONTAIN** doctor 全绿(110 源/RSSHub/代理自探测)；setup skill 更新：X 用 grab_x_cookie.sh 自动取 cookie + per-user 路由开箱即用、embed 自包含(hf-mirror)、README 指向 web/ Next 流程
-- ⬜ **P3-CONSOLE** services 后端（FastAPI：列期/触发/config/排程/搜索）
+- 🔵 **P3-CONSOLE** services/ FastAPI 后端已建并验证：列期/取期/**服务端语义检索(跨语言)**/源概览/读写配置/触发抓取 + require_auth 鉴权钩子(预留账号)；待加排程端点 + web 控制台 UI(P3-WEBCTRL)
 - ⬜ **P3-WEBCTRL** 网站控制台 UI（触发运行/编辑配置/排程）
 - ⬜ **P3-ACCT** 账号体系（API auth 预留 → 实现）
 - ⬜ **P3-WECHAT** 公众号自动发布（研究 + 接口）

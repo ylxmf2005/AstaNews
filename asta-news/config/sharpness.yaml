@@ -1,0 +1,16 @@
+# 犀利度档位：改写层按档产出（默认 neutral；网站可切）。
+sharpness:
+  default: neutral
+  levels:
+    neutral:
+      label: 中性
+      desc: 客观新闻体，先桥接再展开再落判断。当前默认风格。
+      voice: 克制、准确、不吹不踩；保留诚实的保留意见。
+    sharp:
+      label: 锐评
+      desc: 带判断与态度，点明谁在画饼、谁动真格、坑在哪。
+      voice: 直接、有观点、敢下结论；但论据必须扎实，不为犀利而失真。
+    deep:
+      label: 深读
+      desc: 多段背景 + 技术拆解 + 来龙去脉，给愿意花时间的人。
+      voice: 详尽、有脉络；解释清楚 why 与 how，可比当前更长。

@@ -1,0 +1,32 @@
+# 多视角：同一批日报候选，按受众重排序 + 各自导语。不重新抓取。
+# 重排分 = 基础加权分 + Σ(layer_boost[该条 layer])。网站可切视角。
+perspectives:
+  all:
+    label: 全栈
+    desc: 默认，全栈视野不偏科。
+    layer_boost: {}
+  technical:
+    label: 技术
+    desc: 研究者/工程师。重方法、架构、数字。
+    layer_boost: {model: 1.5, post-training: 1.5, infra: 1.2, serving: 1.2, eval: 1.0}
+    lede_hint: 偏方法与实现，关注新架构/训练范式/系统优化。
+  product:
+    label: 产品
+    desc: 产品/应用。重能力边界与可用性。
+    layer_boost: {product: 1.5, agent: 1.4, devtool: 1.3, maas: 1.2, model: 0.6}
+    lede_hint: 偏"能用来做什么"，关注 agent/工具/API 的可用性与边界。
+  business:
+    label: 商业
+    desc: 投资/商业（橘鸦视角）。重格局、融资、战略。
+    layer_boost: {business: 1.8, product: 1.0, maas: 0.8, model: 0.5}
+    lede_hint: 偏商业格局与钱的流向，关注融资/并购/战略/市场。
+  research:
+    label: 研究
+    desc: 学术。重新意与可复现。
+    layer_boost: {eval: 1.4, model: 1.2, post-training: 1.2, safety: 1.1, data: 1.1}
+    lede_hint: 偏论文与基准，关注新意、方法论、可复现。
+  embodied:
+    label: 具身
+    desc: 机器人/具身智能。
+    layer_boost: {embodied: 2.0, model: 0.6}
+    lede_hint: 偏机器人与具身，关注 VLA/操作/人形/world model。

@@ -120,12 +120,12 @@ group  : 目标 5（上限 8），最严，微信群发
 状态：⬜ 待办 / 🔵 进行中 / ✅ 完成
 
 - ✅ **P0-DOC** 写本 ROADMAP（PO 总纲）
-- ⬜ **P0-CRON** 设 5am 北京（21:00 UTC）定时任务，进入持续迭代循环（读本文件 backlog → 实现 → commit → 循环 + 跑当日 digest 生产）
+- ✅ **P0-CRON** 5am 北京定时任务已设（durable cron），进入持续迭代循环
 - ✅ **P1-EMBED** 本地 embedding（fastembed multilingual-MiniLM，hf-mirror，离线 CPU）+ 向量索引 + 跨语言检索，`scripts/embed.py` 自测通过
-- ⬜ **P1-CONFIG** 配置模块化：建 `asta-news/config/`，迁 sources/rules，新增 tiers/perspectives/sharpness/site/search yaml
-- ⬜ **P1-SCHEMA** 数据模型 v2：daily-digest 产出 tiers(full/daily/group)+perspectives；今日这期回填重生成
-- ⬜ **P1-TIERS** 多级筛选实现（评分一次→分层切；daily~20 可配）
-- ⬜ **P1-WEB** React MPA 脚手架（Next static export）读 v2 schema，部署 Pages，保留 gazette 美学
+- ✅ **P1-CONFIG** `asta-news/config/` 已建：tiers/perspectives/sharpness/site/search.yaml
+- 🔵 **P1-SCHEMA** v2 schema 定义+今日回填完成；待固化进 skill 产出流程
+- 🔵 **P1-TIERS** 今日 v2 已含 group6/daily18/full483 三级；待把 daily 切层固化进 daily-digest skill（明日自动跑也产 tiers）
+- ✅ **P1-WEB** React MPA（Next 15 静态导出，真多页：home/edition/archive/search/about）读 v2，gazette 美学，构建通过；部署中
 - ⬜ **P2-PERSP** 多视角实现（perspectives.yaml + 改写/重排 + 网站视角切换）
 - ⬜ **P2-SEARCH** 向量索引构建 + 混合检索 + 网站搜索页
 - ⬜ **P2-IMG** 配图：抓取脚本 + schema image 字段 + skill how-to + 卡片展示

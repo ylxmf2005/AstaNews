@@ -1,0 +1,27 @@
+# 多级筛选：同一批候选层层筛，数量可配。网站/本地可覆盖。
+# full ⊇ daily ⊇ group。评分一次，按分数+多样性分层切。
+tiers:
+  full:
+    label: 完整级
+    desc: 当天全部候选（仅去重，不限量）。给要全景的人。
+    limit: null            # 不限
+  daily:
+    label: 日报级
+    desc: 约 20 条，门槛低于群聊，覆盖更多 layer 与长尾。网站首页/日报。
+    target: 20
+    max: 28
+    min_layers: 6
+    max_per_layer: 4
+    max_per_source: 3
+    score_threshold: 2.2   # 低于群聊
+    readable_paras: [2, 3] # 日报条目改写 2-3 段（比群聊略短）
+  group:
+    label: 群聊级
+    desc: 默认 5（上限 8），最严，微信群发。
+    target: 5
+    max: 8
+    min_layers: 3
+    max_per_layer: 2
+    max_per_source: 2
+    score_threshold: 3.0
+    readable_paras: [3, 4] # 新闻体 3-4 段

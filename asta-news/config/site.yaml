@@ -1,0 +1,29 @@
+# 站点元信息与栏目。React MPA 构建时读取。
+site:
+  name: AstaNews
+  tagline: AI 全栈每日情报
+  lab: Asta Lab
+  base_path: /AstaNews        # GitHub Pages 项目站子路径
+  repo: ylxmf2005/AstaNews
+  pages_url: https://ylxmf2005.github.io/AstaNews/
+  default_tier: daily         # 首页默认展示日报级
+  default_perspective: all
+  nav:
+    - {key: daily,   label: 今日日报, path: /}
+    - {key: archive, label: 往期,     path: /archive}
+    - {key: search,  label: 搜索,     path: /search}
+    - {key: about,   label: 关于,     path: /about}
+layers:   # 展示用：中文名 + emoji + 主题色（配图兜底/badge）
+  model:         {name: 模型,   emoji: 🧠, color: "#b23a23"}
+  post-training: {name: 后训练, emoji: 🎛️, color: "#9a7b32"}
+  eval:          {name: 评测,   emoji: 📊, color: "#5b7a4a"}
+  data:          {name: 数据,   emoji: 🗂️, color: "#7a6a4a"}
+  infra:         {name: 基建,   emoji: 🏗️, color: "#4a6a7a"}
+  serving:       {name: 推理,   emoji: ⚡, color: "#7a4a6a"}
+  maas:          {name: MaaS,   emoji: ☁️, color: "#4a7a7a"}
+  agent:         {name: 智能体, emoji: 🤖, color: "#8a5a2a"}
+  embodied:      {name: 具身,   emoji: 🦾, color: "#5a5a8a"}
+  safety:        {name: 安全,   emoji: 🛡️, color: "#8a3a3a"}
+  product:       {name: 产品,   emoji: 📦, color: "#6a6a3a"}
+  business:      {name: 商业,   emoji: 💰, color: "#a07820"}
+  devtool:       {name: 工具,   emoji: 🔧, color: "#3a6a5a"}

@@ -1,13 +1,14 @@
 name: deploy-pages
 
-# 站点内容变化即部署。daily-digest 跑完 push 产物会触发这里；也可手动 dispatch。
+# 构建 React MPA（web/，Next 静态导出）并部署 Pages。
+# 数据来自仓库 site/data（digest 产物）；daily-digest push 产物会触发这里。
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 on:
   push:
     branches: [main]
-    paths: ["site/**"]
+    paths: ["site/data/**", "web/**", ".github/workflows/deploy-pages.yml"]
   workflow_dispatch:
 
 permissions:
@@ -27,8 +28,15 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
       - uses: actions/configure-pages@v5
+      - name: Build web (Next static export)
+        working-directory: web
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
       - uses: actions/upload-pages-artifact@v3
-        with: { path: ./site }
+        with: { path: ./web/out }
       - id: deploy
         uses: actions/deploy-pages@v4

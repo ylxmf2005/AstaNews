@@ -1,0 +1,17 @@
+# 检索配置：混合 BM25 + 向量。网站搜索页与本地服务共用。
+search:
+  embedding:
+    model: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+    dim: 384
+    hf_endpoint: https://hf-mirror.com   # 默认镜像，可被 HF_ENDPOINT 覆盖
+  hybrid:
+    method: rrf            # rrf（倒数排名融合）或 linear
+    rrf_k: 60
+    bm25_weight: 0.4       # linear 模式用
+    vector_weight: 0.6
+  index:
+    path: site/data/vectors.npz   # 构建产物（gitignore；服务/构建时重建）
+    rebuild_on_digest: true
+  results:
+    default_top: 12
+    snippet_chars: 160

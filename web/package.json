@@ -1,0 +1,16 @@
+{
+  "name": "asta-news-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prepare-data": "node scripts/prepare-data.mjs",
+    "dev": "npm run prepare-data && next dev",
+    "build": "npm run prepare-data && next build",
+    "start": "npx serve out"
+  },
+  "dependencies": {
+    "next": "15.1.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  }
+}

@@ -79,6 +79,15 @@ export default function Console() {
     try { const d = await (await fetch(`${API}/api/run/fetch`, { method: "POST" })).json(); setMsg(`已触发抓取 (pid ${d.pid})`); }
     catch (e) { setMsg(`触发失败：${e}`); }
   }
+  async function wechat() {
+    if (!API) return;
+    const date = health?.editions ? (new Date().toISOString().slice(0, 10)) : "";
+    setMsg("生成公众号 HTML…");
+    try {
+      const d = await (await fetch(`${API}/api/publish/wechat?date=${date}`, { method: "POST" })).json();
+      setMsg(d.ok ? `公众号 HTML 已生成 → ${d.html}${d.published ? "（草稿已发）" : "（配 WECHAT 凭证可直接发草稿）"}` : `失败：${d.detail || d.log || ""}`);
+    } catch (e) { setMsg(`失败：${e}`); }
+  }
 
   if (!API) {
     return (
@@ -129,10 +138,11 @@ cd web && NEXT_PUBLIC_API=http://127.0.0.1:8799 npm run dev
       <Card title="配置（可编辑保存）">
         {config ? <ConfigEditor config={config} /> : "…"}
       </Card>
-      <Card title="触发">
-        <button onClick={trigger} className="chip" style={{ borderColor: "var(--seal)" }}>触发抓取</button>
+      <Card title="触发 / 发布">
+        <button onClick={trigger} className="chip" style={{ borderColor: "var(--seal)", marginRight: 8 }}>触发抓取</button>
+        <button onClick={wechat} className="chip" style={{ borderColor: "var(--seal)" }}>生成公众号 HTML</button>
         <span style={{ marginLeft: 12, fontSize: 13, color: "var(--muted)" }}>{msg}</span>
-        <div style={{ fontSize: 12, color: "var(--faint)", marginTop: 8 }}>完整 digest（评分/改写）由 5am cron 与 GitHub Actions 跑。</div>
+        <div style={{ fontSize: 12, color: "var(--faint)", marginTop: 8 }}>完整 digest（评分/改写）由 5am cron 与 GitHub Actions 跑；公众号发草稿需 WECHAT 凭证。</div>
       </Card>
     </>
   );

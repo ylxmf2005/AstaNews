@@ -140,7 +140,7 @@ group  : 目标 5（上限 8），最严，微信群发
 - 🔵 **P3-WEBCTRL** 网站 /console 页上线：静态站显引导，连后端则看状态/源、服务端语义检索、触发抓取、**编辑并保存配置(tiers/perspectives/sharpness/…)**；待加排程 UI
 - ⬜ **P3-ACCT** 账号体系（API auth 预留 → 实现）
 - 🔵 **分发** Atom 订阅 feed + **社交分享卡(OG/Twitter meta:首页+每条 item,带图)**——分享到微信群/推特有预览卡
-- 🔵 **P3-WECHAT** md→公众号内联样式 HTML 转换器(publish_wechat.py,橘鸦风,≤1MB,实测渲染 OK)已成；微信 draft/publish API 接口已写好,gated 在 WECHAT_APPID/SECRET(等用户公众号凭证)；待加 services 端点+控制台按钮
+- 🔵 **P3-WECHAT** md→公众号内联样式 HTML 转换器(publish_wechat.py,橘鸦风,≤1MB,实测渲染 OK)已成；微信 draft/publish API 接口已写好,gated 在 WECHAT_APPID/SECRET(等用户公众号凭证)；services 端点 /api/publish/wechat + 控制台「生成公众号 HTML」按钮已加(实测生成成功,发布等凭证)
 - 🔵 **持续** 前端：头条层级 + **item 详情页/永久链接(标题点进站内,含全文/锐评/facts/相关)**；数据源 121（+TLDR AI/Ben's Bites/Ethan Mollick/Zvi/RunPod/Meta新闻RSS 等）（+The Decoder/MarkTechPost/Together/Google AI/philschmid/r-ML 等，不止 RSSHub）；前端人类视角打磨、文章质量、更多中文/商业/创意源待续
 
 ## 5. 循环工作准则（5am 起的自我迭代）

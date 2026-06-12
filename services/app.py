@@ -131,6 +131,22 @@ def run_fetch(_=Depends(require_auth)):
     return {"ok": True, "pid": p.pid, "note": "已后台启动抓取；完整 digest（评分/改写）由 claude headless 或 5am cron 跑"}
 
 
+@app.post("/api/publish/wechat")
+def publish_wechat(date: str = Query(...), publish: bool = False, _=Depends(require_auth)):
+    """把某期 editions/<date>.md 转成公众号内联样式 HTML；publish=true 且配了
+    WECHAT_APPID/SECRET 时还发草稿。返回 HTML 路径。"""
+    md = REPO / "editions" / f"{date}.md"
+    if not md.exists():
+        raise HTTPException(404, f"无 editions/{date}.md")
+    out = REPO / "editions" / f"{date}.wechat.html"
+    cmd = ["uv", "run", str(SCRIPTS / "publish_wechat.py"), "--md", str(md), "--out", str(out)]
+    if publish:
+        cmd.append("--publish")
+    r = subprocess.run(cmd, cwd=str(REPO), capture_output=True, text=True, timeout=60)
+    return {"ok": r.returncode == 0, "html": str(out) if out.exists() else None,
+            "published": publish and "草稿已创建" in r.stderr, "log": r.stderr[-400:]}
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=int(os.environ.get("ASTA_API_PORT", 8799)))

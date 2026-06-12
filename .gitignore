@@ -5,3 +5,4 @@ __pycache__/
 .asta-runtime/
 site/data/vectors.npz
 site/data/vectors.meta.json
+editions/*.wechat.html

@@ -1,0 +1,113 @@
+# 评测 / 榜单 / 数据集发布信号
+sources:
+  - id: swebench-leaderboard
+    name: SWE-bench Leaderboards
+    layers: [eval, agent, devtool]
+    type: json
+    parser: swebench
+    url: https://raw.githubusercontent.com/swe-bench/swe-bench.github.io/master/data/leaderboards.json
+    priority: P0
+    freq: weekly
+    verified: 2026-06-12
+    notes: "raw 在 master 分支（main 404、swebench.com 路径 404）；条目含成本与日期，只报窗口内新条目"
+
+  - id: evalplus
+    name: EvalPlus Results
+    layers: [eval, devtool]
+    type: json
+    parser: evalplus
+    url: https://evalplus.github.io/results.json
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+    notes: "HumanEval+/MBPP+ pass@1，按新增模型报"
+
+  - id: aider-polyglot
+    name: Aider Polyglot Leaderboard
+    layers: [eval, devtool]
+    type: json
+    parser: aider_yaml
+    url: https://raw.githubusercontent.com/Aider-AI/aider/main/aider/website/_data/polyglot_leaderboard.yml
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+    notes: "YAML 格式（parser 处理）；含 pass_rate 与成本"
+
+  - id: livebench
+    name: LiveBench
+    layers: [eval, model]
+    type: html
+    url: https://livebench.ai
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+    notes: "数据文件带日期戳（table_YYYY_MM_DD.json），需经 GitHub contents API（LiveBench/livebench.github.io 的 public/ 目录）发现最新文件名后抓取——策展 agent 按需做"
+
+  - id: epoch-benchmarks
+    name: Epoch AI Benchmarking Hub
+    layers: [eval]
+    type: html
+    url: https://epoch.ai/data/ai-benchmarking-dashboard
+    priority: P1
+    freq: weekly
+    verified: 2026-06-12
+    notes: "独立复测 FrontierMath/SWE-bench V 等，并聚合 ARC-AGI/OSWorld/Aider/terminal-bench（这些榜单本体是 JS 渲染抓不到，用 Epoch 的 benchmark_data.zip 替代）"
+
+  - id: lmarena
+    name: LMArena Leaderboard
+    layers: [eval, model, maas]
+    type: html
+    url: https://lmarena.ai/leaderboard
+    priority: P1
+    needs_proxy: true
+    freq: weekly
+    verified: 2026-06-12
+    notes: "无官方 API；结构化快照在 HF dataset lmarena-ai/leaderboard-dataset（needs_proxy）；Elo 大变动才值得报"
+
+  - id: hf-new-datasets
+    name: HF Hub New Datasets
+    layers: [data]
+    type: json
+    parser: hf_hub_list
+    url: "https://huggingface.co/api/datasets?sort=createdAt&direction=-1&limit=30"
+    priority: P1
+    needs_proxy: true
+    freq: daily
+    verified: 2026-06-12
+    notes: "数据集 firehose，策展时只挑有名团队/有规模/有新意的"
+
+  - id: kaggle-datasets
+    name: Kaggle New Datasets
+    layers: [data]
+    type: json
+    parser: kaggle_datasets
+    url: "https://www.kaggle.com/api/v1/datasets/list?sortBy=published&page=1"
+    priority: P2
+    freq: daily
+    verified: 2026-06-12
+    notes: "list 端点无需鉴权（下载才要 key）"
+
+  - id: rewardbench
+    name: RewardBench (AllenAI)
+    layers: [eval, post-training]
+    type: html
+    url: https://huggingface.co/spaces/allenai/reward-bench
+    priority: P2
+    needs_proxy: true
+    enabled: false
+    freq: monthly
+    verified: 2026-06-12
+    notes: "唯一 reward model 榜；HF Space 是 JS 渲染，生产网络复验后再启用"
+
+  - id: artificial-analysis
+    name: Artificial Analysis
+    layers: [eval, serving, maas, business]
+    type: json
+    parser: generic
+    url: https://artificialanalysis.ai/api/v2/data/llms/models
+    priority: P2
+    requires_env: [AA_API_KEY]
+    enabled: false
+    freq: daily
+    verified: 2026-06-12
+    notes: "一次调用拿全行业 智能指数+价格+tokens/s+延迟；需免费注册 API key（x-api-key 头），配好 AA_API_KEY 后 enable"

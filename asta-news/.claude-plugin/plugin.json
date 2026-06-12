@@ -1,0 +1,8 @@
+{
+  "name": "asta-news",
+  "displayName": "AstaNews — AI Full Stack Daily",
+  "description": "Daily AI full-stack digest agent: papers, model releases, evals, infra/serving, MaaS changelogs, agents, embodied AI, safety, product/business, devtools. Community-extensible source registry.",
+  "version": "0.1.0",
+  "author": { "name": "Asta Lab" },
+  "repository": "https://github.com/asta-lab/AstaNews"
+}

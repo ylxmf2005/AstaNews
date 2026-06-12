@@ -1,0 +1,26 @@
+# asta-news 编辑规则（全局默认）
+# 本地覆盖：${CLAUDE_PLUGIN_DATA}/rules.local.yaml，同键深合并
+layers: [model, post-training, eval, data, infra, serving, maas, agent, embodied, safety, product, business, devtool]
+
+edition:
+  max_items: 8            # 硬上限
+  default_items: 5        # 默认目标；候选质量不足时宁可少于 5
+  min_layers: 3           # 当日 digest 必须覆盖的最少 layer 数
+  max_per_layer: 2        # 单 layer 最多条数
+  max_per_source: 2       # 单一源最多条数（防单源垄断）
+  language: zh            # 中文为主，专有名词/术语保留英文
+  staleness_skip_hours: 2 # 启动时间晚于预期窗口 2 小时以上：声明过期跳过，不补发旧闻
+
+scoring:
+  # 加权总分 = Σ weight × 维度分(0-5)；维度锚点定义见 skills/daily-digest/references/curation.md
+  weights:
+    novelty: 0.35         # 信息增量：是不是新东西（不是发布日期新）
+    leading_edge: 0.30    # 领先性：推进 SOTA / 首次公开的做法 / 行业第一家
+    impact: 0.25          # 影响面：多少从业者的工作会因此改变
+    cross_stack: 0.10     # 跨层性：牵动多个 stack layer
+  window_hours: 36        # 候选新鲜度窗口（覆盖时差与周末积压）
+  prefer_primary_source: true   # 同一事件多源报道时，只取官方一手源，社区链接作补充
+
+dedup:
+  seen_window_days: 14    # 滑窗：14 天内见过的 URL/标题不再成为候选
+  title_similarity: 0.78  # 模糊标题判重阈值（difflib ratio）

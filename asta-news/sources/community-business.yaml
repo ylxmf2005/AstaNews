@@ -1,0 +1,121 @@
+# 社区热度 / X / 中英文媒体 / 商业产品 / GitHub trending
+sources:
+  - id: hn-frontpage
+    name: Hacker News Front Page
+    layers: [product, devtool, business]
+    type: json
+    parser: hn_algolia
+    url: "https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=30"
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "首页≈已被 HN 社区策展；AI 相关性在策展层判断；points/comments 进 extra"
+
+  - id: smol-ai-news
+    name: Smol AI News (AINews)
+    layers: [model, product, agent]
+    type: rss
+    url: https://news.smol.ai/rss.xml
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "每日'AI Twitter/Reddit/Discord 在聊什么'的机器+人工综述——X 信号的免费冗余兜底；工作日刊"
+
+  - id: techcrunch-ai
+    name: TechCrunch AI
+    layers: [business, product]
+    type: rss
+    url: https://techcrunch.com/category/artificial-intelligence/feed/
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "免费融资/产品新闻 firehose，全文 feed；日 5-15 条，策展层收窄"
+
+  - id: qbitai
+    name: 量子位 (RSSHub)
+    layers: [business, product, model]
+    type: rsshub
+    url: /qbitai/category/资讯
+    priority: P1
+    freq: daily
+    verified: 2026-06-12
+    notes: "中文 AI 媒体；机器之心已无可用源（路由移除+原生 feed 死），量子位为替代"
+
+  - id: oss-insight-trends
+    name: OSS Insight Trending Repos
+    layers: [devtool, agent, serving]
+    type: json
+    parser: oss_insight
+    url: "https://api.ossinsight.io/v1/trends/repos/?period=past_24_hours&language=All"
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "GitHub Trending 的结构化替代（官方无 API）；stars/forks 进 extra；'某开源项目值得关注的更新'主信号之一"
+
+  - id: github-trending-rss
+    name: GitHubTrendingRSS (备用)
+    layers: [devtool]
+    type: rss
+    url: https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml
+    priority: P2
+    enabled: false
+    freq: daily
+    verified: 2026-06-12
+    notes: "oss-insight 失效时的备用镜像（GitHub Pages 日构建）"
+
+  - id: rsshub-github-trending
+    name: GitHub Trending (RSSHub)
+    layers: [devtool]
+    type: rsshub
+    url: /github/trending/daily/any
+    priority: P2
+    requires_env: [GITHUB_ACCESS_TOKEN]
+    enabled: false
+    freq: daily
+    verified: 2026-06-12
+    notes: "需真实 PAT（GraphQL，无 scope 即可）；与 oss-insight 二选一"
+
+  - id: x-ai-list
+    name: X/Twitter AI List (RSSHub)
+    layers: [model, agent, product]
+    type: rsshub
+    url: /twitter/list/${ASTA_X_LIST_ID}
+    priority: P0
+    requires_env: [TWITTER_AUTH_TOKEN, ASTA_X_LIST_ID]
+    enabled: false
+    freq: daily
+    verified: 2026-06-12
+    notes: "setup 配好 cookie 与 List id 后 enable。建议 List 成员（继承自旧项目并扩充）：karpathy, sama, AndrewYNg, DrJimFan, _akhaliq, emollick, goodside, simonw, HamelHusain, mckaywrigley, geoffreylitt, swyx, nearcyan, teortaxesTex, scaling01, _jasonwei, adcock_brett, physical_int, Tesla_AI, AnthropicAI, OpenAI, GoogleDeepMind。备选方案：twitterapi.io（按量 ~$0.15/1k 推、需 key）；浏览器 agent 读同一 List（零额外配置但每次跑成本高）"
+
+  - id: last-week-in-ai
+    name: Last Week in AI
+    layers: [product, business]
+    type: rss
+    url: https://lastweekin.ai/feed
+    priority: P2
+    freq: weekly
+    verified: 2026-06-12
+    notes: "周刊兜底扫描，用于查漏"
+
+  - id: chinai
+    name: ChinAI (Jeffrey Ding)
+    layers: [model, business]
+    type: rss
+    url: https://chinai.substack.com/feed
+    priority: P2
+    enabled: false
+    freq: weekly
+    verified: 2026-06-12
+    notes: "唯一稳定的中国 AI 翻译/分析源；substack.com 域名对数据中心 IP 502，住宅网络可 enable"
+
+  - id: reddit-localllama
+    name: r/LocalLLaMA Top Daily
+    layers: [model, serving]
+    type: json
+    parser: reddit_top
+    url: "https://www.reddit.com/r/LocalLLaMA/top.json?t=day&limit=25"
+    priority: P1
+    enabled: false
+    freq: daily
+    verified: 2026-06-12
+    notes: "开源权重/本地推理第一社区，新模型常最先在这爆。但数据中心/部分住宅 IP 403：需免费 OAuth script app（100 QPM）或保持禁用，由 HN+Smol AI 兜底"

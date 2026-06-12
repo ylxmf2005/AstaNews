@@ -1,0 +1,129 @@
+# 具身智能 / 安全（论文流在 papers.yaml 的 cs.RO / cs.CR，这里是实验室与机构）
+# 具身实验室大多无 RSS：type=html，由策展 agent 按需读索引页，不做选择器爬取
+sources:
+  - id: pi-blog
+    name: Physical Intelligence Blog
+    layers: [embodied]
+    type: html
+    url: https://www.pi.website/blog
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+    notes: "VLA 定义性实验室；physicalintelligence.company 已 308 到 pi.website"
+
+  - id: figure-news
+    name: Figure AI News
+    layers: [embodied, business]
+    type: html
+    url: https://www.figure.ai/news
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: unitree-news
+    name: Unitree News
+    layers: [embodied]
+    type: html
+    url: https://www.unitree.com/news
+    priority: P1
+    freq: weekly
+    verified: 2026-06-12
+    notes: "中国人形机器人价格/性能标杆"
+
+  - id: 1x-discover
+    name: 1X Technologies
+    layers: [embodied]
+    type: html
+    url: https://www.1x.tech/discover
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: skild-blog
+    name: Skild AI Blog
+    layers: [embodied]
+    type: html
+    url: https://www.skild.ai/blogs
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: worldlabs-blog
+    name: World Labs Blog
+    layers: [embodied, model]
+    type: html
+    url: https://www.worldlabs.ai/blog
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+    notes: "Fei-Fei Li，空间智能/world model"
+
+  - id: alignment-forum
+    name: Alignment Forum
+    layers: [safety]
+    type: rss
+    url: https://www.alignmentforum.org/feed.xml
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "各实验室安全研究员交叉发文的中心场所，全文 feed"
+
+  - id: anthropic-alignment
+    name: Anthropic Alignment Blog
+    layers: [safety]
+    type: html
+    url: https://alignment.anthropic.com/
+    priority: P1
+    freq: weekly
+    verified: 2026-06-12
+    notes: "无 RSS（/feed.xml 返回 HTML），读索引页"
+
+  - id: transformer-circuits
+    name: Transformer Circuits
+    layers: [safety, model]
+    type: html
+    url: https://transformer-circuits.pub/
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+    notes: "可解释性前沿，月度 Circuits Updates"
+
+  - id: uk-aisi
+    name: UK AI Security Institute
+    layers: [safety, eval]
+    type: html
+    url: https://www.aisi.gov.uk/research
+    priority: P1
+    freq: weekly
+    verified: 2026-06-12
+    notes: "最高产的政府评测机构；页面 JS 渲染，必要时用 agent-browser"
+
+  - id: metr
+    name: METR Blog
+    layers: [safety, eval]
+    type: html
+    url: https://metr.org/blog
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+    notes: "time-horizon 曲线 = 全行业引用的能力/安全趋势数；站点无 RSS，substack 镜像数据中心被 502"
+
+  - id: import-ai
+    name: Import AI (Jack Clark)
+    layers: [safety, model, business]
+    type: rss
+    url: https://jack-clark.net/feed/
+    priority: P1
+    freq: weekly
+    verified: 2026-06-12
+    notes: "周一刊；用 jack-clark.net 不要用 substack 镜像（数据中心 502）"
+
+  - id: ai-incident-db
+    name: AI Incident Database
+    layers: [safety]
+    type: rss
+    url: https://incidentdatabase.ai/rss.xml
+    priority: P2
+    freq: daily
+    verified: 2026-06-12
+    notes: "结构化真实世界 AI 事故报告"

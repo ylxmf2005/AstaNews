@@ -1,0 +1,125 @@
+# 论文流：arXiv 各类目 + 社区策展信号
+# arXiv RSS 仅工作日更新（~04:00 UTC 重建），周末空 diff 属正常
+sources:
+  - id: arxiv-cs-cl
+    name: arXiv cs.CL
+    layers: [model, post-training]
+    type: rss
+    url: https://rss.arxiv.org/rss/cs.CL
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "description 含全文摘要，无需二次抓取；按 arxiv:announce_type=new 去重（replace/cross 忽略）"
+
+  - id: arxiv-cs-lg
+    name: arXiv cs.LG
+    layers: [post-training, model]
+    type: rss
+    url: https://rss.arxiv.org/rss/cs.LG
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "RLHF/DPO/GRPO/RLVR/reward model 关键词重点关注"
+
+  - id: arxiv-cs-ai
+    name: arXiv cs.AI
+    layers: [agent, model]
+    type: rss
+    url: https://rss.arxiv.org/rss/cs.AI
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+
+  - id: arxiv-cs-ro
+    name: arXiv cs.RO
+    layers: [embodied]
+    type: rss
+    url: https://rss.arxiv.org/rss/cs.RO
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "策展时按 VLA / manipulation / humanoid / world model 关键词收窄"
+
+  - id: arxiv-cs-cr
+    name: arXiv cs.CR
+    layers: [safety]
+    type: rss
+    url: https://rss.arxiv.org/rss/cs.CR
+    priority: P1
+    freq: daily
+    verified: 2026-06-12
+    notes: "只关注 LLM/agent 安全相关（prompt injection、jailbreak、supply chain）"
+
+  - id: arxiv-cs-dc
+    name: arXiv cs.DC
+    layers: [infra]
+    type: rss
+    url: https://rss.arxiv.org/rss/cs.DC
+    priority: P1
+    freq: daily
+    verified: 2026-06-12
+    notes: "只关注训练/推理系统相关"
+
+  - id: hf-daily-papers
+    name: Hugging Face Daily Papers
+    layers: [model, post-training, agent]
+    type: json
+    parser: hf_daily_papers
+    url: "https://huggingface.co/api/daily_papers?limit=50"
+    priority: P0
+    needs_proxy: true
+    freq: daily
+    verified: 2026-06-12
+    notes: "社区投票后的 shortlist，最佳信噪比；upvote 数进 extra；工作日更新。代理不可用时的备用：RSSHub /huggingface/daily-papers（实测可达）"
+
+  - id: hf-daily-papers-rsshub
+    name: HF Daily Papers (RSSHub 备用)
+    layers: [model, post-training, agent]
+    type: rsshub
+    url: /huggingface/daily-papers
+    priority: P2
+    enabled: false
+    freq: daily
+    verified: 2026-06-12
+    notes: "hf-daily-papers 直连/代理都失败时启用；RSSHub 容器出口可达 HF（实测）"
+
+  - id: hf-blog
+    name: Hugging Face Blog
+    layers: [post-training, model, data]
+    type: rss
+    url: https://huggingface.co/blog/feed.xml
+    priority: P1
+    needs_proxy: true
+    freq: daily
+    verified: 2026-06-12
+    notes: "TRL/开源 post-training recipe 首发地"
+
+  - id: interconnects
+    name: Interconnects (Nathan Lambert)
+    layers: [post-training, model, safety]
+    type: rss
+    url: https://www.interconnects.ai/feed
+    priority: P0
+    freq: weekly
+    verified: 2026-06-12
+    notes: "RLHF/post-training 最强分析源，常早于共识"
+
+  - id: ahead-of-ai
+    name: Ahead of AI (Sebastian Raschka)
+    layers: [model, post-training]
+    type: rss
+    url: https://magazine.sebastianraschka.com/feed
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: papers-cool
+    name: papers.cool cs.AI (RSSHub)
+    layers: [model, agent]
+    type: rsshub
+    url: /papers/category/arxiv/cs.AI
+    priority: P2
+    enabled: false
+    freq: daily
+    verified: 2026-06-12
+    notes: "arXiv 浏览的另一视角；注意路径必须带 arxiv/ 前缀"

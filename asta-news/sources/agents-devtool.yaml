@@ -1,0 +1,134 @@
+# Agent 生态 / Devtool（AI 全栈工程）
+sources:
+  - id: claude-code-releases
+    name: Claude Code Releases
+    layers: [devtool, agent]
+    type: github-releases
+    url: https://github.com/anthropics/claude-code/releases.atom
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "详细条目看 raw CHANGELOG：https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md（docs 的 release-notes 页也重定向到它）；日更，只报有实质功能的版本"
+
+  - id: cursor-changelog
+    name: Cursor Changelog
+    layers: [devtool]
+    type: rss
+    url: https://cursor.com/changelog/rss.xml
+    priority: P0
+    freq: weekly
+    verified: 2026-06-12
+
+  - id: gh-codex
+    name: OpenAI Codex Releases
+    layers: [devtool, agent]
+    type: github-releases
+    url: https://github.com/openai/codex/releases.atom
+    priority: P1
+    freq: weekly
+    verified: 2026-06-12
+    exclude_pattern: "(?i)(alpha|beta|rc\\d*)"
+    notes: "alpha 日发，只报正式版；developers.openai.com/codex/changelog 有 bot 墙 403"
+
+  - id: gh-gemini-cli
+    name: Gemini CLI Releases
+    layers: [devtool, agent]
+    type: github-releases
+    url: https://github.com/google-gemini/gemini-cli/releases.atom
+    priority: P2
+    freq: weekly
+    verified: 2026-06-12
+    exclude_pattern: "(?i)(preview|nightly)"
+    notes: "preview 多，只报正式版"
+
+  - id: mcp-registry
+    name: MCP Official Registry
+    layers: [agent]
+    type: json
+    parser: mcp_registry
+    url: "https://registry.modelcontextprotocol.io/v0/servers?limit=50"
+    priority: P1
+    freq: daily
+    verified: 2026-06-12
+    notes: "无需鉴权；日 diff 出新/更新的 server = MCP 生态脉搏"
+
+  - id: gh-mcp-spec
+    name: MCP Spec Releases
+    layers: [agent, devtool]
+    type: github-releases
+    url: https://github.com/modelcontextprotocol/modelcontextprotocol/releases.atom
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+    notes: "低频高权重：spec RC/正式版本身就是一条 digest"
+
+  - id: gh-a2a
+    name: A2A Protocol Releases
+    layers: [agent]
+    type: github-releases
+    url: https://github.com/a2aproject/A2A/releases.atom
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+    notes: "Linux Foundation 跨厂商 agent 互操作标准，低频高权重"
+
+  - id: gh-langgraph
+    name: LangGraph Releases
+    layers: [agent, devtool]
+    type: github-releases
+    url: https://github.com/langchain-ai/langgraph/releases.atom
+    priority: P2
+    freq: weekly
+    verified: 2026-06-12
+    exclude_pattern: "(?i)(cli|sdk|checkpoint|prebuilt)=="
+    notes: "cli/sdk 子包 release 多，只报框架本体大版本"
+
+  - id: gh-openhands
+    name: OpenHands Releases
+    layers: [agent, devtool]
+    type: github-releases
+    url: https://github.com/All-Hands-AI/OpenHands/releases.atom
+    priority: P2
+    freq: weekly
+    verified: 2026-06-12
+
+  - id: gh-crewai
+    name: CrewAI Releases
+    layers: [agent]
+    type: github-releases
+    url: https://github.com/crewAIInc/crewAI/releases.atom
+    priority: P2
+    enabled: false
+    freq: weekly
+    verified: 2026-06-12
+
+  - id: awesome-mcp-commits
+    name: awesome-mcp-servers commits
+    layers: [agent]
+    type: atom
+    url: https://github.com/punkpeye/awesome-mcp-servers/commits/main.atom
+    priority: P2
+    enabled: false
+    freq: daily
+    verified: 2026-06-12
+    notes: "策展过的 MCP server 新增信号，噪声偏大默认禁用"
+
+  - id: simonwillison
+    name: Simon Willison's Weblog
+    layers: [devtool, agent, product]
+    type: atom
+    url: https://simonwillison.net/atom/everything/
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "每个模型/工具发布最快的可信上手实测；一天多更"
+
+  - id: latent-space
+    name: Latent Space
+    layers: [agent, devtool, product]
+    type: rss
+    url: https://www.latent.space/feed
+    priority: P1
+    freq: daily
+    verified: 2026-06-12
+    notes: "AI engineer 视角；自定义域 Substack，数据中心可达"

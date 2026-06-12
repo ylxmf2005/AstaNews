@@ -1,0 +1,43 @@
+# asta-news 自部署 RSSHub（X/Twitter、Anthropic、量子位、GitHub Trending 等无原生 feed 的源）
+# 实测于 2026-06-12：/anthropic/news /anthropic/engineering /qbitai/category/资讯
+# /huggingface/daily-papers /papers/category/arxiv/cs.AI 零配置可用。
+#
+# 用法：
+#   cp 本文件 ${CLAUDE_PLUGIN_DATA}/rsshub/docker-compose.yml
+#   在同目录 .env 写入凭证（见下方注释），然后 docker compose up -d
+#   restart: always —— 开机自启、崩溃自拉，init 一次后无需再管。
+services:
+  rsshub:
+    image: diygod/rsshub:chromium-bundled
+    restart: always
+    ports:
+      - "127.0.0.1:1200:1200"   # 仅回环：实例里有你的 Twitter cookie，不要暴露公网
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: redis://redis:6379/
+      # x.com 登录后浏览器 cookie 里的 auth_token 值；支持逗号分隔多账号轮换。
+      # 取法：x.com 登录 → DevTools → Application → Cookies → auth_token
+      TWITTER_AUTH_TOKEN: ${TWITTER_AUTH_TOKEN:-}
+      # 真实 GitHub PAT（无需任何 scope）；trending 路由走 GraphQL，假 token 会 401
+      GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN:-}
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1200/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+volumes:
+  redis-data:

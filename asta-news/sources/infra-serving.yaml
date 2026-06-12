@@ -1,0 +1,164 @@
+# Infra / Serving / 训练框架（GitHub releases.atom 为主）+ 硬件经济
+# 所有 releases.atom 均实测 200，且这些 repo 都发真实 Release（无需 tags.atom 兜底）
+sources:
+  - id: gh-vllm
+    name: vLLM Releases
+    layers: [serving]
+    type: github-releases
+    url: https://github.com/vllm-project/vllm/releases.atom
+    priority: P0
+    freq: weekly
+    verified: 2026-06-12
+
+  - id: gh-sglang
+    name: SGLang Releases
+    layers: [serving]
+    type: github-releases
+    url: https://github.com/sgl-project/sglang/releases.atom
+    priority: P0
+    freq: weekly
+    verified: 2026-06-12
+
+  - id: gh-ollama
+    name: Ollama Releases
+    layers: [serving, devtool]
+    type: github-releases
+    url: https://github.com/ollama/ollama/releases.atom
+    priority: P1
+    freq: weekly
+    verified: 2026-06-12
+
+  - id: gh-transformers
+    name: HF Transformers Releases
+    layers: [model, post-training]
+    type: github-releases
+    url: https://github.com/huggingface/transformers/releases.atom
+    priority: P0
+    freq: weekly
+    verified: 2026-06-12
+    notes: "github.com 可达即可，无需 HF 代理"
+
+  - id: gh-trl
+    name: HF TRL Releases
+    layers: [post-training]
+    type: github-releases
+    url: https://github.com/huggingface/trl/releases.atom
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: gh-peft
+    name: HF PEFT Releases
+    layers: [post-training]
+    type: github-releases
+    url: https://github.com/huggingface/peft/releases.atom
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: gh-tensorrt-llm
+    name: TensorRT-LLM Releases
+    layers: [serving]
+    type: github-releases
+    url: https://github.com/NVIDIA/TensorRT-LLM/releases.atom
+    priority: P1
+    freq: weekly
+    verified: 2026-06-12
+    exclude_pattern: "(?i)rc\\d*"
+    notes: "RC 极多，只报正式版"
+
+  - id: gh-llamacpp
+    name: llama.cpp Releases
+    layers: [serving]
+    type: github-releases
+    url: https://github.com/ggml-org/llama.cpp/releases.atom
+    priority: P2
+    enabled: false
+    freq: daily
+    verified: 2026-06-12
+    notes: "每次 CI build 都发 release（一天多个 bXXXX），默认禁用；重大变化由 HN/r-localllama 兜底"
+
+  - id: gh-pytorch
+    name: PyTorch Releases
+    layers: [infra]
+    type: github-releases
+    url: https://github.com/pytorch/pytorch/releases.atom
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: gh-deepspeed
+    name: DeepSpeed Releases
+    layers: [infra, post-training]
+    type: github-releases
+    url: https://github.com/deepspeedai/DeepSpeed/releases.atom
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: gh-megatron
+    name: Megatron-LM Releases
+    layers: [infra]
+    type: github-releases
+    url: https://github.com/NVIDIA/Megatron-LM/releases.atom
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: gh-ray
+    name: Ray Releases
+    layers: [infra, serving]
+    type: github-releases
+    url: https://github.com/ray-project/ray/releases.atom
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: semianalysis
+    name: SemiAnalysis
+    layers: [infra, business]
+    type: rss
+    url: https://newsletter.semianalysis.com/feed
+    priority: P0
+    freq: weekly
+    verified: 2026-06-12
+    notes: "正文硬付费墙，feed 只有摘要——标题本身就是信号。注意：semianalysis.com/feed 是停更旧 feed，勿用"
+
+  - id: nvidia-blog
+    name: NVIDIA Corporate Blog
+    layers: [infra, business]
+    type: rss
+    url: https://blogs.nvidia.com/feed/
+    priority: P1
+    freq: daily
+    verified: 2026-06-12
+
+  - id: nvidia-dev-blog
+    name: NVIDIA Developer Blog
+    layers: [infra, serving]
+    type: atom
+    url: https://developer.nvidia.com/blog/feed
+    priority: P1
+    freq: daily
+    verified: 2026-06-12
+    notes: "CUDA/TensorRT/NIM 技术文"
+
+  - id: aws-whats-new
+    name: AWS What's New
+    layers: [infra, maas]
+    type: rss
+    url: https://aws.amazon.com/about-aws/whats-new/recent/feed/
+    priority: P2
+    freq: daily
+    verified: 2026-06-12
+    notes: "量大，策展时只看 Trainium/Inferentia/Bedrock/SageMaker 关键词"
+
+  - id: epoch-data-hub
+    name: Epoch AI Data Hub
+    layers: [infra, data, business]
+    type: html
+    url: https://epoch.ai/data
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+    notes: "无 RSS；notable_ai_models.csv / benchmark_data.zip / GPU clusters 数据集，月度看一次趋势；CC-BY"

@@ -1,0 +1,13 @@
+{
+  "name": "asta-lab",
+  "owner": { "name": "Asta Lab" },
+  "plugins": [
+    {
+      "name": "asta-news",
+      "source": "./asta-news",
+      "description": "Daily AI full-stack digest: papers, releases, evals, infra, agents, embodied, safety, business, devtools. Community-extensible sources.",
+      "version": "0.1.0",
+      "category": "productivity"
+    }
+  ]
+}

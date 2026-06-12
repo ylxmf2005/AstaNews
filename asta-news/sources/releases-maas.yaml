@@ -1,0 +1,225 @@
+# 模型发布 / 实验室公告 / MaaS & API changelog
+sources:
+  - id: openai-news
+    name: OpenAI News
+    layers: [model, product, business]
+    type: rss
+    url: https://openai.com/news/rss.xml
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "platform.openai.com/docs/changelog 有 Cloudflare 403，本 feed 是 OpenAI 唯一可自动化一手源"
+
+  - id: deepmind-blog
+    name: Google DeepMind Blog
+    layers: [model, safety]
+    type: rss
+    url: https://deepmind.google/blog/rss.xml
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "服务器偶发慢/超时，脚本需重试"
+
+  - id: anthropic-news
+    name: Anthropic Newsroom (RSSHub)
+    layers: [model, product, business]
+    type: rsshub
+    url: /anthropic/news
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "Anthropic 全站无 RSS；此路由实测零配置可用。无 RSSHub 时由策展 agent 直接读 anthropic.com/news（needs_proxy）"
+
+  - id: anthropic-engineering
+    name: Anthropic Engineering (RSSHub)
+    layers: [devtool, agent, infra]
+    type: rsshub
+    url: /anthropic/engineering
+    priority: P1
+    freq: weekly
+    verified: 2026-06-12
+
+  - id: claude-api-release-notes
+    name: Claude API Release Notes
+    layers: [maas, devtool]
+    type: html
+    url: https://platform.claude.com/docs/en/release-notes/overview
+    priority: P1
+    needs_proxy: true
+    freq: weekly
+    verified: 2026-06-12
+    notes: "docs.claude.com 301 至此；部分地区 region-block，挂代理可达"
+
+  - id: gemini-api-changelog
+    name: Gemini API Changelog
+    layers: [maas, model]
+    type: html
+    url: https://ai.google.dev/gemini-api/docs/changelog
+    priority: P0
+    needs_proxy: true
+    freq: weekly
+    verified: 2026-06-12
+
+  - id: deepseek-updates
+    name: DeepSeek API Updates
+    layers: [model, maas]
+    type: html
+    url: https://api-docs.deepseek.com/updates
+    priority: P0
+    freq: weekly
+    verified: 2026-06-12
+    notes: "DeepSeek 唯一带日期的一手发布渠道（/news/ 是 404）"
+
+  - id: deepseek-github-org
+    name: DeepSeek GitHub org
+    layers: [model]
+    type: json
+    parser: github_org_repos
+    url: "https://api.github.com/orgs/deepseek-ai/repos?sort=created&per_page=20"
+    priority: P1
+    freq: daily
+    verified: 2026-06-12
+    notes: "新模型 = 新 repo，常早于媒体数小时"
+
+  - id: qwen-github-org
+    name: Qwen GitHub org
+    layers: [model]
+    type: json
+    parser: github_org_repos
+    url: "https://api.github.com/orgs/QwenLM/repos?sort=pushed&per_page=20"
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "qwen.ai/blog 是 JS SPA、旧 GitHub Pages feed 停更于 2025-09，org API 是唯一可靠机器可读信号"
+
+  - id: kimi-platform-blog
+    name: Moonshot/Kimi Platform Blog
+    layers: [model, maas]
+    type: html
+    url: https://platform.kimi.ai/blog
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+    notes: "platform.moonshot.ai 已改域名至 kimi.ai"
+
+  - id: zai-release-notes
+    name: Z.ai (Zhipu/GLM) Release Notes
+    layers: [model, maas]
+    type: html
+    url: https://docs.z.ai/release-notes/new-released
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: minimax-news
+    name: MiniMax News
+    layers: [model]
+    type: html
+    url: https://www.minimax.io/news
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: mistral-news
+    name: Mistral News
+    layers: [model, maas]
+    type: html
+    url: https://mistral.ai/news
+    priority: P1
+    needs_proxy: true
+    freq: weekly
+    verified: 2026-06-12
+
+  - id: meta-ai-blog
+    name: Meta AI Blog
+    layers: [model]
+    type: html
+    url: https://ai.meta.com/blog/
+    priority: P1
+    needs_proxy: true
+    enabled: false
+    freq: weekly
+    verified: 2026-06-12
+    notes: "Meta 屏蔽数据中心 IP，本网络代理也未稳定可达——生产网络复验后再 enable；Llama 发布通常 HN/Smol AI 兜底"
+
+  - id: xai-news
+    name: xAI News
+    layers: [model, maas]
+    type: html
+    url: https://x.ai/news
+    priority: P1
+    needs_proxy: true
+    freq: weekly
+    verified: 2026-06-12
+    notes: "本网络直连被墙、代理可试；API release notes 在 docs.x.ai/developers/release-notes"
+
+  - id: cohere-changelog
+    name: Cohere Changelog
+    layers: [maas, model]
+    type: rss
+    url: https://docs.cohere.com/changelog.rss
+    priority: P1
+    freq: monthly
+    verified: 2026-06-12
+    notes: "罕见的带真 RSS 的 MaaS changelog"
+
+  - id: openrouter-models
+    name: OpenRouter Models API（新模型探测器）
+    layers: [maas, model]
+    type: json
+    parser: openrouter_models
+    url: https://openrouter.ai/api/v1/models
+    priority: P0
+    freq: daily
+    verified: 2026-06-12
+    notes: "对比上次快照 diff 出新上架模型，跨所有 provider 的最佳单一 MaaS 信号；其官网 changelog 是 JS SPA 无需理会"
+
+  - id: fireworks-changelog
+    name: Fireworks Changelog
+    layers: [maas, serving]
+    type: html
+    url: https://docs.fireworks.ai/updates/changelog.md
+    priority: P2
+    freq: weekly
+    verified: 2026-06-12
+    notes: "Mintlify .md 后缀返回干净 markdown，可直接 diff"
+
+  - id: together-changelog
+    name: Together AI Changelog
+    layers: [maas, serving]
+    type: html
+    url: https://docs.together.ai/docs/changelog
+    priority: P2
+    freq: weekly
+    verified: 2026-06-12
+
+  - id: bfl-blog
+    name: Black Forest Labs Blog
+    layers: [model]
+    type: html
+    url: https://bfl.ai/blog
+    priority: P2
+    freq: monthly
+    verified: 2026-06-12
+
+  - id: elevenlabs-changelog
+    name: ElevenLabs Changelog
+    layers: [model, product]
+    type: html
+    url: https://elevenlabs.io/docs/changelog
+    priority: P2
+    freq: weekly
+    verified: 2026-06-12
+    notes: "Fern docs：.md 后缀是 200 但软 404，必须用 HTML 页"
+
+  - id: hf-trending-models
+    name: HF Hub Trending Models
+    layers: [model]
+    type: json
+    parser: hf_hub_list
+    url: "https://huggingface.co/api/models?sort=trendingScore&direction=-1&limit=20"
+    priority: P1
+    needs_proxy: true
+    freq: daily
+    verified: 2026-06-12
+    notes: "开源权重发布的热度信号；downloads/likes 进 extra"

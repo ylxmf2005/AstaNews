@@ -1,0 +1,7 @@
+# 本地规则覆盖（rules.local.yaml）——只写想改的键，深合并进默认 rules.yaml
+# 示例：
+# edition:
+#   default_items: 6
+#   language: zh
+# scoring:
+#   weights: { novelty: 0.4, leading_edge: 0.3, impact: 0.2, cross_stack: 0.1 }

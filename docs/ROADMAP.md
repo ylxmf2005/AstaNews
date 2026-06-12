@@ -126,8 +126,8 @@ group  : 目标 5（上限 8），最严，微信群发
 - ✅ **P0-CRON** 5am 北京定时任务已设（durable cron），进入持续迭代循环
 - ✅ **P1-EMBED** 本地 embedding（fastembed multilingual-MiniLM，hf-mirror，离线 CPU）+ 向量索引 + 跨语言检索，`scripts/embed.py` 自测通过
 - ✅ **P1-CONFIG** `asta-news/config/` 已建：tiers/perspectives/sharpness/site/search.yaml
-- 🔵 **P1-SCHEMA** v2 schema 定义+今日回填完成；待固化进 skill 产出流程
-- 🔵 **P1-TIERS** 今日 v2 已含 group6/daily18/full483 三级；待把 daily 切层固化进 daily-digest skill（明日自动跑也产 tiers）
+- ✅ **P1-SCHEMA** v2 schema 固化进 skill，2026-06-13 首次端到端生产跑通(group/daily/full+视角+锐评+配图+向量)
+- ✅ **P1-TIERS** 多级筛选固化并生产验证(06-13 真实跑出 group6/daily12/full134)
 - ✅ **P1-WEB** React MPA（Next 15 静态导出，真多页：home/edition/archive/search/about）读 v2，gazette 美学，构建通过；部署中
 - ✅ **P2-PERSP** 两类 filter 上线：视角(全栈/技术/产品/商业/研究/具身, 重排)×类别(13 layer, 硬筛)，网站可组合切换 + 视角导语
 - 🔵 **P2-SEARCH** 关键词搜索 + 相关新闻(预计算近邻)已稳上线；语义搜索框(浏览器 transformers.js 同款模型嵌入 query×vectors.bin)已实现为渐进增强(graceful fallback 到关键词)，真机大概率可用，headless sandbox 加载不了 CDN 模块故未能本地验证——待真机确认/改自托管模型

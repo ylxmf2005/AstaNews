@@ -2,9 +2,18 @@
 
 **🌐 在线网页：https://ylxmf2005.github.io/AstaNews/**
 
-AI 全栈每日情报。一条命令，从论文、模型发布、评测榜单、infra/serving、MaaS changelog、agent 生态、具身智能、安全、产品/商业、devtool 共 **13 个 stack layer** 的已验证数据源中，策展出当日最值得读的内容——**默认 5 条，最多 8 条，覆盖至少 3 层**。
+AI 全栈综合资讯平台。每天从 **121+ 个已验证数据源**（论文、模型发布、评测榜单、infra/serving、MaaS changelog、agent、具身、安全、产品/商业、devtool、X KOL、中文媒体、newsletter…）抓取，经确定性脚本去重，由 agent 按编辑准则**层层筛选、多视角呈现**。
 
-这是一个 Claude Code plugin：数据源注册表开放贡献，抓取与去重由确定性脚本完成，筛选与撰写由 agent 按编辑准则裁决。系统为什么这样设计、数据怎么流动，见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
+**核心特性**
+- **三级筛选**：完整级（当天全部）→ 日报级（~20）→ 群聊级（5-8 精选，微信群发）。数量可配。
+- **两类 filter**：视角（全栈/技术/产品/商业/研究/具身，重排）× 类别（13 个 stack layer，硬筛），可任意组合。
+- **多犀利度**：中性新闻体 / 锐评，一键切换。
+- **用图说话**：精选配 AI 找的信息图（评测图/架构图），日报配 og:image。
+- **可搜可订**：语义检索（本地向量，跨语言）+ 关键词；每条带"相关新闻"（向量近邻）；Atom 订阅 + 社交分享卡。
+- **网站即控制台**：[在线站](https://ylxmf2005.github.io/AstaNews/) 公开只读；本地连后端可服务端检索 / 编辑配置 / 触发运行 / 生成公众号 HTML。
+- **全自动**：GitHub Actions + Pages 每日产出并部署；产物即仓库（`site/data/<date>.json`），去重用"仓库即状态"。
+
+底层是一个 Claude Code plugin（编排）+ React 多页站（`web/`）+ FastAPI 后端（`services/`），模块化配置在 `asta-news/config/`。设计与数据流见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) 与 [docs/ROADMAP.md](docs/ROADMAP.md)。一条命令体检全平台：`uv run asta-news/scripts/doctor.py`。
 
 ## 安装
 

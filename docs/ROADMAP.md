@@ -127,7 +127,8 @@ group  : 目标 5（上限 8），最严，微信群发
     - `scripts/llm.py` + `config/llm.yaml`：OpenAI 兼容小模型 client（base_url/model/key 进 config，生产默认便宜云 API、自测走本地 ollama），不可用即优雅退化返回 None。自测 PASS（配置解析/JSON 抠取/不可达端点退化）。
     - `scripts/classify.py`：embedding 零样本（13 层中英原型锚向量，复用 fastembed）+ 源 `layers[]` 先验，零 LLM。自测 6/6，端到端对 model/serving/embodied/devtool 判对。
     - `scripts/prerank.py` + `config/prerank.yaml`：多信号确定性打分（源权威/新鲜度/多源共识/领先关键词/热度/跨层）+ 可选 LLM 重排，把候选压到 keep。自测 PASS（SOTA 发布顶上、typo 补丁沉底）。classify→prerank 字段契约端到端验证通过。
-  - ⬜ **待用户签字后做**：① 拍 A/B/C；② `dedup.py` 暴露 `cluster_size`、fetch 候选带 `priority`；③ 可选 `extract.py`（trafilatura 解析）；④ **改 daily-digest SKILL 第 3–4 步接线**（删 subagent fan-out，改跑 classify+prerank，agent 只看 top~15）——这是唯一改生产行为的一步，gate 在签字。
+    - `scripts/extract.py`：trafilatura 规则法抽正文（剥导航/页脚），给摘要过薄的候选回填 `summary`/`clean_text`，零 LLM、失败开放、被墙域名走代理。自测 PASS（抽取/薄摘要升级/够料跳过/无网络优雅）。与 A/B/C 正交。
+  - ⬜ **待用户签字后做**：① 拍 A/B/C；② `dedup.py` 暴露 `cluster_size`、fetch 候选带 `priority`（喂 prerank 的共识/权威信号）；③ **改 daily-digest SKILL 第 3–4 步接线**（删 subagent fan-out，改跑 classify+prerank+extract，agent 只看 top~15）——这是唯一改生产行为的一步，gate 在签字。
   - **下次从这继续**：用户确认 A → writing-plans 出接线计划 → 改 SKILL + dedup/fetch 字段 → 端到端跑一期验证。
 - ✅ **P0-DOC** 写本 ROADMAP（PO 总纲）
 - ✅ **生产** 2026-06-13 首次端到端 v2 digest 跑通并上线(往期已 2 期)；publish_site 加 facts/links 归一容错

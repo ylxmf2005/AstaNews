@@ -143,6 +143,8 @@ group  : 目标 5（上限 8），最严，微信群发
 - 🔵 **P3-WECHAT** md→公众号内联样式 HTML 转换器(publish_wechat.py,橘鸦风,≤1MB,实测渲染 OK)已成；微信 draft/publish API 接口已写好,gated 在 WECHAT_APPID/SECRET(等用户公众号凭证)；services 端点 /api/publish/wechat + 控制台「生成公众号 HTML」按钮已加(实测生成成功,发布等凭证)
 - 🔵 **持续** 前端：favicon(轨道印记)+品牌 404 页 + 头条层级 + **item 详情页 + **往期 prev/next 顺序导航**；数据源 121（+TLDR AI/Ben's Bites/Ethan Mollick/Zvi/RunPod/Meta新闻RSS 等）（+The Decoder/MarkTechPost/Together/Google AI/philschmid/r-ML 等，不止 RSSHub）；前端人类视角打磨、文章质量、更多中文/商业/创意源待续
 
+- ✅ **健壮** 云端 daily-digest 无 ANTHROPIC_API_KEY 时优雅跳过(不再每日失败,设了即每日自动跑)
+
 ## 5. 循环工作准则（5am 起的自我迭代）
 
 1. 先跑当日 digest 生产（产出新一期），再做改进。

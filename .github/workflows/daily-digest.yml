@@ -50,6 +50,10 @@ jobs:
           GITHUB_ACCESS_TOKEN: ${{ github.token }}                # api.github.com 提额
           ASTA_RUN_DATE: ${{ github.event.inputs.date }}
         run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::notice title=AstaNews::ANTHROPIC_API_KEY 未设置，跳过云端 digest。在仓库 Settings → Secrets and variables → Actions 添加 ANTHROPIC_API_KEY 后，每天 UTC 01:00 自动产出。"
+            exit 0
+          fi
           claude -p "/asta-news:daily-digest" \
             --permission-mode bypassPermissions \
             --plugin-dir ./asta-news \

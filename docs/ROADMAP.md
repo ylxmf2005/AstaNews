@@ -163,7 +163,7 @@ group  : 目标 5（上限 8），最严，微信群发
 5. 预算/用量紧张时，先 commit 已完成的，写清下次从哪继续，再停。
 6. 把自己当 PO+开发：想到合理功能就写进 backlog 再做，不必等人确认（非破坏性前提下）。
 
-- ✅ **贡献质量门** validate_registry.py + CI(validate.yml)：PR/push 自动校验源 schema/配置/manifest，负向测试通过
+- ✅ **贡献质量门** validate_registry.py + CI(validate.yml)：PR/push 自动校验源 schema/配置/manifest，负向测试通过；CI 现还跑初筛脚本自测(llm/prerank/extract，离线无模型下载)并对 scripts/** 改动触发——回归门覆盖到新脚本
 
 ## 6. 研究参考
 - 橘鸦（微信 AI 日报公众号）：易懂写法 + 商业新闻 + 配图。研究其结构与图文。

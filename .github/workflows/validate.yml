@@ -1,15 +1,16 @@
 name: validate
 
-# 贡献质量门：源注册表 schema + 配置 + manifest 校验。PR/push 改到 sources/config 时跑。
+# 贡献质量门：源注册表 schema + 配置 + manifest 校验 + 初筛脚本自测。
+# PR/push 改到 sources/config/scripts 时跑。
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 on:
   push:
     branches: [main]
-    paths: ["asta-news/sources/**", "asta-news/config/**", "asta-news/rules.yaml", "**/.claude-plugin/*.json"]
+    paths: ["asta-news/sources/**", "asta-news/config/**", "asta-news/scripts/**", "asta-news/rules.yaml", "**/.claude-plugin/*.json"]
   pull_request:
-    paths: ["asta-news/sources/**", "asta-news/config/**", "asta-news/rules.yaml", "**/.claude-plugin/*.json"]
+    paths: ["asta-news/sources/**", "asta-news/config/**", "asta-news/scripts/**", "asta-news/rules.yaml", "**/.claude-plugin/*.json"]
   workflow_dispatch:
 
 jobs:
@@ -20,3 +21,9 @@ jobs:
       - uses: astral-sh/setup-uv@v5
       - name: Validate registry + config + manifest
         run: uv run asta-news/scripts/validate_registry.py
+      - name: Self-test scriptify scripts (offline, no model download)
+        # 轻量、确定性、纯离线的自测——回归门。classify 需下 fastembed 模型，太重，留本地跑。
+        run: |
+          uv run asta-news/scripts/llm.py --self-test
+          uv run asta-news/scripts/prerank.py --self-test
+          uv run asta-news/scripts/extract.py --self-test

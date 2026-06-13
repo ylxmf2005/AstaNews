@@ -42,6 +42,12 @@ export default async function ItemPage({ params }) {
           <div className="body" style={{ fontSize: 15, whiteSpace: "pre-wrap", color: "var(--ink-2)", marginTop: 8 }}>{it.sharp}</div>
         </details>
       )}
+      {it.deep && (
+        <details style={{ marginTop: 12 }}>
+          <summary style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--seal-2)", cursor: "pointer" }}>深读版</summary>
+          <div className="body" style={{ fontSize: 15, whiteSpace: "pre-wrap", color: "var(--ink-2)", marginTop: 8 }}>{it.deep}</div>
+        </details>
+      )}
       {it.source_excerpt && (
         <details style={{ marginTop: 12 }}>
           <summary style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--gold)", cursor: "pointer" }}>原文摘录（深读）</summary>

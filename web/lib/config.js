@@ -39,6 +39,13 @@ export const PERSPECTIVES = [
   { key: "embodied", label: "具身", boost: { embodied: 2.0, model: 0.6 } },
 ];
 
+// 犀利度档位（对齐 config/sharpness.yaml）。中性恒在；锐评/深读按数据存在与否门控显示。
+export const SHARPNESS = [
+  { key: "neutral", label: "中性", field: "readable" },
+  { key: "sharp", label: "锐评", field: "sharp" },
+  { key: "deep", label: "深读", field: "deep" },
+];
+
 export const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 export const asset = (p) => `${BASE}${p}`;
 // 本地/全功能模式：services 后端地址（静态 Pages 为空 → 控制台只读+引导）

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { LAYERS, lz, layerName, layerEmoji, layerColor, TIERS, PERSPECTIVES, BASE, slug } from "../lib/config";
+import { LAYERS, lz, layerName, layerEmoji, layerColor, TIERS, PERSPECTIVES, SHARPNESS, BASE, slug } from "../lib/config";
 
 function baseScore(it, i) {
   if (typeof it.score === "number") return it.score;
@@ -20,8 +20,8 @@ function applyPerspective(items, persp) {
     .map((x) => x.it);
 }
 
-function Story({ it, n, related, lead, sharp }) {
-  const body = (sharp && it.sharp) || it.readable || it.take || "";
+function Story({ it, n, related, lead, level }) {
+  const body = (level === "deep" && it.deep) || (level === "sharp" && it.sharp) || it.readable || it.take || "";
   const facts = Array.isArray(it.facts) ? it.facts : it.facts ? [it.facts] : [];
   const links = [];
   if (it.links?.primary) links.push(["一手源", it.links.primary]);
@@ -81,7 +81,7 @@ export default function EditionView({ edition }) {
   const [tier, setTier] = useState("daily");
   const [persp, setPersp] = useState("all");   // 视角（大）：重排+框定
   const [cat, setCat] = useState("all");        // 类别（小）：按 layer 硬筛
-  const [sharp, setSharp] = useState(false);    // 犀利度：中性 / 锐评
+  const [level, setLevel] = useState("neutral");  // 犀利度：中性 / 锐评 / 深读（按数据门控）
   const [related, setRelated] = useState(null); // 预计算的相关新闻（向量近邻）
   useEffect(() => {
     fetch(`${BASE}/data/related.json`).then((r) => r.json()).then(setRelated).catch(() => setRelated({}));
@@ -103,7 +103,12 @@ export default function EditionView({ edition }) {
     return raw;
   }, [tier, persp, cat, edition.date]);
 
-  const hasSharp = useMemo(() => (tiers[tier] || []).some((it) => it.sharp), [tier, edition.date]);
+  // 当前 tier 有哪些犀利度档可选：中性恒在，锐评/深读需有对应数据（it.sharp / it.deep）
+  const levels = useMemo(
+    () => SHARPNESS.filter((l) => l.key === "neutral" || (tiers[tier] || []).some((it) => it[l.key])),
+    [tier, edition.date]
+  );
+  const activeLevel = levels.some((l) => l.key === level) ? level : "neutral"; // 切 tier 后档位不可用则回退
 
   const perspLede = edition.perspectives?.[persp]?.lede;
 
@@ -130,12 +135,13 @@ export default function EditionView({ edition }) {
             </div>
           </div>
         )}
-        {tier !== "full" && hasSharp && (
+        {tier !== "full" && levels.length > 1 && (
           <div className="ctl-group">
             <span className="ctl-label">犀利度</span>
             <div className="seg">
-              <button className={!sharp ? "on" : ""} onClick={() => setSharp(false)}>中性</button>
-              <button className={sharp ? "on" : ""} onClick={() => setSharp(true)}>锐评</button>
+              {levels.map((l) => (
+                <button key={l.key} className={activeLevel === l.key ? "on" : ""} onClick={() => setLevel(l.key)}>{l.label}</button>
+              ))}
             </div>
           </div>
         )}
@@ -168,7 +174,7 @@ export default function EditionView({ edition }) {
         ? <FullRows items={items} />
         : items.length === 0
           ? <p className="empty">该类别下暂无条目。</p>
-          : items.map((it, i) => <Story key={it.id || i} it={it} n={i + 1} related={related} lead={i === 0} sharp={sharp} />)}
+          : items.map((it, i) => <Story key={it.id || i} it={it} n={i + 1} related={related} lead={i === 0} level={activeLevel} />)}
 
       {tier !== "full" && edition.gaps?.length > 0 && (
         <>

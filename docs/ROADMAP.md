@@ -142,7 +142,7 @@ group  : 目标 5（上限 8），最严，微信群发
 - ✅ **P2-PERSP** 两类 filter 上线：视角(全栈/技术/产品/商业/研究/具身, 重排)×类别(13 layer, 硬筛)，网站可组合切换 + 视角导语
 - 🔵 **P2-SEARCH** **混合检索(BM25+向量, RRF 融合)已落地**：`scripts/search.py` 把 BM25 关键词(jieba 中文分词，TF-IDF+长度归一)与向量语义(fastembed 跨语言)各出一榜、RRF 融合(免量纲调参)，替换原 services `/api/search` 的"向量+子串 boost"hack。自测 PASS(分词/BM25/RRF 离线)，真实索引端到端验证：「块级稀疏注意力」→MiniMax MSA #1、「agent benchmark 推理基准」→NVIDIA AA-AgentPerf #1；API 端到端 200 真混合(两榜)；fastembed 缺失等情况优雅退化为单榜。相关新闻(预计算近邻)已稳上线；浏览器 transformers.js 语义搜为渐进增强，真机大概率可用、headless sandbox 加载不了 CDN 故未本地验证——待真机确认/改自托管模型
 - ✅ **P2-IMG** 精选 6/6 配 AI 信息图(arXiv 架构图/行为率图)+ daily og:image 兜底(11 张上线)+ enrich_images.py + images.md how-to + 卡片渲染；待续:提升 daily/arXiv 覆盖、防盗链兜底
-- ✅ **P2-SHARP** 犀利度上线：中性/锐评 切换(网站控件)，今日 6 精选含 sharp 锐评变体，readiness.md 写明产出规范；深读档待加
+- ✅ **P2-SHARP** 犀利度上线：中性/锐评/**深读** 三档全在 config/sharpness.yaml；前端控件已从二元泛化为**三档数据门控**(中性恒在，锐评/深读各按 it.sharp/it.deep 存在与否显示，切 tier 不可用则回退)，item 详情页加深读版块——本地 build 验证(2026-06-12 页：犀利度控件在、中性/锐评渲染、深读因无数据正确隐藏)。**只剩改写层产出 `it.deep` 深读变体**(属 readiness/改写，待 SKILL 接线或橘鸦研究落地一并做)，产出后深读按钮自动出现
 - ✅ **P3-STUDY** 橘鸦研究完成(docs/study-juya.md)：发现我们 gazette 美学已天然对齐橘鸦；借鉴'今日概览编号列表'已应用到微信版 md；公众号发布路径(md2juya/md2wechat→微信API)已规划进 P3-WECHAT
 - ✅ **P3-SELFCONTAIN** doctor 升级为全平台健康检查(uv/node/docker/配置/embed/后端/公众号脚本/源/RSSHub)，全绿(110 源/RSSHub/代理自探测)；setup skill 更新：X 用 grab_x_cookie.sh 自动取 cookie + per-user 路由开箱即用、embed 自包含(hf-mirror)、README 指向 web/ Next 流程
 - 🔵 **P3-CONSOLE** services/ FastAPI 后端已建并验证：列期/取期/**服务端语义检索(跨语言)**/源概览/读写配置/触发抓取 + require_auth 鉴权钩子(预留账号)；待加排程端点 + web 控制台 UI(P3-WEBCTRL)

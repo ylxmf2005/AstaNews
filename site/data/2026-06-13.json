@@ -81,11 +81,6 @@
     "rank": 3,
     "readable": "各家旗舰模型在 SWE-Bench、HLE 上动辄八九十分，但那真的等于“会干活”吗？UC Berkeley 放出的 Agents' Last Exam（ALE）给了一盆冷水：它不在沙箱里跑代码题，而是让 agent 进 Siemens NX 建 3D 模型、在 Unreal 里搭场景、用 After Effects 做合成——真实专业软件里的真实任务。结果是最难一档，Fable 5 和 GPT-5.5 全部 0 分。\n\n更耐人寻味的是排名翻转。ALE 总通过率榜上，GPT-5.5+Codex 以 24.0% 夺冠，GPT-5.5+ALE Claw 23.0% 第二，Fable 5+Claude Code 只有 22.0% 排第三，Opus 4.7 拿 18.4%，Opus 4.8 垫底 15.8%。这和大家熟悉的格局几乎反过来——在 SWE-Bench Pro 上 Fable 系是 80.3% 对 GPT 的 58.6%，HLE 上 64.5% 对 52.2%，都是碾压；一换到真实工具链，碾压就消失甚至反转了。\n\n提出团队不是无名之辈，正是 MMLU、MATH、CyberGym 的作者，做基准是老本行。需要留意的是这组数字目前来自量子位对 UC Berkeley 团队的转述，原始榜单细节值得回查；但方向性结论很清楚：现有刷榜分数和“在专业软件里真正完成一个项目”之间，存在一道还没被跨过的鸿沟。对所有把 agent 能力当卖点的人，这是最直接的冷水。",
     "sharp": "想知道旗舰 agent 的成色，别看刷榜看 ALE。UC Berkeley 这套评测把 agent 扔进 Siemens NX、Unreal、After Effects 里干真活，最难一档 Fable 5 和 GPT-5.5 一起吃 0 分——这才是 agent 真实水位的样子，不是 SWE-Bench 上那串好看的数字。\n\n最打脸的是排名反转：ALE 总通过率 GPT-5.5+Codex 24.0% 居首，Fable 5+Claude Code 只有 22.0%，Opus 4.8 直接垫底 15.8%。而同样这些模型在 SWE-Bench Pro 是 80.3% 对 58.6%、HLE 是 64.5% 对 52.2%，Fable 系一路碾压。一进真实工具链碾压就蒸发，只能说明那些榜可能已经被刷出了水分。\n\n团队是 MMLU/MATH/CyberGym 的原班人马，做基准的可信度在线，唯一保留是当前数据经量子位转述、原始细节待核。但谁都别急着拿“某榜第一”当 agent 能力背书了——能在专业软件里把活干完，目前没有一家及格。",
-    "image": {
-     "url": "https://www.qbitai.com/wp-content/uploads/imgs/qbitai-logo-1.png",
-     "credit": "qbitai.com",
-     "source": "https://www.qbitai.com/2026/06/434774.html"
-    },
     "source_excerpt": "“智能体最后的考试”，Fable 5竟然不敌GPT 5.5 一水 2026-06-12 12:13:23 来源： 量子位 最难档通通零蛋 没想到打脸来得如此之快！！ 刚刚，UC伯克利放出了一场号称 “智能体最后的考试” 的全新基准测试。 它把当今最强的AI Agent们拉到考场上，让它们干真正的活—— 在Siemens NX里建3D模型、在Unreal Engine里搭游戏场景、在Adobe After Effects里做特效合成。 结果成绩令人傻眼： 最难的一档，当今公认最强的Claude Fable 5、GPT 5.5，全是大写的零蛋 。 你说难度稍微放低一点呢？分数倒是有了，但结果也相当令人意外—— GPT 5.5竟然还小胜了Claude Fable 5 。 我没听错吧，A家刚发布的最强模型Claude Fable 5，被几个月前的GPT 5.5打败了？？ 要知道在此前几乎所有主流b"
    },
    {
@@ -217,11 +212,6 @@
     },
     "score": 3.85,
     "rank": 3,
-    "image": {
-     "url": "https://www.qbitai.com/wp-content/uploads/imgs/qbitai-logo-1.png",
-     "credit": "qbitai.com",
-     "source": "https://www.qbitai.com/2026/06/434774.html"
-    },
     "source_excerpt": "“智能体最后的考试”，Fable 5竟然不敌GPT 5.5 一水 2026-06-12 12:13:23 来源： 量子位 最难档通通零蛋 没想到打脸来得如此之快！！ 刚刚，UC伯克利放出了一场号称 “智能体最后的考试” 的全新基准测试。 它把当今最强的AI Agent们拉到考场上，让它们干真正的活—— 在Siemens NX里建3D模型、在Unreal Engine里搭游戏场景、在Adobe After Effects里做特效合成。 结果成绩令人傻眼： 最难的一档，当今公认最强的Claude Fable 5、GPT 5.5，全是大写的零蛋 。 你说难度稍微放低一点呢？分数倒是有了，但结果也相当令人意外—— GPT 5.5竟然还小胜了Claude Fable 5 。 我没听错吧，A家刚发布的最强模型Claude Fable 5，被几个月前的GPT 5.5打败了？？ 要知道在此前几乎所有主流b"
    },
    {
@@ -1570,11 +1560,6 @@
    "rank": 3,
    "readable": "各家旗舰模型在 SWE-Bench、HLE 上动辄八九十分，但那真的等于“会干活”吗？UC Berkeley 放出的 Agents' Last Exam（ALE）给了一盆冷水：它不在沙箱里跑代码题，而是让 agent 进 Siemens NX 建 3D 模型、在 Unreal 里搭场景、用 After Effects 做合成——真实专业软件里的真实任务。结果是最难一档，Fable 5 和 GPT-5.5 全部 0 分。\n\n更耐人寻味的是排名翻转。ALE 总通过率榜上，GPT-5.5+Codex 以 24.0% 夺冠，GPT-5.5+ALE Claw 23.0% 第二，Fable 5+Claude Code 只有 22.0% 排第三，Opus 4.7 拿 18.4%，Opus 4.8 垫底 15.8%。这和大家熟悉的格局几乎反过来——在 SWE-Bench Pro 上 Fable 系是 80.3% 对 GPT 的 58.6%，HLE 上 64.5% 对 52.2%，都是碾压；一换到真实工具链，碾压就消失甚至反转了。\n\n提出团队不是无名之辈，正是 MMLU、MATH、CyberGym 的作者，做基准是老本行。需要留意的是这组数字目前来自量子位对 UC Berkeley 团队的转述，原始榜单细节值得回查；但方向性结论很清楚：现有刷榜分数和“在专业软件里真正完成一个项目”之间，存在一道还没被跨过的鸿沟。对所有把 agent 能力当卖点的人，这是最直接的冷水。",
    "sharp": "想知道旗舰 agent 的成色，别看刷榜看 ALE。UC Berkeley 这套评测把 agent 扔进 Siemens NX、Unreal、After Effects 里干真活，最难一档 Fable 5 和 GPT-5.5 一起吃 0 分——这才是 agent 真实水位的样子，不是 SWE-Bench 上那串好看的数字。\n\n最打脸的是排名反转：ALE 总通过率 GPT-5.5+Codex 24.0% 居首，Fable 5+Claude Code 只有 22.0%，Opus 4.8 直接垫底 15.8%。而同样这些模型在 SWE-Bench Pro 是 80.3% 对 58.6%、HLE 是 64.5% 对 52.2%，Fable 系一路碾压。一进真实工具链碾压就蒸发，只能说明那些榜可能已经被刷出了水分。\n\n团队是 MMLU/MATH/CyberGym 的原班人马，做基准的可信度在线，唯一保留是当前数据经量子位转述、原始细节待核。但谁都别急着拿“某榜第一”当 agent 能力背书了——能在专业软件里把活干完，目前没有一家及格。",
-   "image": {
-    "url": "https://www.qbitai.com/wp-content/uploads/imgs/qbitai-logo-1.png",
-    "credit": "qbitai.com",
-    "source": "https://www.qbitai.com/2026/06/434774.html"
-   },
    "source_excerpt": "“智能体最后的考试”，Fable 5竟然不敌GPT 5.5 一水 2026-06-12 12:13:23 来源： 量子位 最难档通通零蛋 没想到打脸来得如此之快！！ 刚刚，UC伯克利放出了一场号称 “智能体最后的考试” 的全新基准测试。 它把当今最强的AI Agent们拉到考场上，让它们干真正的活—— 在Siemens NX里建3D模型、在Unreal Engine里搭游戏场景、在Adobe After Effects里做特效合成。 结果成绩令人傻眼： 最难的一档，当今公认最强的Claude Fable 5、GPT 5.5，全是大写的零蛋 。 你说难度稍微放低一点呢？分数倒是有了，但结果也相当令人意外—— GPT 5.5竟然还小胜了Claude Fable 5 。 我没听错吧，A家刚发布的最强模型Claude Fable 5，被几个月前的GPT 5.5打败了？？ 要知道在此前几乎所有主流b"
   },
   {

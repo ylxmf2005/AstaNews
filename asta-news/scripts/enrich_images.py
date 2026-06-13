@@ -71,6 +71,8 @@ def find_image(url: str) -> dict | None:
     if img and img.startswith("//"):
         img = "https:" + img
     if img and img.startswith("http"):
+        if re.search(r"(?i)(logo|favicon|default[-_]?(og|share)|placeholder)", img):
+            return None  # 跳过 logo/占位类 og:image（信息量低、常防盗链）
         return {"url": img, "credit": host, "source": url}
     return None
 

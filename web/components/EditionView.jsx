@@ -32,7 +32,7 @@ function Story({ it, n, related, lead, sharp }) {
       <div className="num">{n}</div>
       <div className="dept"><span>{layerEmoji(it.layer)}</span>{layerName(it.layer)}</div>
       <h2>{it.links?.primary ? <Link href={`/item/${slug(it.links.primary)}`}>{it.title}</Link> : it.title}</h2>
-      {it.image?.url && <img className="thumb" src={it.image.url} alt="" loading="lazy" />}
+      {it.image?.url && <img className="thumb" src={it.image.url} alt="" loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} />}
       {body && <div className="body">{body}</div>}
       {facts.length > 0 && <ul className="facts">{facts.map((f, i) => <li key={i}>{f}</li>)}</ul>}
       {links.length > 0 && (

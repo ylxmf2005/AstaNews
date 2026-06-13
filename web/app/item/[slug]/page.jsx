@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { allItems, getItem } from "../../../lib/data";
 import { layerName, layerEmoji } from "../../../lib/config";
+import Img from "../../../components/Img";
 
 export function generateStaticParams() {
   return Object.keys(allItems()).map((slug) => ({ slug }));
@@ -33,7 +34,7 @@ export default async function ItemPage({ params }) {
         <Link href={`/edition/${it.date}`} style={{ marginLeft: "auto", fontFamily: "var(--mono)", fontSize: 12 }}>← 本期</Link>
       </div>
       <h1 className="ed-title" style={{ fontFamily: "var(--cn-serif)", fontSize: "clamp(24px,3.4vw,34px)", lineHeight: 1.25, margin: "8px 0 16px" }}>{it.title}</h1>
-      {it.image?.url && <img className="thumb" src={it.image.url} alt="" style={{ width: "100%", borderRadius: 10, border: "1px solid var(--rule)", marginBottom: 18 }} />}
+      {it.image?.url && <Img className="thumb" src={it.image.url} alt="" style={{ width: "100%", borderRadius: 10, border: "1px solid var(--rule)", marginBottom: 18 }} />}
       {body && <div className="body" style={{ fontSize: 16, whiteSpace: "pre-wrap", color: "var(--ink-2)" }}>{body}</div>}
       {it.sharp && (
         <details style={{ marginTop: 16 }}>

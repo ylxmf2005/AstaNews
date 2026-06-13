@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { layerName, BASE } from "../../lib/config";
+import { layerName, BASE, API } from "../../lib/config";
 
 // 混合检索：语义（浏览器内 transformers.js 嵌入 query，与预构建向量点积）+ 关键词。
 // 模型 Xenova/paraphrase-multilingual-MiniLM-L12-v2（与索引同款），经 hf-mirror 加载，浏览器缓存。
@@ -23,8 +23,9 @@ export default function Search() {
   const [results, setResults] = useState([]);
   const busy = useRef(false);
 
-  // 加载索引
+  // 加载索引（仅在无后端时；有后端走服务端检索）
   useEffect(() => {
+    if (API) { setStatus("api"); return; }
     (async () => {
       try {
         const s = await fetch(`${BASE}/data/search.json`).then((r) => r.json());
@@ -35,6 +36,19 @@ export default function Search() {
       } catch { setStatus("keyword-only"); }
     })();
   }, []);
+
+  // 服务端语义检索（连了后端时，最可靠）
+  useEffect(() => {
+    if (status !== "api" || !q.trim()) { return; }
+    let cancelled = false;
+    const t = setTimeout(async () => {
+      try {
+        const d = await (await fetch(`${API}/api/search?q=${encodeURIComponent(q)}&top=40`)).json();
+        if (!cancelled) setResults((d.results || []).map((r) => ({ it: { u: r.url, t: r.title, d: r.date, l: r.layer }, sem: r.score })));
+      } catch { /* 后端不可达则保持空 */ }
+    }, 250);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [q, status]);
 
   // 懒加载语义模型
   useEffect(() => {
@@ -83,10 +97,11 @@ export default function Search() {
     return () => { cancelled = true; };
   }, [q, model, vecs, meta, dim, terms]);
 
-  const showSem = status === "ready" && q.trim() && results.length > 0;
+  const showSem = (status === "ready" || status === "api") && q.trim() && results.length > 0;
   const list = showSem ? results.map((r) => ({ ...r.it, _sc: r.sem })) : kwResults.map((r) => ({ ...r.it, _kw: r.s }));
 
   const hint = {
+    "api": "服务端语义检索（已连后端）",
     "loading-index": "加载索引…",
     "loading-model": "语义模型加载中（首次约 30MB，之后浏览器缓存）— 先用关键词",
     "ready": `语义检索就绪 · ${meta?.length || 0} 条已索引`,

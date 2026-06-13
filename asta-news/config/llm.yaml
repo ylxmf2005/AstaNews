@@ -1,0 +1,12 @@
+# 小模型底座（OpenAI 兼容接口）——分类/初筛里"拿不准"处薄薄用，不可用时优雅退化。
+# DeepSeek / 通义 / 智谱 / ollama 全是 /v1/chat/completions，只换这三个字段即可。
+#   生产默认 → 国产便宜云 API；  自测 → 本机 ollama（base_url: http://localhost:11434/v1, 不需 key）
+# key 不进 git：放 .env 里名为 api_key_env 的变量（ollama 可留空）。
+# 任意字段可被环境变量覆盖：ASTA_LLM_BASE_URL / ASTA_LLM_MODEL / ASTA_LLM_KEY。
+enabled: true
+base_url: https://api.deepseek.com/v1
+model: deepseek-chat
+api_key_env: ASTA_LLM_KEY
+temperature: 0
+timeout: 30
+max_tokens: 1024

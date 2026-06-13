@@ -1,0 +1,36 @@
+# 初筛打分权重与漏斗（prerank.py 读）。全确定性信号，权重和不必为 1（最后排序用相对值）。
+# 思路对齐"新(信息增量)与领先(SOTA/首次)优先"：领先关键词 + 多源共识 + 源权威 权重最高。
+weights:
+  source_priority: 0.25   # 源权威：P0=1.0 / P1=0.6 / P2=0.3
+  recency: 0.18           # 新鲜度：窗口内按龄期指数衰减
+  consensus: 0.20         # 多源共识（dedup 聚类大小）——"多方比对"的廉价版
+  leading_kw: 0.22        # 领先/首次信号词命中
+  heat: 0.10              # 热度（HN points / stars / likes，对数归一）
+  cross_stack: 0.05       # 跨层加成（classify 给的）
+
+recency_half_life_hours: 36   # 半衰期：36h 前的内容新鲜度分减半
+consensus_saturate: 4         # 达到 4 源即共识满分
+heat_cap: 500                 # 热度对数归一的封顶值
+
+# 领先/首次关键词（标题+摘要命中即加分，2 个封顶）
+leading_keywords:
+  - SOTA
+  - state-of-the-art
+  - state of the art
+  - first
+  - 首次
+  - 首个
+  - 开源
+  - open-source
+  - open source
+  - open weights
+  - outperforms
+  - 突破
+  - 新纪录
+  - benchmark record
+  - release
+  - 发布
+
+# 漏斗：确定性切到 keep，再(可选)LLM 重排切到 rerank_keep
+keep: 30
+rerank_keep: 15

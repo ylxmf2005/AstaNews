@@ -122,7 +122,13 @@ group  : 目标 5（上限 8），最严，微信群发
 
 状态：⬜ 待办 / 🔵 进行中 / ✅ 完成
 
-- 🔵 **P1-SCRIPTIFY**（当前焦点·待用户签字）把分类/初筛/解析从贵 agent 下放到脚本+小模型，解决成本规模化。设计已落 spec：`docs/superpowers/specs/2026-06-13-scriptify-classify-rank-design.md`。Approach A：embedding 零样本分类+源先验（零 LLM）、多信号确定性初筛 134→30、小模型薄层重排 30→15，agent 只对 ~15 终选+改写。小模型走 OpenAI 兼容接口（base_url/model/key 进 config，生产默认便宜云 API、自测走本地 ollama），无 LLM 时优雅退化为纯确定性。新增 `scripts/{llm,classify,prerank,extract}.py`，改 daily-digest SKILL 第 3–4 步。**下次从这继续：用户拍 A/B/C → writing-plans → 实现**。
+- 🔵 **P1-SCRIPTIFY**（当前焦点）把分类/初筛/解析从贵 agent 下放到脚本+小模型，解决成本规模化。设计 spec：`docs/superpowers/specs/2026-06-13-scriptify-classify-rank-design.md`（Approach A）。
+  - ✅ **增量件已建并自测全绿（纯新增、现有 pipeline 零行为变更）**：
+    - `scripts/llm.py` + `config/llm.yaml`：OpenAI 兼容小模型 client（base_url/model/key 进 config，生产默认便宜云 API、自测走本地 ollama），不可用即优雅退化返回 None。自测 PASS（配置解析/JSON 抠取/不可达端点退化）。
+    - `scripts/classify.py`：embedding 零样本（13 层中英原型锚向量，复用 fastembed）+ 源 `layers[]` 先验，零 LLM。自测 6/6，端到端对 model/serving/embodied/devtool 判对。
+    - `scripts/prerank.py` + `config/prerank.yaml`：多信号确定性打分（源权威/新鲜度/多源共识/领先关键词/热度/跨层）+ 可选 LLM 重排，把候选压到 keep。自测 PASS（SOTA 发布顶上、typo 补丁沉底）。classify→prerank 字段契约端到端验证通过。
+  - ⬜ **待用户签字后做**：① 拍 A/B/C；② `dedup.py` 暴露 `cluster_size`、fetch 候选带 `priority`；③ 可选 `extract.py`（trafilatura 解析）；④ **改 daily-digest SKILL 第 3–4 步接线**（删 subagent fan-out，改跑 classify+prerank，agent 只看 top~15）——这是唯一改生产行为的一步，gate 在签字。
+  - **下次从这继续**：用户确认 A → writing-plans 出接线计划 → 改 SKILL + dedup/fetch 字段 → 端到端跑一期验证。
 - ✅ **P0-DOC** 写本 ROADMAP（PO 总纲）
 - ✅ **生产** 2026-06-13 首次端到端 v2 digest 跑通并上线(往期已 2 期)；publish_site 加 facts/links 归一容错
 - ✅ **P0-CRON** 5am 北京定时任务已设（durable cron），进入持续迭代循环

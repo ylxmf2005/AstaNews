@@ -138,7 +138,7 @@ group  : 目标 5（上限 8），最严，微信群发
 - ✅ **P3-SELFCONTAIN** doctor 升级为全平台健康检查(uv/node/docker/配置/embed/后端/公众号脚本/源/RSSHub)，全绿(110 源/RSSHub/代理自探测)；setup skill 更新：X 用 grab_x_cookie.sh 自动取 cookie + per-user 路由开箱即用、embed 自包含(hf-mirror)、README 指向 web/ Next 流程
 - 🔵 **P3-CONSOLE** services/ FastAPI 后端已建并验证：列期/取期/**服务端语义检索(跨语言)**/源概览/读写配置/触发抓取 + require_auth 鉴权钩子(预留账号)；待加排程端点 + web 控制台 UI(P3-WEBCTRL)
 - 🔵 **P3-WEBCTRL** 网站 /console 页上线：静态站显引导，连后端则看状态/源、服务端语义检索、触发抓取、**编辑并保存配置(tiers/perspectives/sharpness/…)**；排程在控制台可见(读 workflow cron);改排程=编辑 workflow(写入式 UI 属后续)
-- ⬜ **P3-ACCT** 账号体系（API auth 预留 → 实现）
+- 🔵 **P3-ACCT** auth-lite 令牌门已通：设 ASTA_API_TOKEN 后写操作需 Bearer token(控制台令牌框,localStorage),只读开放;实测 401/200。多用户账号体系按需再扩
 - 🔵 **分发** sitemap.xml + robots.txt(可被搜索引擎/聚合器发现)+ Atom 订阅 feed + **社交分享卡(OG/Twitter meta:首页+每期+每条 item,带图)**——分享到微信群/推特有预览卡
 - 🔵 **P3-WECHAT** md→公众号内联样式 HTML 转换器(publish_wechat.py,橘鸦风,≤1MB,实测渲染 OK)已成；微信 draft/publish API 接口已写好,gated 在 WECHAT_APPID/SECRET(等用户公众号凭证)；services 端点 /api/publish/wechat + 控制台「生成公众号 HTML」按钮已加(实测生成成功,发布等凭证)
 - 🔵 **持续** 前端：favicon(轨道印记)+品牌 404 页 + 头条层级 + **item 详情页 + **往期 prev/next 顺序导航**；数据源 121（+TLDR AI/Ben's Bites/Ethan Mollick/Zvi/RunPod/Meta新闻RSS 等）（+The Decoder/MarkTechPost/Together/Google AI/philschmid/r-ML 等，不止 RSSHub）；前端人类视角打磨、文章质量、更多中文/商业/创意源待续

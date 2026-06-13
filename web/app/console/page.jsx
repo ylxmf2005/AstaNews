@@ -13,7 +13,7 @@ function Card({ title, children }) {
   );
 }
 
-function ConfigEditor({ config }) {
+function ConfigEditor({ config, authHeaders }) {
   const names = Object.keys(config);
   const [name, setName] = useState(names[0]);
   const [text, setText] = useState(JSON.stringify(config[names[0]], null, 1));
@@ -24,7 +24,7 @@ function ConfigEditor({ config }) {
     try { body = JSON.parse(text); } catch (e) { setMsg(`JSON 非法：${e}`); return; }
     setMsg("保存中…");
     try {
-      const r = await fetch(`${API}/api/config/${name}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const r = await fetch(`${API}/api/config/${name}`, { method: "PUT", headers: { "Content-Type": "application/json", ...authHeaders }, body: JSON.stringify(body) });
       const d = await r.json();
       setMsg(r.ok ? `已保存 → ${d.wrote}` : `失败：${d.detail || r.status}`);
     } catch (e) { setMsg(`失败：${e}`); }
@@ -54,6 +54,10 @@ export default function Console() {
   const [q, setQ] = useState("");
   const [res, setRes] = useState([]);
   const [msg, setMsg] = useState("");
+  const [token, setToken] = useState("");
+  useEffect(() => { try { setToken(localStorage.getItem("asta_token") || ""); } catch {} }, []);
+  const saveToken = (t) => { setToken(t); try { localStorage.setItem("asta_token", t); } catch {} };
+  const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
   useEffect(() => {
     if (!API) return;
@@ -78,7 +82,7 @@ export default function Console() {
   async function trigger() {
     if (!API) return;
     setMsg("触发中…");
-    try { const d = await (await fetch(`${API}/api/run/fetch`, { method: "POST" })).json(); setMsg(`已触发抓取 (pid ${d.pid})`); }
+    try { const d = await (await fetch(`${API}/api/run/fetch`, { method: "POST", headers: authHeaders })).json(); setMsg(`已触发抓取 (pid ${d.pid})`); }
     catch (e) { setMsg(`触发失败：${e}`); }
   }
   async function wechat() {
@@ -86,7 +90,7 @@ export default function Console() {
     const date = health?.editions ? (new Date().toISOString().slice(0, 10)) : "";
     setMsg("生成公众号 HTML…");
     try {
-      const d = await (await fetch(`${API}/api/publish/wechat?date=${date}`, { method: "POST" })).json();
+      const d = await (await fetch(`${API}/api/publish/wechat?date=${date}`, { method: "POST", headers: authHeaders })).json();
       setMsg(d.ok ? `公众号 HTML 已生成 → ${d.html}${d.published ? "（草稿已发）" : "（配 WECHAT 凭证可直接发草稿）"}` : `失败：${d.detail || d.log || ""}`);
     } catch (e) { setMsg(`失败：${e}`); }
   }
@@ -120,6 +124,11 @@ cd web && NEXT_PUBLIC_API=http://127.0.0.1:8799 npm run dev
       {err && <Card title="错误"><span style={{ color: "var(--seal)" }}>{err}（确认 services 后端在跑）</span></Card>}
       <Card title="状态">
         {health ? <span style={{ fontFamily: "var(--mono)", fontSize: 13 }}>ok · {health.editions} 期 · {health.data_dir}</span> : "…"}
+        <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 8 }}>
+          <span className="ctl-label">令牌</span>
+          <input type="password" value={token} onChange={(e) => saveToken(e.target.value)} placeholder="ASTA_API_TOKEN（设了鉴权才需要）"
+            style={{ flex: 1, padding: "5px 10px", border: "1px solid var(--rule-2)", borderRadius: 6, background: "var(--paper)", color: "var(--ink)", fontFamily: "var(--mono)", fontSize: 12 }} />
+        </div>
       </Card>
       <Card title="服务端语义检索">
         <form onSubmit={search} style={{ display: "flex", gap: 10 }}>
@@ -146,7 +155,7 @@ cd web && NEXT_PUBLIC_API=http://127.0.0.1:8799 npm run dev
         ) : "…"}
       </Card>
       <Card title="配置（可编辑保存）">
-        {config ? <ConfigEditor config={config} /> : "…"}
+        {config ? <ConfigEditor config={config} authHeaders={authHeaders} /> : "…"}
       </Card>
       <Card title="触发 / 发布">
         <button onClick={trigger} className="chip" style={{ borderColor: "var(--seal)", marginRight: 8 }}>触发抓取</button>
